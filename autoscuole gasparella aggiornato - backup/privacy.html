@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Privacy Policy &ndash; Autoscuole Gasparella Vicenza</title>
+<meta name="description" content="Informativa sul trattamento dei dati personali (GDPR - Regolamento UE 2016/679) del sito Autoscuole Gasparella Vicenza." />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  #demo-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+    background: #111827; color: #e5e7eb;
+    font-family: Montserrat, sans-serif; font-size: 0.76rem; font-weight: 500;
+    text-align: center; padding: 9px 1rem;
+  }
+  #demo-bar a { color: #fbbf24; text-decoration: none; font-weight: 700; }
+  body { padding-top: 36px; }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue:   #1280c2;
+    --blue-d: #0e6aa3;
+    --bg:     #f2f4f7;
+    --dark:   #2d3236;
+    --text:   #353735;
+    --white:  #ffffff;
+  }
+  body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+  a { text-decoration: none; color: inherit; }
+  ul, ol { list-style: none; }
+  img { max-width: 100%; display: block; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 5%; }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 36px; z-index: 200;
+    background: var(--blue);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: .9rem 5%;
+  }
+  .logo { display: flex; align-items: center; gap: .6rem; }
+  .nav-right { display: flex; align-items: center; gap: 2.2rem; }
+  .nav-links { display: flex; gap: 2.2rem; }
+  .nav-links a { font-size: 1.05rem; font-weight: 700; color: var(--white); letter-spacing: .01em; transition: opacity .2s; }
+  .nav-links a:hover { opacity: .75; }
+  .nav-social { display: flex; align-items: center; gap: .7rem; }
+  .nav-social-icon {
+    width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,.16);
+    display: flex; align-items: center; justify-content: center; transition: background .2s;
+  }
+  .nav-social-icon:hover { background: rgba(255,255,255,.3); }
+  .burger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; }
+  .burger span { width: 24px; height: 2.5px; background: var(--white); }
+
+  /* HERO */
+  .patente-hero { background: var(--blue); color: var(--white); padding: 2.6rem 0 2.2rem; }
+  .ph-back { font-size: .82rem; font-weight: 700; color: rgba(255,255,255,.85); display: inline-block; margin-bottom: 1rem; }
+  .ph-back:hover { color: #fff; }
+  .patente-hero h1 { font-size: clamp(2rem,4.4vw,3rem); font-weight: 800; margin-bottom: .6rem; letter-spacing: -.01em; }
+  .ph-sub { font-size: 1.02rem; opacity: .92; max-width: 660px; }
+
+  /* CONTENT */
+  .patente-content { padding: 3rem 5% 1rem; max-width: 980px; margin: 0 auto; }
+  .sub-block { background: var(--white); border-radius: 14px; padding: 2.2rem 2.2rem 2rem; margin-bottom: 2.2rem; box-shadow: 0 10px 30px rgba(0,0,0,.06); }
+
+  .legal-disclaimer { background: #fff3cd; border: 1px solid #f2dca0; color: #7a5c00; border-radius: 12px; padding: 1.1rem 1.4rem; font-size: .85rem; line-height: 1.65; margin-bottom: 2rem; }
+  .legal-disclaimer strong { color: #5c4600; }
+
+  .policy-toc { background: var(--bg); border-radius: 12px; padding: 1.3rem 1.5rem; margin-bottom: 2.2rem; }
+  .policy-toc h2 { font-size: .95rem; font-weight: 800; color: var(--text); margin-bottom: .8rem; text-transform: uppercase; letter-spacing: .03em; }
+  .policy-toc ol { padding-left: 0; counter-reset: toc; }
+  .policy-toc li { counter-increment: toc; font-size: .86rem; margin-bottom: .5rem; }
+  .policy-toc li a { color: var(--blue); font-weight: 700; }
+  .policy-toc li a:hover { text-decoration: underline; }
+  .policy-toc li::before { content: counter(toc) ". "; font-weight: 800; color: var(--blue); }
+
+  .policy-updated { font-size: .8rem; color: #888; margin-bottom: 1.6rem; }
+
+  .policy-section { margin-bottom: 2rem; scroll-margin-top: 110px; }
+  .policy-section:last-child { margin-bottom: 0; }
+  .policy-section h2 { font-size: 1.25rem; font-weight: 800; color: var(--blue); margin-bottom: .8rem; padding-bottom: .7rem; border-bottom: 2px solid var(--bg); }
+  .policy-section h3 { font-size: .95rem; font-weight: 800; color: var(--dark); margin: 1.1rem 0 .5rem; }
+  .policy-section p { font-size: .9rem; color: #444; line-height: 1.75; margin-bottom: .8rem; }
+  .policy-section ul { padding-left: 0; margin-bottom: .8rem; }
+  .policy-section ul li { font-size: .88rem; color: #444; line-height: 1.7; margin-bottom: .5rem; padding-left: 1.1rem; position: relative; }
+  .policy-section ul li::before { content: "\2022"; color: var(--blue); font-weight: 800; position: absolute; left: 0; }
+  .policy-section table { width: 100%; border-collapse: collapse; margin: .8rem 0 1rem; font-size: .84rem; }
+  .policy-section table th, .policy-section table td { border: 1px solid #e3e6ea; padding: .6rem .7rem; text-align: left; vertical-align: top; }
+  .policy-section table th { background: var(--bg); color: var(--dark); font-weight: 700; }
+  .policy-section .table-wrap { overflow-x: auto; }
+  .policy-section .titolare-box { background: var(--bg); border-radius: 10px; padding: 1rem 1.2rem; font-size: .88rem; color: var(--text); line-height: 1.75; margin-bottom: .8rem; }
+
+  .cta-band { background: var(--dark); color: var(--white); border-radius: 14px; padding: 2rem 2.2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.2rem; margin: 1rem 0 3rem; }
+  .cta-band h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: .3rem; }
+  .cta-band p { font-size: .88rem; color: rgba(255,255,255,.75); }
+  .cta-actions { display: flex; gap: .8rem; flex-wrap: wrap; }
+  .btn-cta { padding: .75rem 1.4rem; border-radius: 999px; font-size: .88rem; font-weight: 700; display: inline-block; }
+  .btn-cta.call { background: var(--blue); color: #fff; }
+  .btn-cta.outline { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,.4); }
+
+  /* FOOTER */
+  footer { background: var(--dark); color: rgba(255,255,255,.8); padding: 3.5rem 0 0; }
+  .footer-grid { display: grid; grid-template-columns: 1.15fr 1.1fr 1.3fr 1fr; gap: 2.3rem; padding: 0 5% 2.5rem; max-width: 1180px; margin: 0 auto; }
+  footer h4 { color: var(--white); font-size: 1.05rem; font-weight: 800; margin-bottom: 1rem; }
+  footer p { font-size: .86rem; line-height: 1.75; color: rgba(255,255,255,.7); }
+  footer ul li { margin-bottom: .55rem; }
+  footer ul li a { font-size: .86rem; color: #7fc4e8; }
+  footer ul li a:hover { text-decoration: underline; }
+  .social-link { display: flex; align-items: center; gap: .6rem; margin-bottom: .9rem; font-size: .86rem; color: #7fc4e8; }
+  .social-icon { width: 30px; height: 30px; background: rgba(255,255,255,.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .footer-sub-heading { margin-top: 0; }
+  .footer-divider { border: none; border-top: 1px solid rgba(255,255,255,.2); margin: 1.4rem 0 1.3rem; width: 60%; }
+  .footer-logo { width: 130px; height: auto; margin-top: 1.2rem; opacity: .95; }
+  .footer-bottom { border-top: 1px solid rgba(255,255,255,.12); padding: 1.2rem 5%; text-align: center; font-size: .78rem; color: rgba(255,255,255,.55); }
+
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    .nav-social { display: none; }
+    .burger { display: flex; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 700px) {
+    .cta-band { flex-direction: column; align-items: flex-start; }
+  }
+  @media (max-width: 600px) {
+    .footer-grid { grid-template-columns: 1fr; }
+  }
+
+  .wa-float {
+    position: fixed; right: 22px; bottom: 22px; width: 58px; height: 58px;
+    background: #fff; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 20px rgba(0,0,0,.28); z-index: 999;
+    transition: transform .2s ease;
+  }
+  .wa-float:hover { transform: scale(1.08); }
+  .wa-float svg { width: 34px; height: 34px; }
+  @media (max-width: 600px) {
+    .wa-float { right: 14px; bottom: 14px; width: 52px; height: 52px; }
+    .wa-float svg { width: 30px; height: 30px; }
+  }
+</style>
+</head>
+<body>
+
+<a href="https://wa.me/393336161355?text=Ciao%2C%20vorrei%20informazioni%20sulle%20Autoscuole%20Gasparella" target="_blank" rel="noopener" class="wa-float" aria-label="Scrivici su WhatsApp" title="Scrivici su WhatsApp">
+  <svg viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2Z" fill="#25D366"/><path d="M16.5 13.6c-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.47-.4-.4-.54-.41-.14-.01-.3-.01-.46-.01-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.12 3.64.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28Z" fill="#fff"/></svg>
+</a>
+
+<div id="demo-bar">Pagina dimostrativa Privacy Policy &mdash; <a href="index.html">Torna alla home</a></div>
+
+<nav>
+  <a href="index.html" class="logo">
+    <img src="https://www.autoscuolegasparellavicenza.it/wp-content/uploads/2024/08/LogoGaspaW-1024x257.png" alt="Autoscuole Gasparella" style="height:56px; width:auto;" />
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="patenti.html">Categorie Patenti</a></li>
+      <li><a href="le-nostre-autoscuole.html">Le Nostre Autoscuole</a></li>
+      <li><a href="servizi.html">Servizi</a></li>
+    </ul>
+    <div class="nav-social">
+      <a class="nav-social-icon" href="https://www.facebook.com/p/Autoscuola-Gasparella-100046330225155/?locale=it_IT" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M14 9h3V6h-3c-1.7 0-3 1.3-3 3v2H9v3h2v6h3v-6h3l1-3h-4V9c0-.6.4-1 1-1z" fill="#fff"/></svg>
+      </a>
+      <a class="nav-social-icon" href="https://www.instagram.com/autoscuolegasparella/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="#fff" stroke-width="1.6"/><circle cx="12" cy="12" r="4" stroke="#fff" stroke-width="1.6"/></svg>
+      </a>
+    </div>
+  </div>
+  <button class="burger"><span></span><span></span><span></span></button>
+</nav>
+
+<header class="patente-hero">
+  <div class="wrap">
+    <a href="index.html" class="ph-back">&larr; Torna alla home</a>
+    <h1>Privacy Policy</h1>
+    <p class="ph-sub">Informativa sul trattamento dei dati personali ai sensi degli artt. 13-14 del Regolamento UE 2016/679 (GDPR)</p>
+  </div>
+</header>
+
+<main class="patente-content">
+  <div class="sub-block">
+    <div class="legal-disclaimer">
+      <strong>Nota per Autoscuole Gasparella / Studio Digital:</strong> questo documento &egrave; stato redatto seguendo i principi generali del GDPR (Regolamento UE 2016/679) e del Codice Privacy italiano, sulla base delle informazioni raccolte sul sito e sui servizi offerti. Non sostituisce una consulenza legale: prima della pubblicazione ufficiale va fatto validare da un avvocato o da un DPO, che verifichi i trattamenti realmente svolti (fornitori, cookie effettivamente installati, tempi di conservazione interni, eventuali obblighi specifici verso la Motorizzazione Civile).
+    </div>
+
+    <p class="policy-updated">Ultimo aggiornamento: 8 luglio 2026</p>
+
+    <div class="policy-toc">
+      <h2>Indice</h2>
+      <ol>
+        <li><a href="#titolare">Titolare del trattamento</a></li>
+        <li><a href="#dati">Tipologie di dati raccolti</a></li>
+        <li><a href="#finalita">Finalit&agrave; e base giuridica del trattamento</a></li>
+        <li><a href="#modalita">Modalit&agrave; del trattamento e misure di sicurezza</a></li>
+        <li><a href="#destinatari">Comunicazione e destinatari dei dati</a></li>
+        <li><a href="#trasferimento">Trasferimento dei dati verso paesi extra-UE</a></li>
+        <li><a href="#conservazione">Periodo di conservazione dei dati</a></li>
+        <li><a href="#minori">Dati di minori</a></li>
+        <li><a href="#cookie">Cookie e tecnologie simili</a></li>
+        <li><a href="#diritti">Diritti dell'interessato</a></li>
+        <li><a href="#reclamo">Diritto di reclamo al Garante</a></li>
+        <li><a href="#modifiche">Modifiche alla presente informativa</a></li>
+        <li><a href="#contatti">Contatti</a></li>
+      </ol>
+    </div>
+
+    <div class="policy-section" id="titolare">
+      <h2>1. Titolare del trattamento</h2>
+      <p>Il Titolare del trattamento dei dati personali raccolti tramite questo sito &egrave;:</p>
+      <div class="titolare-box">
+        <strong>Gasparella S.r.l.</strong><br>
+        Via Degli Alpini, 7 &ndash; 36040 Sossano (VI)<br>
+        Codice Fiscale e Partita IVA: 02503620243<br>
+        Capitale Sociale: 20.000&euro; i.v. &mdash; R.E.A. VI 235854<br>
+        Email: <a href="#" style="color:var(--blue); font-weight:700;">[inserire indirizzo email dedicato alla privacy]</a><br>
+        Telefono: 333 6161355
+      </div>
+      <p>Il Titolare pu&ograve; essere contattato per qualsiasi richiesta relativa al trattamento dei dati personali agli estremi indicati nella sezione "Contatti" della presente informativa.</p>
+    </div>
+
+    <div class="policy-section" id="dati">
+      <h2>2. Tipologie di dati raccolti</h2>
+      <p>Nell'ambito dell'utilizzo del sito e dei servizi offerti dalle Autoscuole Gasparella, possono essere raccolte le seguenti categorie di dati personali:</p>
+      <ul>
+        <li><strong>Dati di contatto</strong>: nome, cognome, numero di telefono, indirizzo email, forniti volontariamente tramite il modulo "Contattaci", tramite WhatsApp o telefonicamente.</li>
+        <li><strong>Dati di navigazione</strong>: informazioni raccolte automaticamente durante la navigazione (indirizzo IP, tipo di browser, pagine visitate, data e ora di accesso), tipiche dei protocolli di comunicazione internet.</li>
+        <li><strong>Dati forniti in fase di iscrizione ai corsi</strong>: dati anagrafici, copia di documenti di identit&agrave; e codice fiscale, eventuale permesso di soggiorno, dati relativi alla patente posseduta o da conseguire, richiesti per l'erogazione dei servizi e per gli adempimenti previsti dal Codice della Strada verso la Motorizzazione Civile.</li>
+        <li><strong>Dati particolari (categorie speciali, art. 9 GDPR)</strong>: in relazione a specifiche pratiche (es. Commissione Medica, idoneit&agrave; alla guida) potrebbero essere trattati dati relativi allo stato di salute, forniti direttamente dall'interessato o dalle strutture sanitarie competenti, esclusivamente per le finalit&agrave; strettamente connesse alla pratica richiesta.</li>
+        <li><strong>Dati di prenotazione</strong>: nominativo, telefono, sede, data e orario scelti, in caso di utilizzo di eventuali strumenti di prenotazione online.</li>
+        <li><strong>Cookie e identificativi online</strong>: si veda la sezione dedicata "Cookie e tecnologie simili".</li>
+      </ul>
+    </div>
+
+    <div class="policy-section" id="finalita">
+      <h2>3. Finalit&agrave; e base giuridica del trattamento</h2>
+      <p>I dati personali raccolti sono trattati per le seguenti finalit&agrave;:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Finalit&agrave;</th><th>Base giuridica (art. 6 GDPR)</th></tr></thead>
+          <tbody>
+            <tr><td>Rispondere a richieste di informazioni o preventivi inviate tramite form, telefono o WhatsApp</td><td>Misure precontrattuali su richiesta dell'interessato (art. 6.1.b)</td></tr>
+            <tr><td>Gestione dell'iscrizione ai corsi e delle pratiche amministrative (rinnovo, duplicati, CQC, ecc.)</td><td>Esecuzione di un contratto (art. 6.1.b) e obbligo legale verso la Motorizzazione Civile (art. 6.1.c)</td></tr>
+            <tr><td>Gestione di eventuali prenotazioni di lezioni, visite o appuntamenti</td><td>Esecuzione di un contratto / misure precontrattuali (art. 6.1.b)</td></tr>
+            <tr><td>Adempimento di obblighi di legge (fiscali, contabili, verso enti pubblici)</td><td>Obbligo legale (art. 6.1.c)</td></tr>
+            <tr><td>Trattamento di eventuali dati relativi allo stato di salute per pratiche di idoneit&agrave; alla guida</td><td>Consenso esplicito dell'interessato (art. 9.2.a) o motivi di interesse pubblico rilevante previsti dalla normativa sulla circolazione stradale</td></tr>
+            <tr><td>Invio di comunicazioni informative o promozionali (newsletter, offerte)</td><td>Consenso dell'interessato (art. 6.1.a), revocabile in ogni momento</td></tr>
+            <tr><td>Miglioramento del sito e analisi statistiche aggregate</td><td>Legittimo interesse del Titolare (art. 6.1.f) o consenso, a seconda degli strumenti utilizzati</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Il conferimento dei dati &egrave; facoltativo; tuttavia, il mancato conferimento dei dati necessari all'erogazione di un servizio richiesto (es. iscrizione a un corso) rende impossibile l'evasione della richiesta.</p>
+    </div>
+
+    <div class="policy-section" id="modalita">
+      <h2>4. Modalit&agrave; del trattamento e misure di sicurezza</h2>
+      <p>Il trattamento dei dati personali &egrave; effettuato con strumenti informatici e/o cartacei, con logiche strettamente correlate alle finalit&agrave; sopra indicate e, comunque, in modo da garantire la sicurezza e la riservatezza dei dati stessi.</p>
+      <p>Il Titolare adotta misure tecniche e organizzative adeguate al rischio, tra cui, a titolo esemplificativo: accesso ai dati riservato al personale autorizzato e istruito, protezione degli account con credenziali personali, backup periodici, aggiornamento dei sistemi informatici e conservazione della documentazione cartacea in archivi ad accesso controllato.</p>
+    </div>
+
+    <div class="policy-section" id="destinatari">
+      <h2>5. Comunicazione e destinatari dei dati</h2>
+      <p>I dati personali potranno essere comunicati, per le finalit&agrave; sopra descritte, ai seguenti soggetti:</p>
+      <ul>
+        <li>Personale interno delle Autoscuole Gasparella, autorizzato al trattamento in quanto necessario allo svolgimento delle proprie mansioni;</li>
+        <li>Motorizzazione Civile e altri enti pubblici competenti, per gli adempimenti previsti dal Codice della Strada e dalla normativa di settore;</li>
+        <li>Fornitori di servizi informatici e di hosting che operano in qualit&agrave; di responsabili del trattamento (art. 28 GDPR), previa nomina formale;</li>
+        <li>Fornitori di servizi di terze parti integrati nel sito, quali Google (mappe, calendario, moduli), Meta/WhatsApp (chat diretta), e piattaforme di gestione dei social media, ciascuno nell'ambito delle rispettive informative privacy;</li>
+        <li>Consulenti e liberi professionisti (es. commercialista, legale) per gli adempimenti di legge;</li>
+        <li>Autorit&agrave; pubbliche, qualora richiesto per legge o per l'esercizio di un diritto in sede giudiziaria.</li>
+      </ul>
+      <p>I dati personali non sono oggetto di diffusione, salvo quanto espressamente previsto dalla presente informativa.</p>
+    </div>
+
+    <div class="policy-section" id="trasferimento">
+      <h2>6. Trasferimento dei dati verso paesi extra-UE</h2>
+      <p>Alcuni fornitori di servizi utilizzati dal sito (ad esempio Google e Meta/WhatsApp, richiamati alla sezione precedente) possono trattare dati anche al di fuori dello Spazio Economico Europeo. In tali casi, il trasferimento avviene sulla base di garanzie adeguate previste dal GDPR, quali le Clausole Contrattuali Standard approvate dalla Commissione Europea o decisioni di adeguatezza, secondo quanto indicato nelle rispettive informative privacy dei fornitori.</p>
+    </div>
+
+    <div class="policy-section" id="conservazione">
+      <h2>7. Periodo di conservazione dei dati</h2>
+      <p>I dati personali sono conservati per il tempo strettamente necessario a conseguire le finalit&agrave; per cui sono stati raccolti, nel rispetto dei seguenti criteri generali:</p>
+      <ul>
+        <li>i dati raccolti tramite il modulo di contatto sono conservati per il tempo necessario a gestire la richiesta e, successivamente, per un periodo massimo di 24 mesi, salvo diverso accordo con l'interessato;</li>
+        <li>i dati relativi a iscrizioni e pratiche amministrative sono conservati per il periodo previsto dagli obblighi di legge e fiscali applicabili (generalmente 10 anni per la documentazione contabile e fiscale);</li>
+        <li>i dati trattati sulla base del consenso (es. per finalit&agrave; di marketing) sono conservati fino alla revoca del consenso stesso.</li>
+      </ul>
+      <p>Al termine del periodo di conservazione i dati saranno cancellati o resi anonimi, salvo diverso obbligo di legge.</p>
+    </div>
+
+    <div class="policy-section" id="minori">
+      <h2>8. Dati di minori</h2>
+      <p>Alcuni corsi (ad esempio per il conseguimento della patente AM, A1 o B1) possono coinvolgere persone minorenni. In questi casi, il trattamento dei dati personali del minore &egrave; effettuato previo consenso di chi esercita la responsabilit&agrave; genitoriale, che deve sottoscrivere la relativa modulistica al momento dell'iscrizione. Il Titolare non raccoglie consapevolmente dati di minori attraverso il sito senza il coinvolgimento di un genitore o tutore.</p>
+    </div>
+
+    <div class="policy-section" id="cookie">
+      <h2>9. Cookie e tecnologie simili</h2>
+      <p>Il sito pu&ograve; utilizzare cookie tecnici, necessari al corretto funzionamento delle pagine, e cookie di terze parti legati a servizi integrati (ad esempio mappe interattive, calendari di prenotazione, contenuti social). Questi ultimi sono soggetti alle informative privacy e cookie dei rispettivi fornitori (Google, Meta, ecc.).</p>
+      <p>Al momento della pubblicazione ufficiale del sito sar&agrave; attivato un banner di consenso ai cookie conforme alle Linee guida del Garante Privacy, che permetter&agrave; all'utente di accettare, rifiutare o personalizzare le proprie preferenze prima che vengano installati cookie non tecnici.</p>
+      <h3>Tipologie di cookie utilizzabili</h3>
+      <ul>
+        <li><strong>Cookie tecnici</strong>: necessari alla navigazione e al funzionamento del sito, non richiedono consenso.</li>
+        <li><strong>Cookie di funzionalit&agrave;</strong>: utilizzati per ricordare le preferenze dell'utente (es. sede selezionata).</li>
+        <li><strong>Cookie di terze parti</strong>: installati da servizi esterni integrati nel sito (mappe, calendari, social media), soggetti al consenso dell'utente.</li>
+      </ul>
+    </div>
+
+    <div class="policy-section" id="diritti">
+      <h2>10. Diritti dell'interessato</h2>
+      <p>In qualit&agrave; di interessato, l'utente ha il diritto di richiedere in qualsiasi momento al Titolare del trattamento, ai sensi degli articoli 15-22 del GDPR:</p>
+      <ul>
+        <li><strong>Accesso</strong> ai propri dati personali (art. 15);</li>
+        <li><strong>Rettifica</strong> dei dati inesatti o incompleti (art. 16);</li>
+        <li><strong>Cancellazione</strong> dei dati, nei casi previsti dalla legge (art. 17, c.d. "diritto all'oblio");</li>
+        <li><strong>Limitazione</strong> del trattamento (art. 18);</li>
+        <li><strong>Portabilit&agrave;</strong> dei dati forniti, in un formato strutturato e leggibile (art. 20);</li>
+        <li><strong>Opposizione</strong> al trattamento, in particolare per finalit&agrave; di marketing diretto (art. 21);</li>
+        <li><strong>Revoca del consenso</strong> in qualsiasi momento, senza pregiudicare la liceit&agrave; del trattamento svolto prima della revoca.</li>
+      </ul>
+      <p>Le richieste possono essere inviate agli estremi indicati nella sezione "Contatti". Il Titolare risponder&agrave; entro i termini previsti dalla normativa vigente (generalmente 30 giorni).</p>
+    </div>
+
+    <div class="policy-section" id="reclamo">
+      <h2>11. Diritto di reclamo al Garante</h2>
+      <p>Fatto salvo ogni altro ricorso amministrativo o giurisdizionale, l'interessato che ritenga che il trattamento dei propri dati personali violi la normativa vigente ha il diritto di proporre reclamo al Garante per la Protezione dei Dati Personali, secondo le modalit&agrave; indicate sul sito ufficiale dell'Autorit&agrave; (<span style="color:var(--blue); font-weight:700;">www.garanteprivacy.it</span>), oppure di adire le competenti sedi giudiziarie.</p>
+    </div>
+
+    <div class="policy-section" id="modifiche">
+      <h2>12. Modifiche alla presente informativa</h2>
+      <p>Il Titolare si riserva il diritto di modificare o aggiornare, in tutto o in parte, la presente informativa, anche a seguito di variazioni normative. Le modifiche saranno pubblicate su questa pagina con indicazione della data di ultimo aggiornamento. Si invita l'utente a consultare periodicamente questa pagina.</p>
+    </div>
+
+    <div class="policy-section" id="contatti">
+      <h2>13. Contatti</h2>
+      <p>Per esercitare i propri diritti o per qualsiasi informazione relativa al trattamento dei dati personali, &egrave; possibile contattare il Titolare del trattamento:</p>
+      <div class="titolare-box">
+        <strong>Gasparella S.r.l.</strong><br>
+        Via Degli Alpini, 7 &ndash; 36040 Sossano (VI)<br>
+        Telefono: 333 6161355<br>
+        Email: <a href="#" style="color:var(--blue); font-weight:700;">[inserire indirizzo email dedicato alla privacy]</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-band">
+    <div>
+      <h3>Hai domande sul trattamento dei tuoi dati?</h3>
+      <p>Scrivici e ti risponderemo il prima possibile.</p>
+    </div>
+    <div class="cta-actions">
+      <a class="btn-cta call" href="https://wa.me/393336161355" target="_blank" rel="noopener">Scrivici su WhatsApp</a>
+      <a class="btn-cta outline" href="index.html#footer-contatti">Vai al modulo contatti</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <h4>Dettagli societari</h4>
+      <p>Gasparella srl<br>Via Degli Alpini, 7<br>36040 &ndash; Sossano (VI)<br>CF e P.IVA: 02503620243<br>Cap. Soc: 20.000&euro; i.v.<br>R.E.A: VI 235854</p>
+      <hr class="footer-divider" />
+      <h4 class="footer-sub-heading">Privacy Policy</h4>
+      <p><a href="privacy.html" style="color:#7fc4e8;">Leggi l'informativa privacy completa</a></p>
+    </div>
+    <div>
+      <h4>Le nostre sedi</h4>
+      <ul>
+        <li><a href="https://maps.app.goo.gl/Xi2rXdnS9AFLUZM68" target="_blank" rel="noopener">Autoscuola Barbarano</a></li>
+        <li><a href="https://maps.app.goo.gl/8GwTXpxpiJAx4D9P7" target="_blank" rel="noopener">Autoscuola Caldogno</a></li>
+        <li><a href="https://maps.app.goo.gl/9cbMaUQau4mDAfKL9" target="_blank" rel="noopener">Autoscuola Costabissara</a></li>
+        <li><a href="https://maps.app.goo.gl/eM5753cM1pKAaPBK6" target="_blank" rel="noopener">Autoscuola Isola Vicentina</a></li>
+        <li><a href="https://maps.app.goo.gl/Uyp12GzgZsm5Pena9" target="_blank" rel="noopener">Autoscuola Montegalda</a></li>
+        <li><a href="https://maps.app.goo.gl/1BsrLTKLacLfeVqy9" target="_blank" rel="noopener">Autoscuola Sossano</a></li>
+        <li><a href="https://maps.app.goo.gl/FbzRmcYCGyZHGhpP6" target="_blank" rel="noopener">Autoscuola Marano Vicentino</a></li>
+        <li><a href="https://www.google.com/maps/search/?api=1&amp;query=Autoscuola+Gasparella+Villaverla+Piazza+delle+Fornaci+7" target="_blank" rel="noopener">Autoscuola Villaverla</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Chi siamo</h4>
+      <p>L'autoscuola apre la sua prima sede nel 1977 a Sossano, grazie al suo fondatore Luigi Gasparella e alla sorella Antonia. Successivamente vengono aperte le sedi di Montegalda, Costabissara, Isola Vicentina, Barbarano Mossano e Caldogno.</p>
+    </div>
+    <div>
+      <h4>Social page</h4>
+      <a class="social-link" href="https://www.facebook.com/p/Autoscuola-Gasparella-100046330225155/?locale=it_IT" target="_blank" rel="noopener">
+        <span class="social-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M14 9h3V6h-3c-1.7 0-3 1.3-3 3v2H9v3h2v6h3v-6h3l1-3h-4V9c0-.6.4-1 1-1z" fill="#fff"/></svg>
+        </span>
+        Facebook
+      </a>
+      <a class="social-link" href="https://www.instagram.com/autoscuolegasparella/" target="_blank" rel="noopener">
+        <span class="social-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="#fff" stroke-width="1.6"/><circle cx="12" cy="12" r="4" stroke="#fff" stroke-width="1.6"/></svg>
+        </span>
+        Instagram
+      </a>
+      <img src="https://www.autoscuolegasparellavicenza.it/wp-content/uploads/2024/08/LogoGaspaB-300x75.png" alt="Autoscuole Gasparella" class="footer-logo" />
+    </div>
+  </div>
+  <div class="footer-bottom">Copyright &copy; Gasparella srl &ndash; 2026</div>
+</footer>
+</body>
+</html>

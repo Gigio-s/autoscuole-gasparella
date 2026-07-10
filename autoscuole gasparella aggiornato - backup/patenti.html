@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Categorie Patenti AM, A, B, C, D Vicenza &ndash; Autoscuole Gasparella</title>
+<meta name="description" content="Scopri le categorie di patente AM, A, B, C e D nelle Autoscuole Gasparella di Vicenza e provincia: corsi teorici e pratici in 8 sedi." />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  #demo-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+    background: #111827; color: #e5e7eb;
+    font-family: Montserrat, sans-serif; font-size: 0.76rem; font-weight: 500;
+    text-align: center; padding: 9px 1rem;
+  }
+  #demo-bar a { color: #fbbf24; text-decoration: none; font-weight: 700; }
+  body { padding-top: 36px; }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue: #1280c2; --blue-d: #0e6aa3; --dark: #2d3236; --text: #353735; --white: #fff; --bg: #f2f4f7;
+  }
+  body { font-family: 'Montserrat', sans-serif; background: var(--white); color: var(--text); }
+  a { text-decoration: none; color: inherit; }
+
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 5%; }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 36px; z-index: 200;
+    background: var(--blue);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: .9rem 5%;
+  }
+  .logo { display: flex; align-items: center; gap: .6rem; }
+  .nav-right { display: flex; align-items: center; gap: 2.2rem; }
+  .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+  .nav-links a { font-size: 1.05rem; font-weight: 700; color: var(--white); letter-spacing: .01em; transition: opacity .2s; }
+  .nav-links a:hover { opacity: .75; }
+  .nav-social { display: flex; align-items: center; gap: .7rem; }
+  .nav-social-icon {
+    width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,.16);
+    display: flex; align-items: center; justify-content: center; transition: background .2s;
+  }
+  .nav-social-icon:hover { background: rgba(255,255,255,.3); }
+  .burger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; }
+  .burger span { width: 24px; height: 2.5px; background: var(--white); }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    background: var(--white); padding: 1.1rem 5%;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .5rem;
+  }
+  .topbar h1 { font-size: 1.3rem; font-weight: 800; color: var(--text); }
+  .topbar h1 span { font-weight: 500; color: #6b7280; font-size: 1rem; }
+  .topbar a.back-home { font-size: .82rem; font-weight: 700; color: var(--blue); }
+
+  /* ── GARAGE STAGE ── */
+  .stage-wrap { padding: 1.4rem 4%; background: var(--white); }
+  .garage-stage {
+    position: relative; width: 100%; max-width: 1180px; margin: 0 auto;
+    aspect-ratio: 2752 / 1536;
+    background: #1a1d21 url('https://d8j0ntlcm91z4.cloudfront.net/user_3Fp93g3AABsPKODQxzIxBVAjWHa/hf_20260702_003015_ff7d3f77-929e-4f30-89de-5576fe58d0b2.png') center / cover no-repeat;
+    overflow: hidden;
+    border-radius: 14px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.4);
+    perspective: 1400px;
+    perspective-origin: 62% 20%;
+  }
+
+  .vehicle {
+    position: absolute;
+    transform: translate(-50%, -100%);
+    filter: drop-shadow(0 10px 14px rgba(0,0,0,.45));
+    cursor: pointer;
+    transition: opacity .45s ease, transform .45s ease, filter .25s ease;
+    background: none; border: none; padding: 0;
+  }
+  /* tight-crop wrapper: removes transparent padding baked into each PNG so the
+     vehicle silhouette itself fills the box, instead of a small vehicle floating
+     in a mostly-empty transparent frame */
+  .vehicle .crop {
+    position: relative; width: 100%; overflow: hidden; display: block;
+    transform-origin: 50% 100%; transform-style: preserve-3d;
+  }
+  .vehicle .crop img { position: absolute; display: block; max-width: none; pointer-events: none; }
+  .vehicle:hover { filter: drop-shadow(0 14px 22px rgba(0,0,0,.55)) brightness(1.08); }
+  .vehicle:hover .v-label { opacity: 1; transform: translateY(0); }
+
+  .v-label {
+    position: absolute; bottom: -2.1rem; left: 50%; transform: translateX(-50%) translateY(4px);
+    background: rgba(11,20,30,.9); color: #fff; font-size: .72rem; font-weight: 700;
+    padding: .3rem .7rem; border-radius: 999px; white-space: nowrap;
+    opacity: 0; transition: opacity .2s, transform .2s; pointer-events: none;
+    letter-spacing: .03em;
+  }
+
+  /* base positions (percent of stage) — calibrated against the actual
+     "garage 2" reference photo ground-contact points of each vehicle,
+     widths trimmed just enough that adjacent boxes never overlap */
+  #v-am  { left: 14.8%; top: 78.5%; width: 13%; z-index: 5; }
+  #v-a   { left: 35%;   top: 68%;   width: 15%; z-index: 4; }
+  #v-b   { left: 50.8%; top: 62%;   width: 16%; z-index: 3; }
+  #v-c   { left: 68.5%; top: 53.3%; width: 18%; z-index: 2; }
+  #v-d   { left: 82.4%; top: 44.1%; width: 18%; z-index: 1; }
+
+  .sub-vehicle { opacity: 0; pointer-events: none; }
+  .sub-vehicle.show { opacity: 1; pointer-events: auto; }
+
+  .hidden-fade { opacity: 0 !important; pointer-events: none !important; transform: translate(-50%, -85%) scale(.9) !important; }
+
+  /* ── INFO CARD (riquadro in basso a destra) ── */
+  .info-card {
+    position: absolute; right: 2.5%; bottom: 6.5rem; left: auto; transform: translateY(10px);
+    background: rgba(255,255,255,.97); border-radius: 14px; padding: 1.1rem 1.4rem;
+    min-width: 260px; max-width: 340px; text-align: left;
+    box-shadow: 0 20px 40px rgba(0,0,0,.35);
+    opacity: 0; pointer-events: none; transition: opacity .3s ease, transform .3s ease;
+  }
+  .info-card.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .info-card h3 { font-size: 1.05rem; font-weight: 800; color: var(--blue); margin-bottom: .3rem; }
+  .info-card p { font-size: .82rem; color: #555; margin-bottom: .8rem; line-height: 1.5; }
+  .info-card .ic-actions { display: flex; gap: .6rem; }
+  .info-card .btn {
+    font-size: .78rem; font-weight: 700; padding: .5rem .9rem; border-radius: 999px;
+    display: inline-block;
+  }
+  .info-card .btn-primary { background: var(--blue); color: #fff; }
+  .info-card .btn-outline { background: transparent; color: var(--blue); border: 1.5px solid var(--blue); }
+
+  /* ── BACK BUTTON ── */
+  .back-btn {
+    position: absolute; left: 2%; top: 6%;
+    background: rgba(255,255,255,.95); color: var(--text);
+    font-size: .82rem; font-weight: 700; padding: .6rem 1.1rem; border-radius: 999px;
+    display: flex; align-items: center; gap: .4rem; border: none; cursor: pointer;
+    opacity: 0; pointer-events: none; transform: translateY(-8px); transition: opacity .3s, transform .3s;
+  }
+  .back-btn.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+  /* ── BOTTOM TAB STRIP ── */
+  .tab-strip {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    background: rgba(17,20,24,.88); backdrop-filter: blur(6px);
+    display: flex; overflow-x: auto; padding: .6rem 1.5%;
+    gap: .5rem;
+  }
+  .tab-strip::-webkit-scrollbar { display: none; }
+  .tab {
+    flex: 0 0 auto; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+    border-radius: 10px; padding: .55rem 1rem; cursor: pointer; text-align: left;
+    transition: background .2s, border-color .2s;
+  }
+  .tab:hover, .tab.active { background: rgba(18,128,194,.25); border-color: var(--blue); }
+  .tab b { display: block; color: #fff; font-size: .82rem; font-weight: 800; }
+  .tab span { display: block; color: rgba(255,255,255,.5); font-size: .68rem; }
+  .tab-underline { height: 3px; border-radius: 2px; margin-top: .35rem; background: #4b5563; }
+  .tab.active .tab-underline { background: var(--blue); }
+
+  @media (max-width: 780px) {
+    .info-card { max-width: 78%; min-width: 0; right: 2%; bottom: 5.5rem; }
+    .topbar h1 { font-size: 1.05rem; }
+  }
+
+  /* ── EDIT MODE (trascina i veicoli) ── */
+  .edit-controls { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+  .edit-btn {
+    font-size: .76rem; font-weight: 700; padding: .5rem .85rem; border-radius: 999px;
+    border: 1.5px solid var(--blue); background: #fff; color: var(--blue); cursor: pointer;
+    transition: background .2s, color .2s;
+  }
+  .edit-btn:hover { background: var(--blue); color: #fff; }
+  .edit-btn.on { background: var(--blue); color: #fff; }
+  .edit-btn.secondary { border-color: #9ca3af; color: #6b7280; }
+  .edit-btn.secondary:hover { background: #6b7280; color: #fff; }
+  .vt-label { font-size: .76rem; font-weight: 700; color: var(--text); margin-right: .3rem; }
+
+  body.edit-mode .vehicle { cursor: grab; }
+  body.edit-mode .vehicle .crop {
+    outline: 2px dashed rgba(255,255,255,.55); outline-offset: 3px; border-radius: 4px;
+  }
+  .vehicle.dragging { cursor: grabbing !important; z-index: 60; }
+  .vehicle.dragging .crop { outline-color: #fbbf24; }
+  .vehicle.selected .crop { outline-color: #22c55e; outline-style: solid; }
+
+  /* ── FOOTER ── */
+  footer { background: var(--dark); color: rgba(255,255,255,.8); padding: 3.5rem 0 0; }
+  .footer-grid { display: grid; grid-template-columns: 1.15fr 1.1fr 1.3fr 1fr; gap: 2.3rem; padding: 0 5% 2.5rem; max-width: 1180px; margin: 0 auto; }
+  footer h4 { color: var(--white); font-size: 1.05rem; font-weight: 800; margin-bottom: 1rem; }
+  footer p { font-size: .86rem; line-height: 1.75; color: rgba(255,255,255,.7); }
+  footer ul li { margin-bottom: .55rem; list-style: none; }
+  footer ul li a { font-size: .86rem; color: #7fc4e8; }
+  footer ul li a:hover { text-decoration: underline; }
+  .social-link { display: flex; align-items: center; gap: .6rem; margin-bottom: .9rem; font-size: .86rem; color: #7fc4e8; }
+  .social-icon { width: 30px; height: 30px; background: rgba(255,255,255,.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .footer-sub-heading { margin-top: 0; }
+  .footer-divider { border: none; border-top: 1px solid rgba(255,255,255,.2); margin: 1.4rem 0 1.3rem; width: 60%; }
+  .footer-logo { width: 130px; height: auto; margin-top: 1.2rem; opacity: .95; }
+  .footer-bottom { border-top: 1px solid rgba(255,255,255,.12); padding: 1.2rem 5%; text-align: center; font-size: .78rem; color: rgba(255,255,255,.55); }
+
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    .nav-social { display: none; }
+    .burger { display: flex; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .footer-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<a href="https://wa.me/393336161355?text=Ciao%2C%20vorrei%20informazioni%20sulle%20Autoscuole%20Gasparella" target="_blank" rel="noopener" class="wa-float" aria-label="Scrivici su WhatsApp" title="Scrivici su WhatsApp">
+  <svg viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2Z" fill="#25D366"/><path d="M16.5 13.6c-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.47-.4-.4-.54-.41-.14-.01-.3-.01-.46-.01-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.12 3.64.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28Z" fill="#fff"/></svg>
+</a>
+<style>
+  .wa-float {
+    position: fixed; right: 22px; bottom: 22px; width: 58px; height: 58px;
+    background: #fff; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 20px rgba(0,0,0,.28); z-index: 999;
+    transition: transform .2s ease;
+  }
+  .wa-float:hover { transform: scale(1.08); }
+  .wa-float svg { width: 34px; height: 34px; }
+  @media (max-width: 600px) {
+    .wa-float { right: 14px; bottom: 14px; width: 52px; height: 52px; }
+    .wa-float svg { width: 30px; height: 30px; }
+  }
+</style>
+
+<div id="demo-bar">Demo di lavoro — garage dinamico patenti. <a href="index.html">Torna alla home</a></div>
+
+<nav>
+  <a href="index.html" class="logo">
+    <img src="https://www.autoscuolegasparellavicenza.it/wp-content/uploads/2024/08/LogoGaspaW-1024x257.png" alt="Autoscuole Gasparella" style="height:56px; width:auto;" />
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="patenti.html">Categorie Patenti</a></li>
+      <li><a href="le-nostre-autoscuole.html">Le Nostre Autoscuole</a></li>
+      <li><a href="servizi.html">Servizi</a></li>
+    </ul>
+    <div class="nav-social">
+      <a class="nav-social-icon" href="https://www.facebook.com/p/Autoscuola-Gasparella-100046330225155/?locale=it_IT" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M14 9h3V6h-3c-1.7 0-3 1.3-3 3v2H9v3h2v6h3v-6h3l1-3h-4V9c0-.6.4-1 1-1z" fill="#fff"/></svg>
+      </a>
+      <a class="nav-social-icon" href="https://www.instagram.com/autoscuolegasparella/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="#fff" stroke-width="1.6"/><circle cx="12" cy="12" r="4" stroke="#fff" stroke-width="1.6"/></svg>
+      </a>
+    </div>
+  </div>
+  <button class="burger"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="topbar">
+  <h1>CATEGORIE PATENTI <span>— Esplora i veicoli & inizia a guidare</span></h1>
+  <div class="edit-controls">
+    <button class="edit-btn" id="editModeBtn" onclick="toggleEditMode()">✎ Modifica posizioni</button>
+    <button class="edit-btn secondary" id="exportBtn" onclick="exportPositions()">📋 Copia posizioni</button>
+    <button class="edit-btn secondary" id="resetBtn" onclick="resetPositions()">↺ Ripristina</button>
+  </div>
+  <div class="edit-controls" id="vehicleToolbar" style="display:none;">
+    <span class="vt-label" id="vtLabel">Veicolo selezionato</span>
+    <button class="edit-btn secondary" onclick="rotateSelected(-15)">⟲ Ruota</button>
+    <button class="edit-btn secondary" onclick="rotateSelected(15)">⟳ Ruota</button>
+    <button class="edit-btn secondary" onclick="flipSelected('x')">⇔ Capovolgi orizz.</button>
+    <button class="edit-btn secondary" onclick="flipSelected('y')">⇕ Capovolgi vert.</button>
+    <button class="edit-btn secondary" onclick="scaleSelected(0.9)">− Rimpicciolisci</button>
+    <button class="edit-btn secondary" onclick="scaleSelected(1.1)">+ Ingrandisci</button>
+    <button class="edit-btn secondary" onclick="moveZSelected(40)">⇱ Avvicina (Z)</button>
+    <button class="edit-btn secondary" onclick="moveZSelected(-40)">⇲ Allontana (Z)</button>
+    <button class="edit-btn secondary" onclick="resetSelectedTransform()">↺ Reset veicolo</button>
+  </div>
+</div>
+
+<div class="stage-wrap">
+<div class="garage-stage" id="stage">
+
+  <button class="back-btn" id="backBtn">← Indietro</button>
+
+  <!-- ═══ BASE VEHICLES ═══ -->
+  <button class="vehicle" id="v-am" data-group="am">
+    <div class="crop" data-rx="8" data-ry="10" data-scale="1.20" style="aspect-ratio:1044/1064;">
+      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Fp93g3AABsPKODQxzIxBVAjWHa/hf_20260702_003212_43592e26-254e-4758-8175-0b7828399d45.png" style="width:229.9%; left:-65.5%; top:-32%;" alt="Patente AM" />
+    </div>
+    <span class="v-label">Patente AM</span>
+  </button>
+
+  <button class="vehicle" id="v-a" data-group="a">
+    <div class="crop" data-rx="8" data-ry="7" data-scale="1.06" style="aspect-ratio:1318/1102;">
+      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Fp93g3AABsPKODQxzIxBVAjWHa/hf_20260702_003215_e3bce2cd-f638-47a7-9cc1-caf64dc90814.png" style="width:182.1%; left:-41.4%; top:-30.3%;" alt="Patente A" />
+    </div>
+    <span class="v-label">Patente A</span>
+  </button>
+
+  <button class="vehicle" id="v-b" data-group="b">
+    <div class="crop" data-rx="9" data-ry="3" style="aspect-ratio:872/632;">
+      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Fp93g3AABsPKODQxzIxBVAjWHa/hf_20260702_045439_ab8ce7e2-7121-4519-ae00-cb3f96ced366.png" style="width:137.6%; left:-20.4%; top:-19.6%;" alt="Patente B" />
+    </div>
+    <span class="v-label">Patente B</span>
+  </button>
+
+  <button class="vehicle" id="v-c" data-group="c">
+    <div class="crop" data-rx="10" data-ry="-4" style="aspect-ratio:1752/1252;">
+      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Fp93g3AABsPKODQxzIxBVAjWHa/hf_20260702_005934_fa752e6d-d02a-4a9b-8283-ebf56f371bdc.png" style="width:137%; left:-18.3%; top:-20%;" alt="Patente C" />
+    </div>
+    <span class="v-label">Patente C</span>
+  </button>
+
+  <button class="vehicle" id="v-d" data-group="d">
+    <div class="crop" data-rx="11" data-ry="-9" style="aspect-ratio:936/500;">
+      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Fp93g3AABsPKODQxzIxBVAjWHa/hf_20260702_045443_3fab47a9-1c54-4d8e-b1a3-765ce8d26fe7.png" style="width:128.2%; left:-15.2%; top:-36.4%;" alt="Patente D" />
+    </div>
+    <span class="v-label">Patente D</span>
+  </button>
+
+  <!-- ═══ A SUBCATEGORIES ═══ -->
+  <a class="vehicle sub-vehicle" data-sub="a" href="patente-a.html#a1" style="left:20%; top:70%; width:13%;">
+    <div class="crop" data-rx="8" data-ry="7" style="aspect-ratio:1244/1108;">
+      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Fp93g3AABsPKODQxzIxBVAjWHa/hf_20260702_003502_82008206-97d4-4980-ab4c-181a7ae59b38.png" style="width:192.9%; left:-46.1%; top:-29.6%;" alt="Patente A1" />
+    </div>
+    <span class="v-label">Patente A1</span>
+  </a>
+  <a class="vehicle sub-vehicle" data-sub="a" href="patente-a.html#a2" style="left:50%; top:70%; width:13%;">
+    <div class="crop" data-rx="8" data-ry="7" style="aspect-ratio:1594/1234;">
+      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Fp93g3AABsPKODQxzIxBVAjWHa/hf_20260702_003629_066061ec-8d01-4f1f-97eb-1fd77a3e5783.png" style="width:150.6%; left:-25.2%; top:-23.8%;" alt="Patente A2" />
+    </div>
+    <span class="v-label">Patente A2</span>
+  </a>
+  <a class="vehicle sub-vehicle" data-sub="a" href="patente-a.html#a" style="left:80%; top:70%; width:13%;">
+    <div class="crop" data-rx="8" data-ry="7" style="aspect-ratio:1318/1102;">
+      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Fp93g3AABsPKODQxzIxBVAjWHa/hf_20260702_003215_e3bce2cd-f638-47a7-9cc1-caf64dc90814.png" style="width:182.1%; left:-41.4%; top:-30.3%;" alt="Patente A" />
+    </div>
+    <span class="v-label">Patente A</span>
+  </a>
+
+  <!-- ═══ B SUBCATEGORIES ═══ -->
+  <a class="vehicle sub-vehicle" data-sub="b" href="patente-b.html#b" style="left:20%; top:65%; width:17%; z-index:3;">
+    <div class="crop" data-rx="9" data-ry="3" style="aspect-ratio:872/632;">
+      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Fp93g3AABsPKODQxzIxBVAjWHa/hf_20260702_045439_ab8ce7e2-7121-4519-ae00-cb3f96ced366.png" style="width:137.6%; left:-20.4%; top:-19.6%;" alt="Patente B" />
+    </div>
+    <span class="v-label">Patente B</span>
+  </a>
+  <a class="vehicle sub-vehicle" data-sub="b" href="patente-b.html#b96" style="left:50%; top:65%; width:17%; z-index:2;">
+    <div class="crop" data-rx="9" data-ry="3" style="aspect-ratio:1946/850;">
+      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Fp93g3AABsPKODQxzIxBVAjWHa/hf_20260702_010130_b103968c-11e4-436e-a200-31a48c088901.png" style="width:123.3%; left:0%; top:-58.4%;" alt="Patente B96" />
+    </div>
+    <span class="v-label">Patente B96</span>
+  </a>
+  <a class="vehicle sub-vehicle" data-sub="b" href="patente-b.html#be" style="left:80%; top:65%; width:17%; z-index:1;">
+    <div class="crop" data-rx="9" data-ry="3" style="aspect-ratio:1874/848;">
+      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Fp93g3AABsPKODQxzIxBVAjWHa/hf_20260702_010153_545a5b8a-c7e9-42f1-a97d-85789a4b31e9.png" style="width:128.1%; left:-3.8%; top:-58.5%;" alt="Patente BE" />
+    </div>
+    <span class="v-label">Patente BE</span>
+  </a>
+
+  <!-- ═══ C SUBCATEGORIES ═══ -->
+  <a class="vehicle sub-vehicle" data-sub="c" href="patente-c.html#c1-c1e" style="left:15%; top:59%; width:19%; z-index:4;">
+    <div class="crop" data-rx="10" data-ry="-4" style="aspect-ratio:1754/1250;">
+      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Fp93g3AABsPKODQxzIxBVAjWHa/hf_20260702_010331_248e9789-65c8-49ae-8ee3-572e19816d4d.png" style="width:136.8%; left:-18.3%; top:-20.3%;" alt="Patente C1" />
+    </div>
+    <span class="v-label">Patente C1</span>
+  </a>
+  <a class="vehicle sub-vehicle" data-sub="c" href="patente-c.html#c1-c1e" style="left:38%; top:59%; width:19%; z-index:3;">
+    <div class="crop" data-rx="10" data-ry="-4" style="aspect-ratio:1940/1250;">
+      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Fp93g3AABsPKODQxzIxBVAjWHa/hf_20260702_011921_69a207e5-df12-404b-96bc-b3daf47db82a.png" style="width:123.7%; left:-6.8%; top:-20.2%;" alt="Patente C1E" />
+    </div>
+    <span class="v-label">Patente C1E</span>
+  </a>
+  <a class="vehicle sub-vehicle" data-sub="c" href="patente-c.html#c-ce" style="left:61%; top:59%; width:19%; z-index:2;">
+    <div class="crop" data-rx="10" data-ry="-4" style="aspect-ratio:1752/1252;">
+      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Fp93g3AABsPKODQxzIxBVAjWHa/hf_20260702_005934_fa752e6d-d02a-4a9b-8283-ebf56f371bdc.png" style="width:137%; left:-18.3%; top:-20%;" alt="Patente C" />
+    </div>
+    <span class="v-label">Patente C</span>
+  </a>
+  <a class="vehicle sub-vehicle" data-sub="c" href="patente-c.html#c-ce" style="left:84%; top:59%; width:19%; z-index:1;">
+    <div class="crop" data-rx="10" data-ry="-4" style="aspect-ratio:974/628;">
+      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Fp93g3AABsPKODQxzIxBVAjWHa/hf_20260702_012000_3b02f05e-731e-4240-ac31-97fbf30102d6.png" style="width:123.2%; left:-6.4%; top:-19.4%;" alt="Patente CE" />
+    </div>
+    <span class="v-label">Patente CE</span>
+  </a>
+
+  <!-- ═══ D SUBCATEGORIES ═══ -->
+  <a class="vehicle sub-vehicle" data-sub="d" href="patente-d.html#d1-d1e" style="left:15%; top:54%; width:19%; z-index:4;">
+    <div class="crop" data-rx="11" data-ry="-9" style="aspect-ratio:1640/870;">
+      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Fp93g3AABsPKODQxzIxBVAjWHa/hf_20260702_003935_5fa6ddea-d495-47ff-81b1-b4f75b674774.png" style="width:146.3%; left:-24.2%; top:-53.8%;" alt="Patente D1" />
+    </div>
+    <span class="v-label">Patente D1</span>
+  </a>
+  <a class="vehicle sub-vehicle" data-sub="d" href="patente-d.html#d1-d1e" style="left:38%; top:54%; width:19%; z-index:3;">
+    <div class="crop" data-rx="11" data-ry="-9" style="aspect-ratio:1718/868;">
+      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Fp93g3AABsPKODQxzIxBVAjWHa/hf_20260702_003937_69e64cf6-a777-46b3-b832-35d43732caf7.png" style="width:139.7%; left:-18.5%; top:-54.2%;" alt="Patente D1E" />
+    </div>
+    <span class="v-label">Patente D1E</span>
+  </a>
+  <a class="vehicle sub-vehicle" data-sub="d" href="patente-d.html#d-de" style="left:61%; top:54%; width:19%; z-index:2;">
+    <div class="crop" data-rx="11" data-ry="-9" style="aspect-ratio:936/500;">
+      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Fp93g3AABsPKODQxzIxBVAjWHa/hf_20260702_045443_3fab47a9-1c54-4d8e-b1a3-765ce8d26fe7.png" style="width:128.2%; left:-15.2%; top:-36.4%;" alt="Patente D" />
+    </div>
+    <span class="v-label">Patente D</span>
+  </a>
+  <a class="vehicle sub-vehicle" data-sub="d" href="patente-d.html#d-de" style="left:84%; top:54%; width:19%; z-index:1;">
+    <div class="crop" data-rx="11" data-ry="-9" style="aspect-ratio:1802/868;">
+      <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Fp93g3AABsPKODQxzIxBVAjWHa/hf_20260702_003941_1bdfd3ec-6bb8-4ee5-80e3-2045af651313.png" style="width:133.2%; left:-13%; top:-54.2%;" alt="Patente DE" />
+    </div>
+    <span class="v-label">Patente DE</span>
+  </a>
+
+  <!-- ═══ INFO CARD ═══ -->
+  <div class="info-card" id="infoCard">
+    <h3 id="icTitle">Patente B</h3>
+    <p id="icDesc">Autovetture fino a 3,5t e 9 posti. Età minima 18 anni.</p>
+    <div class="ic-actions">
+      <a class="btn btn-primary" id="icCta" href="patente-b.html">Dettagli e iscrizione</a>
+    </div>
+  </div>
+
+  <!-- ═══ BOTTOM TAB STRIP ═══ -->
+  <div class="tab-strip" id="tabStrip">
+    <div class="tab" data-group="am"><b>AM</b><span>Ciclomotore</span><div class="tab-underline"></div></div>
+    <div class="tab" data-group="a"><b>A</b><span>Moto (A1·A2·A)</span><div class="tab-underline"></div></div>
+    <div class="tab" data-group="b"><b>B</b><span>Auto (B·B96·BE)</span><div class="tab-underline"></div></div>
+    <div class="tab" data-group="c"><b>C</b><span>Camion (C1·C1E·C·CE)</span><div class="tab-underline"></div></div>
+    <div class="tab" data-group="d"><b>D</b><span>Bus (D1·D1E·D·DE)</span><div class="tab-underline"></div></div>
+  </div>
+</div>
+</div>
+
+<script>
+  const baseVehicles = document.querySelectorAll('.vehicle:not(.sub-vehicle)');
+  const subVehicles = document.querySelectorAll('.sub-vehicle');
+  const backBtn = document.getElementById('backBtn');
+  const infoCard = document.getElementById('infoCard');
+  const icTitle = document.getElementById('icTitle');
+  const icDesc = document.getElementById('icDesc');
+  const icCta = document.getElementById('icCta');
+  const tabs = document.querySelectorAll('.tab');
+
+  const info = {
+    am: { title: 'Patente AM', desc: 'Ciclomotori 2/3 ruote e quadricicli leggeri. Età minima 14 anni.', href: 'patente-am.html', expandable: false },
+    a:  { title: 'Patente A', desc: 'Moto — si divide in A1 (16 anni), A2 (18 anni) e A (24 anni, illimitata).', href: 'patente-a.html', expandable: true },
+    b:  { title: 'Patente B', desc: 'Auto — si divide in B (18 anni), B96 e BE (rimorchio pesante).', href: 'patente-b.html', expandable: true },
+    c:  { title: 'Patente C', desc: 'Camion — si divide in C1/C1E (18 anni, fino 7,5t) e C/CE (21 anni).', href: 'patente-c.html', expandable: true },
+    d:  { title: 'Patente D', desc: 'Bus — si divide in D1/D1E (21 anni, fino 16 posti) e D/DE (24 anni).', href: 'patente-d.html', expandable: true },
+  };
+
+  function showInfo(key) {
+    const i = info[key];
+    icTitle.textContent = i.title;
+    icDesc.textContent = i.desc;
+    icCta.href = i.href;
+    infoCard.classList.add('show');
+  }
+  function hideInfo() { infoCard.classList.remove('show'); }
+
+  function expand(group) {
+    baseVehicles.forEach(v => {
+      if (v.dataset.group !== group) v.classList.add('hidden-fade');
+      else v.classList.add('hidden-fade'); // hide the clicked one too; its full version reappears as a slot
+    });
+    subVehicles.forEach(sv => {
+      sv.classList.toggle('show', sv.dataset.sub === group);
+    });
+    backBtn.classList.add('show');
+    tabs.forEach(t => t.classList.toggle('active', t.dataset.group === group));
+    showInfo(group);
+  }
+
+  function reset() {
+    baseVehicles.forEach(v => v.classList.remove('hidden-fade'));
+    subVehicles.forEach(sv => sv.classList.remove('show'));
+    backBtn.classList.remove('show');
+    tabs.forEach(t => t.classList.remove('active'));
+    hideInfo();
+  }
+
+  baseVehicles.forEach(v => {
+    v.addEventListener('click', () => {
+      const g = v.dataset.group;
+      if (!info[g].expandable) { window.location.href = info[g].href; return; }
+      expand(g);
+    });
+    v.addEventListener('mouseenter', () => { if (!backBtn.classList.contains('show')) showInfo(v.dataset.group); });
+    v.addEventListener('mouseleave', () => { if (!backBtn.classList.contains('show')) hideInfo(); });
+  });
+
+  tabs.forEach(t => {
+    t.addEventListener('click', () => {
+      const g = t.dataset.group;
+      if (!info[g].expandable) { window.location.href = info[g].href; return; }
+      expand(g);
+    });
+  });
+
+  backBtn.addEventListener('click', reset);
+
+  // ============================================================
+  //  MODALITÀ MODIFICA — trascina, ruota, capovolgi, ridimensiona
+  //  Tutto si salva da solo nel browser (localStorage)
+  // ============================================================
+  const STORAGE_KEY = 'gasparella_patenti_positions_v1';
+  const XFORM_KEY = 'gasparella_patenti_transforms_v1';
+  let editMode = false;
+  let dragEl = null, dragOffsetX = 0, dragOffsetY = 0, dragMoved = false;
+  let selectedVehicle = null;
+
+  function getSavedPositions() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch (e) { return {}; }
+  }
+  function setSavedPositions(pos) { localStorage.setItem(STORAGE_KEY, JSON.stringify(pos)); }
+  function getSavedTransforms() {
+    try { return JSON.parse(localStorage.getItem(XFORM_KEY) || '{}'); } catch (e) { return {}; }
+  }
+  function setSavedTransforms(x) { localStorage.setItem(XFORM_KEY, JSON.stringify(x)); }
+
+  function vehicleKey(el) {
+    if (el.id) return el.id; // veicoli base: v-am, v-a, v-b, v-c, v-d
+    const img = el.querySelector('img');
+    return 'sub__' + el.dataset.sub + '__' + (img ? img.alt.replace(/\s+/g, '-') : Math.random());
+  }
+  function getCrop(el) { return el.querySelector('.crop'); }
+
+  function defaultTransform(crop) {
+    return {
+      rx: parseFloat(crop.dataset.rx || '0'),
+      ry: parseFloat(crop.dataset.ry || '0'),
+      rotate: 0, flipX: 1, flipY: 1,
+      scale: parseFloat(crop.dataset.scale || '1'),
+      tz: 0
+    };
+  }
+  function applyTransform(el) {
+    const crop = getCrop(el);
+    if (!crop) return;
+    const all = getSavedTransforms();
+    const t = Object.assign(defaultTransform(crop), all[vehicleKey(el)] || {});
+    crop.style.transform =
+      `rotateX(${t.rx}deg) rotateY(${t.ry}deg) rotateZ(${t.rotate}deg) translateZ(${t.tz}px) scale(${t.scale * t.flipX}, ${t.scale * t.flipY})`;
+  }
+  function saveTransform(el, patch) {
+    const crop = getCrop(el);
+    const all = getSavedTransforms();
+    const current = Object.assign(defaultTransform(crop), all[vehicleKey(el)] || {});
+    Object.assign(current, patch);
+    all[vehicleKey(el)] = current;
+    setSavedTransforms(all);
+    applyTransform(el);
+  }
+
+  function applySavedPositions() {
+    const pos = getSavedPositions();
+    document.querySelectorAll('.vehicle').forEach(el => {
+      const saved = pos[vehicleKey(el)];
+      if (saved) { el.style.left = saved.left + '%'; el.style.top = saved.top + '%'; }
+      applyTransform(el);
+    });
+  }
+
+  function toggleEditMode() {
+    editMode = !editMode;
+    document.body.classList.toggle('edit-mode', editMode);
+    const btn = document.getElementById('editModeBtn');
+    btn.textContent = editMode ? '✓ Modifica attiva — trascina i veicoli' : '✎ Modifica posizioni';
+    btn.classList.toggle('on', editMode);
+    if (!editMode) selectVehicle(null);
+  }
+
+  function selectVehicle(el) {
+    if (selectedVehicle) selectedVehicle.classList.remove('selected');
+    selectedVehicle = el;
+    const toolbar = document.getElementById('vehicleToolbar');
+    if (el) {
+      el.classList.add('selected');
+      toolbar.style.display = 'flex';
+      document.getElementById('vtLabel').textContent = '» ' + (el.querySelector('img')?.alt || 'Veicolo') + ':';
+    } else {
+      toolbar.style.display = 'none';
+    }
+  }
+
+  function elLeftTopPx(el) {
+    const cs = getComputedStyle(el);
+    return { left: parseFloat(cs.left), top: parseFloat(cs.top) };
+  }
+
+  function startDrag(e, el) {
+    if (!editMode) return;
+    e.preventDefault();
+    dragEl = el; dragMoved = false;
+    const rect = document.getElementById('stage').getBoundingClientRect();
+    const p = elLeftTopPx(el);
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    dragOffsetX = clientX - rect.left - p.left;
+    dragOffsetY = clientY - rect.top - p.top;
+    el.classList.add('dragging');
+  }
+  function onDrag(e) {
+    if (!dragEl) return;
+    e.preventDefault();
+    dragMoved = true;
+    const rect = document.getElementById('stage').getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    let leftPct = ((clientX - rect.left - dragOffsetX) / rect.width) * 100;
+    let topPct = ((clientY - rect.top - dragOffsetY) / rect.height) * 100;
+    leftPct = Math.max(0, Math.min(100, leftPct));
+    topPct = Math.max(0, Math.min(100, topPct));
+    dragEl.style.left = leftPct.toFixed(1) + '%';
+    dragEl.style.top = topPct.toFixed(1) + '%';
+  }
+  function endDrag() {
+    if (!dragEl) return;
+    dragEl.classList.remove('dragging');
+    selectVehicle(dragEl);
+    if (dragMoved) {
+      const pos = getSavedPositions();
+      pos[vehicleKey(dragEl)] = { left: parseFloat(dragEl.style.left), top: parseFloat(dragEl.style.top) };
+      setSavedPositions(pos);
+    }
+    dragEl = null;
+  }
+
+  document.addEventListener('mousemove', onDrag);
+  document.addEventListener('mouseup', endDrag);
+  document.addEventListener('touchmove', onDrag, { passive: false });
+  document.addEventListener('touchend', endDrag);
+
+  document.querySelectorAll('.vehicle').forEach(el => {
+    el.addEventListener('mousedown', (e) => startDrag(e, el));
+    el.addEventListener('touchstart', (e) => startDrag(e, el), { passive: false });
+    // in modalità modifica, blocca il click normale (espandi categoria / apri link)
+    el.addEventListener('click', (e) => { if (editMode) { e.preventDefault(); e.stopImmediatePropagation(); } }, true);
+    // rotellina del mouse = ridimensiona rapidamente
+    el.addEventListener('wheel', (e) => {
+      if (!editMode) return;
+      e.preventDefault();
+      selectVehicle(el);
+      scaleSelected(e.deltaY < 0 ? 1.05 : 0.95);
+    }, { passive: false });
+  });
+
+  function rotateSelected(deg) {
+    if (!selectedVehicle) return;
+    const all = getSavedTransforms();
+    const crop = getCrop(selectedVehicle);
+    const cur = Object.assign(defaultTransform(crop), all[vehicleKey(selectedVehicle)] || {});
+    saveTransform(selectedVehicle, { rotate: (cur.rotate + deg) % 360 });
+  }
+  function flipSelected(axis) {
+    if (!selectedVehicle) return;
+    const all = getSavedTransforms();
+    const crop = getCrop(selectedVehicle);
+    const cur = Object.assign(defaultTransform(crop), all[vehicleKey(selectedVehicle)] || {});
+    if (axis === 'x') saveTransform(selectedVehicle, { flipX: cur.flipX * -1 });
+    else saveTransform(selectedVehicle, { flipY: cur.flipY * -1 });
+  }
+  function scaleSelected(factor) {
+    if (!selectedVehicle) return;
+    const all = getSavedTransforms();
+    const crop = getCrop(selectedVehicle);
+    const cur = Object.assign(defaultTransform(crop), all[vehicleKey(selectedVehicle)] || {});
+    let next = cur.scale * factor;
+    next = Math.max(0.3, Math.min(3, next));
+    saveTransform(selectedVehicle, { scale: next });
+  }
+  function resetSelectedTransform() {
+    if (!selectedVehicle) return;
+    const all = getSavedTransforms();
+    delete all[vehicleKey(selectedVehicle)];
+    setSavedTransforms(all);
+    applyTransform(selectedVehicle);
+  }
+
+  function exportPositions() {
+    const pos = getSavedPositions();
+    const xf = getSavedTransforms();
+    const keys = Array.from(new Set([...Object.keys(pos), ...Object.keys(xf)]));
+    const text = keys.length
+      ? keys.map(k => {
+          const p = pos[k] ? `left ${pos[k].left}%, top ${pos[k].top}%` : '(posizione originale)';
+          const t = xf[k] ? `, ruota ${xf[k].rotate}°, scala ${xf[k].scale?.toFixed(2)}, flipX ${xf[k].flipX}, flipY ${xf[k].flipY}` : '';
+          return `${k}:  ${p}${t}`;
+        }).join('\n')
+      : 'Nessuna modifica ancora salvata.';
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed'; ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+    alert('Posizioni e trasformazioni copiate negli appunti:\n\n' + text);
+  }
+
+  function resetPositions() {
+    if (confirm('Ripristinare tutto (posizioni, rotazioni, capovolgimenti, dimensioni)?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(XFORM_KEY);
+      location.reload();
+    }
+  }
+
+  applySavedPositions();
+</script>
+<footer>
+  <div class="footer-grid">
+    <div>
+      <h4>Dettagli societari</h4>
+      <p>Gasparella srl<br>Via Degli Alpini, 7<br>36040 &ndash; Sossano (VI)<br>CF e P.IVA: 02503620243<br>Cap. Soc: 20.000&euro; i.v.<br>R.E.A: VI 235854</p>
+      <hr class="footer-divider" />
+      <h4 class="footer-sub-heading">Privacy Policy</h4>
+      <p><a href="privacy.html" style="color:#7fc4e8;">Leggi l'informativa privacy completa</a></p>
+    </div>
+    <div>
+      <h4>Le nostre sedi</h4>
+      <ul>
+        <li><a href="https://maps.app.goo.gl/Xi2rXdnS9AFLUZM68" target="_blank" rel="noopener">Autoscuola Barbarano</a></li>
+        <li><a href="https://maps.app.goo.gl/8GwTXpxpiJAx4D9P7" target="_blank" rel="noopener">Autoscuola Caldogno</a></li>
+        <li><a href="https://maps.app.goo.gl/9cbMaUQau4mDAfKL9" target="_blank" rel="noopener">Autoscuola Costabissara</a></li>
+        <li><a href="https://maps.app.goo.gl/eM5753cM1pKAaPBK6" target="_blank" rel="noopener">Autoscuola Isola Vicentina</a></li>
+        <li><a href="https://maps.app.goo.gl/Uyp12GzgZsm5Pena9" target="_blank" rel="noopener">Autoscuola Montegalda</a></li>
+        <li><a href="https://maps.app.goo.gl/1BsrLTKLacLfeVqy9" target="_blank" rel="noopener">Autoscuola Sossano</a></li>
+        <li><a href="https://maps.app.goo.gl/FbzRmcYCGyZHGhpP6" target="_blank" rel="noopener">Autoscuola Marano Vicentino</a></li>
+        <li><a href="https://www.google.com/maps/search/?api=1&amp;query=Autoscuola+Gasparella+Villaverla+Piazza+delle+Fornaci+7" target="_blank" rel="noopener">Autoscuola Villaverla</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Chi siamo</h4>
+      <p>L'autoscuola apre la sua prima sede nel 1977 a Sossano, grazie al suo fondatore Luigi Gasparella e alla sorella Antonia. Successivamente vengono aperte le sedi di Montegalda, Costabissara, Isola Vicentina, Barbarano Mossano e Caldogno.</p>
+    </div>
+    <div>
+      <h4>Social page</h4>
+      <a class="social-link" href="https://www.facebook.com/p/Autoscuola-Gasparella-100046330225155/?locale=it_IT" target="_blank" rel="noopener">
+        <span class="social-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M14 9h3V6h-3c-1.7 0-3 1.3-3 3v2H9v3h2v6h3v-6h3l1-3h-4V9c0-.6.4-1 1-1z" fill="#fff"/></svg>
+        </span>
+        Facebook
+      </a>
+      <a class="social-link" href="https://www.instagram.com/autoscuolegasparella/" target="_blank" rel="noopener">
+        <span class="social-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="#fff" stroke-width="1.6"/><circle cx="12" cy="12" r="4" stroke="#fff" stroke-width="1.6"/></svg>
+        </span>
+        Instagram
+      </a>
+      <img src="https://www.autoscuolegasparellavicenza.it/wp-content/uploads/2024/08/LogoGaspaB-300x75.png" alt="Autoscuole Gasparella" class="footer-logo" />
+    </div>
+
+  </div>
+  <div class="footer-bottom">Copyright &copy; Gasparella srl &ndash; 2026</div>
+</footer>
+</body>
+</html>

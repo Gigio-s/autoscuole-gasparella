@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Autoscuola Vicenza | Patenti A, B, C, D, CQC e Rinnovo &ndash; Autoscuole Gasparella</title>
+<meta name="description" content="Autoscuole Gasparella: 8 sedi in provincia di Vicenza (Sossano, Isola Vicentina, Caldogno, Costabissara, Montegalda, Barbarano, Marano Vicentino, Villaverla). Corsi patente A, B, C, D, CQC e servizi." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;0,6..96,700;0,6..96,800;1,6..96,500&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+<style>
+  /* ── DEMO BANNER ── */
+  #demo-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+    background: #111827; color: #e5e7eb;
+    font-family: Montserrat, sans-serif; font-size: 0.72rem; font-weight: 500; letter-spacing: .02em;
+    text-align: center; padding: 9px 1rem;
+  }
+  #demo-bar a { color: #fbbf24; text-decoration: none; font-weight: 700; }
+  body { padding-top: 36px; }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink:       #2d3236;
+    --ink-2:     #23282a;
+    --paper:     #f2f4f7;
+    --paper-2:   #ffffff;
+    --gold:      #1280c2;
+    --gold-light:#7fc4e8;
+    --gold-deep: #0e6aa3;
+    --gray:      #666666;
+    --line:      rgba(45,50,54,.13);
+    --line-lt:   rgba(255,255,255,.22);
+    --serif: 'Bodoni Moda', Georgia, serif;
+    --sans: 'Montserrat', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); background: var(--paper); color: var(--ink); line-height: 1.6; overflow-x: hidden; }
+  a { text-decoration: none; color: inherit; }
+  ul { list-style: none; }
+  img { max-width: 100%; display: block; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 5%; }
+
+  /* reveal-on-scroll */
+  .rv { opacity: 0; transform: translateY(28px); transition: opacity .9s cubic-bezier(.16,.7,.24,1), transform .9s cubic-bezier(.16,.7,.24,1); }
+  .rv.in { opacity: 1; transform: translateY(0); }
+  .rv2 { transition-delay: .1s; }
+  .rv3 { transition-delay: .2s; }
+  .rv4 { transition-delay: .3s; }
+  .rv5 { transition-delay: .4s; }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 36px; z-index: 500;
+    background: var(--gold);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.5rem 5%;
+    transition: padding .45s ease, box-shadow .45s ease;
+  }
+  nav.scrolled { padding: .9rem 5%; box-shadow: 0 10px 30px rgba(0,0,0,.2); }
+  .logo { display: flex; align-items: center; gap: .6rem; }
+  .logo img { height: 50px; width: auto; transition: height .4s ease; filter: drop-shadow(0 2px 8px rgba(0,0,0,.35)); }
+  nav.scrolled .logo img { height: 40px; }
+  .nav-right { display: flex; align-items: center; gap: 2.6rem; }
+  .nav-links { display: flex; gap: 2.4rem; }
+  .nav-links a {
+    position: relative; font-size: .82rem; font-weight: 600; color: var(--paper);
+    letter-spacing: .14em; text-transform: uppercase; padding-bottom: .35rem;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; left: 0; bottom: 0; width: 0; height: 1px; background: var(--gold);
+    transition: width .35s ease;
+  }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-social { display: flex; align-items: center; gap: .7rem; }
+  .nav-social-icon {
+    width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--line-lt);
+    display: flex; align-items: center; justify-content: center; transition: border-color .25s ease, background .25s ease;
+  }
+  .nav-social-icon:hover { border-color: var(--gold); background: rgba(18,128,194,.16); }
+  .burger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: .4rem; }
+  .burger span { width: 22px; height: 1.5px; background: var(--paper); transition: transform .3s ease, opacity .3s ease; }
+  .mobile-menu {
+    display: none; position: fixed; inset: 0; z-index: 480; background: rgba(9,9,9,.98);
+    flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a { color: var(--paper); font-size: 1.3rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; }
+  .mobile-menu a.gold { color: var(--gold); }
+  @media (max-width: 900px) { .nav-links, .nav-social { display: none; } .burger { display: flex; } }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative; min-height: 94vh; background: var(--gold); color: var(--paper);
+    display: flex; flex-direction: column; justify-content: center; overflow: hidden;
+    padding: 3rem 0 0;
+  }
+  .hero-inner { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 2rem; padding: 4rem 5% 2rem; }
+  .hero-photo {
+    position: relative; flex: 0 0 auto; align-self: center;
+    max-width: 46%; cursor: pointer; display: block;
+  }
+  .hero-photo img.hero-car {
+    width: 100%; height: auto; display: block;
+    transition: transform .6s cubic-bezier(.16,.7,.24,1);
+  }
+  .hero-photo:hover img.hero-car, .hero-photo:focus-visible img.hero-car { transform: scale(1.02); }
+  .hero-photo-overlay {
+    position: absolute; inset: 0;
+    background: rgba(45,50,54,.6);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--paper); font-family: var(--serif); font-style: italic; font-size: 2rem; font-weight: 500; letter-spacing: .06em;
+    opacity: 0; transition: opacity .35s ease;
+  }
+  .hero-photo:hover .hero-photo-overlay, .hero-photo:focus-visible .hero-photo-overlay { opacity: 1; }
+  .hero-text { flex: 1 1 auto; }
+  .hero-text h1 {
+    font-family: var(--serif); font-size: clamp(2.8rem, 6.4vw, 5.4rem); font-weight: 500; line-height: 1.02;
+    letter-spacing: -.01em; margin-bottom: 1.6rem; max-width: 700px;
+    overflow: hidden;
+  }
+  .hero-text h1 .line { display: block; overflow: hidden; }
+  .hero-text h1 .line span { display: inline-block; transform: translateY(115%); transition: transform 1s cubic-bezier(.16,.7,.24,1); }
+  .hero-text h1.reveal .line span { transform: translateY(0); }
+  .hero-text h1 .line:nth-child(2) span { transition-delay: .12s; }
+  .hero-text h2.sub {
+    display: inline-block; font-size: .82rem; font-weight: 700; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--gold-light); border-top: 1px solid var(--gold); border-bottom: 1px solid var(--gold);
+    padding: .55rem 0; margin-bottom: 1.7rem;
+  }
+  .hero-text p.tag { font-family: var(--serif); font-style: italic; font-size: 1.35rem; font-weight: 500; margin-bottom: .35rem; color: var(--paper); }
+  .hero-text p.tag2 { font-size: .78rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--gray); }
+  @media (max-width: 780px) {
+    .hero-inner { flex-direction: column; padding-top: 2rem; }
+    .hero-photo { max-width: 72%; }
+  }
+
+  .hero-card {
+    position: relative; z-index: 3; background: var(--paper); color: var(--ink);
+    max-width: 560px; margin: 2.6rem auto 0; padding: 2.4rem 2.4rem 2.6rem;
+    border-top: 2px solid var(--gold);
+    box-shadow: 0 30px 60px rgba(0,0,0,.35);
+  }
+  .hero-card h3 { font-family: var(--serif); font-size: 1.7rem; font-weight: 600; margin-bottom: .7rem; letter-spacing: .01em; }
+  .hero-card p { font-size: .88rem; color: var(--gray); margin-bottom: 1.4rem; max-width: 400px; }
+  .hero-card .contact-line { display: flex; flex-wrap: wrap; gap: .9rem; }
+  .hero-card .contact-line a {
+    display: inline-flex; align-items: center; gap: .55rem; font-weight: 600; font-size: .78rem; letter-spacing: .06em; text-transform: uppercase;
+    text-decoration: none; padding: .78rem 1.4rem; border-radius: 999px; transition: background .25s, color .25s, border-color .25s;
+  }
+  .hero-card .contact-line a svg { flex-shrink: 0; }
+  .hero-card .contact-line a.call { background: var(--gold); color: var(--paper); }
+  .hero-card .contact-line a.call:hover { background: var(--gold-deep); color: var(--ink); }
+  .hero-card .contact-line a.mail { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+  .hero-card .contact-line a.mail:hover { border-color: var(--gold); color: var(--gold-deep); }
+
+  /* ── SECTION LABEL / RIBBON ── */
+  .ribbon-wrap { padding: 7rem 0 0; text-align: center; }
+  .ribbon {
+    display: inline-block; font-family: var(--serif); font-size: clamp(1.7rem, 3vw, 2.4rem); font-weight: 500;
+    letter-spacing: .01em; color: var(--ink);
+    padding: 0 0 1.4rem; margin: 0 5% 3.6rem; position: relative;
+  }
+  .ribbon::after { content: ''; position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); width: 60px; height: 1px; background: var(--gold); }
+  .ribbon.on-dark { color: var(--paper); }
+  .ribbon.on-dark::after { background: var(--gold); }
+
+  /* ── PATENTI COLLECTION GRID ── */
+  .patenti-columns {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 0;
+    padding: 0 5% 2rem; max-width: 1320px; margin: 0 auto;
+    border-top: 1px solid var(--line); border-left: 1px solid var(--line);
+  }
+  .patente-card {
+    position: relative; background: var(--paper-2); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    padding: 2.6rem 1.4rem 2.2rem; text-align: center; transition: background .3s ease;
+  }
+  .patente-card:hover { background: var(--paper); }
+  .p-index { position: absolute; top: 1rem; left: 1.1rem; font-family: var(--serif); font-style: italic; font-size: .82rem; color: var(--gold); letter-spacing: .05em; }
+  .patente-card model-viewer {
+    width: 100px; height: 78px; margin: 1.1rem auto .9rem; display: block;
+    pointer-events: none; transition: transform .35s cubic-bezier(.16,.7,.24,1); --poster-color: transparent;
+  }
+  .patente-card:hover model-viewer { transform: scale(1.22) translateY(-4px); }
+  .patente-card h3 { font-family: var(--serif); font-size: 1.15rem; font-weight: 600; color: var(--ink); letter-spacing: .01em; margin-top: .3rem; }
+  .patente-card span { display: block; font-size: .64rem; font-weight: 700; color: var(--gray); margin-top: .5rem; letter-spacing: .1em; text-transform: uppercase; }
+  .patente-card::before {
+    content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--gold);
+    transform: scaleX(0); transform-origin: left; transition: transform .4s cubic-bezier(.16,.7,.24,1);
+  }
+  .patente-card:hover::before { transform: scaleX(1); }
+  .patenti-credit { text-align: center; font-size: .66rem; color: #b0aa9d; padding: 2.2rem 5% 4rem; max-width: 1180px; margin: 0 auto; line-height: 1.7; }
+  .patenti-credit a { color: #b0aa9d; }
+  @media (max-width: 900px) { .patenti-columns { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .patenti-columns { grid-template-columns: 1fr; } }
+
+  /* ── ALTRI CORSI ── */
+  .corsi-section { background: var(--ink); padding: 0 0 6rem; }
+  .corsi-grid { display: flex; gap: 1px; padding: 0 5%; max-width: 1320px; margin: 0 auto; flex-wrap: wrap; background: var(--line-lt); }
+  .corso-card {
+    position: relative; flex: 1; min-width: 300px; height: 400px; overflow: hidden;
+    display: block; transition: transform .3s ease;
+  }
+  .corso-card .corso-bg {
+    position: absolute; inset: 0; background-size: cover; background-position: center;
+    transition: transform .7s cubic-bezier(.16,.7,.24,1);
+  }
+  .corso-card:hover .corso-bg { transform: scale(1.08); }
+  .corso-card .corso-tint {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(18,128,194,.35) 0%, rgba(45,50,54,.75) 100%);
+  }
+  .corso-card .corso-frame { position: absolute; inset: 20px; border: 1.5px solid rgba(255,255,255,.55); pointer-events: none; }
+  .corso-card .corso-num { position: absolute; top: 2rem; left: 2.2rem; font-family: var(--serif); font-style: italic; color: var(--gold-light); font-size: .9rem; letter-spacing: .05em; }
+  .corso-card .corso-text { position: absolute; left: 2.2rem; right: 2rem; bottom: 2.2rem; }
+  .corso-card:hover { transform: translateY(-4px); }
+  .corso-card h3 { font-family: var(--serif); font-size: 1.7rem; font-weight: 500; color: var(--paper); line-height: 1.25; margin-bottom: .5rem; }
+  .corso-card p { font-size: .8rem; font-weight: 500; letter-spacing: .04em; color: rgba(247,244,238,.72); }
+
+  /* ── TROVA LA SEDE PIÙ VICINA ── */
+  .finder-section { background: var(--paper-2); padding: 6rem 5%; }
+  .finder-inner { max-width: 760px; margin: 0 auto; text-align: center; }
+  .finder-inner h2 { font-family: var(--serif); font-size: clamp(1.6rem, 3vw, 2.1rem); font-weight: 500; color: var(--ink); margin-bottom: .8rem; }
+  .finder-inner p.finder-sub { font-size: .88rem; color: var(--gray); margin-bottom: 2.2rem; max-width: 520px; margin-left: auto; margin-right: auto; }
+  .finder-form { display: flex; gap: 0; max-width: 520px; margin: 0 auto; border-bottom: 1px solid var(--ink); }
+  .finder-form input {
+    flex: 1; min-width: 220px; padding: .9rem .2rem; border: none; background: transparent;
+    font-size: .92rem; font-family: inherit; color: var(--ink);
+  }
+  .finder-form input::placeholder { color: #a39d90; }
+  .finder-form input:focus { outline: none; }
+  .finder-form button {
+    padding: .9rem 1.6rem; background: transparent; color: var(--ink); border: none;
+    font-weight: 700; font-size: .74rem; letter-spacing: .16em; text-transform: uppercase; cursor: pointer; transition: color .25s;
+  }
+  .finder-form button:hover { color: var(--gold-deep); }
+  .finder-status { font-size: .82rem; color: var(--gray); margin-top: 1rem; min-height: 1.2em; }
+  .finder-result {
+    display: none; margin-top: 2.2rem; background: var(--paper); text-align: left;
+    padding: 1.8rem 2rem; border-left: 2px solid var(--gold);
+  }
+  .finder-result.show { display: block; }
+  .finder-result .fr-name { font-family: var(--serif); font-size: 1.3rem; font-weight: 600; color: var(--ink); margin-bottom: .35rem; }
+  .finder-result .fr-dist { font-size: .78rem; font-weight: 700; letter-spacing: .05em; color: var(--gold-deep); margin-bottom: 1rem; text-transform: uppercase; }
+  .finder-result .fr-actions { display: flex; gap: .8rem; flex-wrap: wrap; }
+  .finder-result .fr-actions a {
+    font-size: .74rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; padding: .65rem 1.2rem; border-radius: 999px;
+    transition: background .25s, color .25s;
+  }
+  .finder-result .fr-actions a.fr-primary { background: var(--gold); color: var(--paper); }
+  .finder-result .fr-actions a.fr-primary:hover { background: var(--gold-deep); color: var(--ink); }
+  .finder-result .fr-actions a.fr-outline { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+  .finder-result .fr-actions a.fr-outline:hover { border-color: var(--gold); color: var(--gold-deep); }
+  .finder-map { width: 100%; height: 260px; border: 0; display: block; margin-top: 1.4rem; }
+
+  /* ── CONTATTACI ── */
+  .contact-section { background: var(--paper); padding: 6.5rem 5%; }
+  .contact-inner { max-width: 720px; margin: 0 auto; }
+  .contact-inner h2 { text-align: center; font-family: var(--serif); font-size: clamp(1.7rem, 3vw, 2.2rem); font-weight: 500; letter-spacing: .02em; color: var(--ink); margin-bottom: .7rem; }
+  .contact-inner p.contact-sub { text-align: center; font-size: .88rem; color: var(--gray); margin-bottom: 2.8rem; }
+  .contact-form { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem 1.6rem; }
+  .contact-form .full { grid-column: 1 / -1; }
+  .contact-form input, .contact-form select {
+    width: 100%; padding: .8rem .1rem; border: none; border-bottom: 1px solid var(--line); font-family: inherit;
+    font-size: .9rem; color: var(--ink); background: transparent; appearance: none; border-radius: 0;
+    transition: border-color .25s;
+  }
+  .contact-form select { cursor: pointer; }
+  .contact-form input::placeholder { color: #a39d90; }
+  .contact-form input:focus, .contact-form select:focus { outline: none; border-color: var(--gold); }
+  .contact-form label.check {
+    grid-column: 1 / -1; display: flex; align-items: flex-start; gap: .6rem;
+    font-size: .78rem; color: var(--gray); line-height: 1.5;
+  }
+  .contact-form label.check input { width: auto; margin-top: .2rem; accent-color: var(--gold-deep); }
+  .contact-form label.check a { color: var(--gold-deep); font-weight: 600; }
+  .contact-form button {
+    grid-column: 1 / -1; justify-self: center; padding: .95rem 3rem; background: transparent;
+    color: var(--ink); border: 1px solid var(--gold); font-weight: 700; font-size: .76rem; letter-spacing: .18em; text-transform: uppercase; cursor: pointer;
+    transition: background .3s, color .3s; margin-top: .6rem;
+  }
+  .contact-form button:hover { background: var(--gold); color: var(--paper); }
+  .contact-thanks { display: none; text-align: center; padding: 2.4rem 1.5rem; background: var(--paper-2); border-left: 2px solid var(--gold); }
+  .contact-thanks.show { display: block; }
+  .contact-thanks h3 { font-family: var(--serif); color: var(--gold-deep); font-weight: 600; font-size: 1.4rem; margin-bottom: .5rem; }
+  @media (max-width: 640px) { .contact-form { grid-template-columns: 1fr; } }
+
+  /* ── REVIEWS ── */
+  .reviews-section { background: var(--paper-2); padding: 5.5rem 5%; text-align: center; }
+  .reviews-inner { max-width: 1100px; margin: 0 auto; }
+  .reviews-inner h2 { font-family: var(--serif); font-size: clamp(1.6rem, 3vw, 2rem); font-weight: 500; color: var(--ink); margin-bottom: .7rem; }
+  .reviews-sub { font-size: .88rem; color: var(--gray); margin-bottom: 2.2rem; }
+  .reviews-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: .8rem; }
+  .review-badge {
+    display: inline-flex; align-items: center; gap: .55rem;
+    background: var(--paper); border-radius: 999px; padding: .6rem 1.3rem;
+    font-size: .72rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--ink); text-decoration: none;
+    border: 1px solid var(--line); transition: border-color .25s ease, transform .25s ease;
+  }
+  .review-badge:hover { border-color: var(--gold); transform: translateY(-2px); }
+  .review-badge svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  /* ── FOLLOW STRIP ── */
+  .follow-strip { background: var(--gold); padding: 4.5rem 5%; text-align: center; }
+  .follow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .8rem; max-width: 800px; margin: 0 auto 2rem; }
+  .follow-tile {
+    aspect-ratio: 1; background: rgba(255,255,255,.12); display: flex; align-items: center; justify-content: center;
+    font-size: .72rem; color: rgba(255,255,255,.75); font-weight: 600; letter-spacing: .05em; text-transform: none;
+    text-align: center; padding: .6rem; border-radius: 4px; transition: background .3s ease;
+  }
+  .follow-tile:hover { background: rgba(255,255,255,.2); }
+  .follow-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .follow-btn { padding: .7rem 1.4rem; font-size: .84rem; font-weight: 700; border: none; cursor: pointer; transition: background .25s, color .25s; }
+  .follow-btn.dark { background: var(--ink); color: var(--paper); }
+  .follow-btn.dark:hover { background: var(--ink-2); }
+  .follow-btn.white { background: var(--paper-2); color: var(--gold); }
+  .follow-btn.white:hover { background: var(--paper); }
+
+  /* ── FOOTER ── */
+  footer { background: var(--ink); color: rgba(255,255,255,.8); padding: 4.5rem 0 0; border-top: 1px solid var(--gold); }
+  .footer-grid { display: grid; grid-template-columns: 1.15fr 1.1fr 1.3fr 1fr; gap: 2.4rem; padding: 0 5% 3rem; max-width: 1240px; margin: 0 auto; }
+  footer h4 { color: var(--paper-2); font-size: .78rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 1.2rem; }
+  footer p { font-size: .85rem; line-height: 1.8; color: rgba(255,255,255,.7); }
+  footer p a { color: var(--gold-light); }
+  footer ul li { margin-bottom: .6rem; }
+  footer ul li a { font-size: .85rem; color: var(--gold-light); transition: opacity .2s; }
+  footer ul li a:hover { text-decoration: underline; }
+  .social-link { display: flex; align-items: center; gap: .6rem; margin-bottom: 1rem; font-size: .85rem; color: var(--gold-light); transition: opacity .2s; }
+  .social-link:hover { opacity: .8; }
+  .social-icon { width: 30px; height: 30px; border: 1px solid var(--line-lt); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .footer-sub-heading { margin-top: 0; }
+  .footer-divider { border: none; border-top: 1px solid var(--line-lt); margin: 1.5rem 0 1.4rem; width: 60%; }
+  .footer-logo { width: 130px; height: auto; margin-top: 1.3rem; opacity: .85; }
+  .footer-bottom { border-top: 1px solid rgba(247,244,238,.1); padding: 1.4rem 5%; text-align: center; font-size: .72rem; letter-spacing: .06em; color: rgba(247,244,238,.4); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 600px) {
+    .hero-card { margin-left: 5%; margin-right: 5%; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .follow-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<a href="https://wa.me/393336161355?text=Ciao%2C%20vorrei%20informazioni%20sulle%20Autoscuole%20Gasparella" target="_blank" rel="noopener" class="wa-float" aria-label="Scrivici su WhatsApp" title="Scrivici su WhatsApp">
+  <svg viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.94 9.94 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2Z" fill="#25D366"/><path d="M16.5 13.6c-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.94-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.47-.4-.4-.54-.41-.14-.01-.3-.01-.46-.01-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.12 3.64.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28Z" fill="#fff"/></svg>
+</a>
+<style>
+  .wa-float {
+    position: fixed; right: 22px; bottom: 22px; width: 58px; height: 58px;
+    background: #fff; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 20px rgba(0,0,0,.28); z-index: 999;
+    transition: transform .2s ease;
+  }
+  .wa-float:hover { transform: scale(1.08); }
+  .wa-float svg { width: 34px; height: 34px; }
+  @media (max-width: 600px) {
+    .wa-float { right: 14px; bottom: 14px; width: 52px; height: 52px; }
+    .wa-float svg { width: 30px; height: 30px; }
+  }
+</style>
+
+<div id="demo-bar">Demo di lavoro — clone 1:1 del sito attuale, base di partenza per le modifiche. <a href="#footer-contatti">Studio Digital</a></div>
+
+<nav id="mainNav">
+  <a href="index.html" class="logo">
+    <img src="https://www.autoscuolegasparellavicenza.it/wp-content/uploads/2024/08/LogoGaspaW-1024x257.png" alt="Autoscuole Gasparella" />
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="patenti.html">Categorie Patenti</a></li>
+      <li><a href="le-nostre-autoscuole.html">Le Nostre Autoscuole</a></li>
+      <li><a href="servizi.html">Servizi</a></li>
+    </ul>
+    <div class="nav-social">
+      <a class="nav-social-icon" href="https://www.facebook.com/p/Autoscuola-Gasparella-100046330225155/?locale=it_IT" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M14 9h3V6h-3c-1.7 0-3 1.3-3 3v2H9v3h2v6h3v-6h3l1-3h-4V9c0-.6.4-1 1-1z" fill="#fff"/></svg>
+      </a>
+      <a class="nav-social-icon" href="https://www.instagram.com/autoscuolegasparella/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="#fff" stroke-width="1.6"/><circle cx="12" cy="12" r="4" stroke="#fff" stroke-width="1.6"/></svg>
+      </a>
+    </div>
+  </div>
+  <button class="burger" id="burgerBtn" aria-label="Apri menu"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="patenti.html">Categorie Patenti</a>
+  <a href="le-nostre-autoscuole.html">Le Nostre Autoscuole</a>
+  <a href="servizi.html">Servizi</a>
+  <a class="gold" href="https://www.instagram.com/autoscuolegasparella/" target="_blank" rel="noopener">Instagram</a>
+</div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <h1 id="heroH1">
+        <span class="line"><span>AUTOSCUOLE</span></span>
+        <span class="line"><span>GASPARELLA</span></span>
+      </h1>
+      <h2 class="sub">PASSIONE E SICUREZZA</h2>
+      <p class="tag">Trova il corso che fa per te</p>
+      <p class="tag2">DIVENTA INDIPENDENTE</p>
+    </div>
+    <a href="patenti.html" class="hero-photo" aria-label="Vai alle categorie patenti">
+      <img src="https://www.autoscuolegasparellavicenza.it/wp-content/uploads/2024/08/Macchina-Home-Page.png" alt="" class="hero-car" />
+      <span class="hero-photo-overlay">Patenti</span>
+    </a>
+  </div>
+
+  <div class="hero-card rv">
+    <h3>Fai il primo passo</h3>
+    <p>Contattaci per avere maggiori informazioni riguardanti il servizio a cui sei interessato.</p>
+    <div class="contact-line">
+      <a class="call" href="tel:3336161355">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.2 1l-2.2 2.3z" fill="currentColor"/></svg>
+        333 616 1355
+      </a>
+      <a class="mail" href="mailto:michelagasparella@gmail.com">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="1.6" fill="none"/></svg>
+        michelagasparella@gmail.com
+      </a>
+    </div>
+  </div>
+</header>
+
+<section class="ribbon-wrap" id="patenti">
+  <div class="ribbon rv">SCEGLI LA PATENTE GIUSTA PER TE</div>
+  <div class="patenti-columns rv rv2">
+    <a href="patente-am.html" class="patente-card">
+      <span class="p-index">01</span>
+      <model-viewer src="3d/vespa_hp.glb" alt="Ciclomotore patente AM" auto-rotate rotation-per-second="18deg" disable-zoom camera-controls="false" interaction-prompt="none" shadow-intensity="0"></model-viewer>
+      <h3>Patente AM</h3>
+    </a>
+    <a href="patente-a.html" class="patente-card">
+      <span class="p-index">02</span>
+      <model-viewer src="3d/ducati_v4r.glb" alt="Moto patente A" auto-rotate rotation-per-second="18deg" disable-zoom camera-controls="false" interaction-prompt="none" shadow-intensity="0"></model-viewer>
+      <h3>Patente A</h3>
+      <span>Patente A1, A2 e A</span>
+    </a>
+    <a href="patente-b.html" class="patente-card">
+      <span class="p-index">03</span>
+      <model-viewer src="3d/1965_fiat_nuova_500_f.glb" alt="Auto patente B" auto-rotate rotation-per-second="18deg" disable-zoom camera-controls="false" interaction-prompt="none" shadow-intensity="0"></model-viewer>
+      <h3>Patente B</h3>
+      <span>Patente B, B96 e BE</span>
+    </a>
+    <a href="patente-c.html" class="patente-card">
+      <span class="p-index">04</span>
+      <model-viewer src="3d/scania_truck.glb" alt="Camion patente C" auto-rotate rotation-per-second="18deg" disable-zoom camera-controls="false" interaction-prompt="none" shadow-intensity="0"></model-viewer>
+      <h3>Patente C</h3>
+      <span>Patente C1, C1E, C e CE</span>
+    </a>
+    <a href="patente-d.html" class="patente-card">
+      <span class="p-index">05</span>
+      <model-viewer src="3d/autobus_abco.glb" alt="Autobus patente D" auto-rotate rotation-per-second="18deg" disable-zoom camera-controls="false" interaction-prompt="none" shadow-intensity="0"></model-viewer>
+      <h3>Patente D</h3>
+      <span>Patente D1, D1E, D e DE</span>
+    </a>
+  </div>
+  <p class="patenti-credit">Modelli 3D: "Vespa HP" di fox_amelie, "Ducati V4r" di Jonrss, "Scania truck" di PAndras, "Autobus ABCO" di BgirlKittyEmo — Sketchfab, licenza CC Attribution 4.0. "1965 FIAT Nuova 500 F" di SIU Car Garage — Sketchfab, licenza CC Attribution-NonCommercial 4.0.</p>
+</section>
+
+<section class="corsi-section" id="corsi">
+  <div class="ribbon-wrap" style="padding-top:4.5rem;">
+    <div class="ribbon on-dark rv" style="margin:0 5% 3.2rem;">ALTRI CORSI</div>
+  </div>
+  <div class="corsi-grid rv rv2">
+    <a href="corsi-cqc.html" class="corso-card">
+      <div class="corso-bg" style="background-image:url('https://images.unsplash.com/photo-1618582948377-cd7eb0e8cb14?auto=format&amp;fit=crop&amp;w=1200&amp;q=80');"></div>
+      <div class="corso-tint"></div>
+      <div class="corso-frame"></div>
+      <span class="corso-num">01</span>
+      <div class="corso-text">
+        <h3>Corsi CQC Merci<br>e/o Persone</h3>
+        <p>Formazione professionale per autotrasportatori</p>
+      </div>
+    </a>
+    <a href="recupero-punti.html" class="corso-card">
+      <div class="corso-bg" style="background-image:url('https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&amp;fit=crop&amp;w=1200&amp;q=80');"></div>
+      <div class="corso-tint"></div>
+      <div class="corso-frame"></div>
+      <span class="corso-num">02</span>
+      <div class="corso-text">
+        <h3>Recupero Punti</h3>
+        <p>Corsi per il recupero dei punti patente</p>
+      </div>
+    </a>
+  </div>
+</section>
+
+<section class="finder-section rv" id="sedi">
+  <div class="finder-inner">
+    <h2>Trova l'autoscuola più vicina a te</h2>
+    <p class="finder-sub">Inserisci il tuo indirizzo o la tua città: ti mostriamo subito la sede Gasparella più vicina, con indicazioni e recensioni Google.</p>
+    <form class="finder-form" id="finderForm">
+      <input type="text" id="finderInput" placeholder="Es. Vicenza, via Roma 10" autocomplete="off" required />
+      <button type="submit">Cerca</button>
+    </form>
+    <div class="finder-status" id="finderStatus"></div>
+    <div class="finder-result" id="finderResult">
+      <div class="fr-name" id="frName"></div>
+      <div class="fr-dist" id="frDist"></div>
+      <div class="fr-actions">
+        <a class="fr-primary" id="frDirections" href="#" target="_blank" rel="noopener">Indicazioni stradali</a>
+        <a class="fr-outline" id="frReviews" href="#" target="_blank" rel="noopener">Vedi recensioni su Google</a>
+      </div>
+      <iframe class="finder-map" id="frMap" loading="lazy"></iframe>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    const SEDI = [
+      { name: 'Autoscuola Barbarano Mossano', lat: 45.3946098, lng: 11.5690114, place: 'https://www.google.com/maps/place/Autoscuola+Gasparella+-+Barbarano+Mossano/@45.3946098,11.5690114,17z/data=!4m6!3m5!1s0x477f249ef2160f7f:0x5cb98b27a8869267!8m2!3d45.3946098!4d11.5690114' },
+      { name: 'Autoscuola Caldogno', lat: 45.609215, lng: 11.508821, place: 'https://www.google.com/maps/place/Autoscuola+Gasparella+Caldogno/@45.609215,11.508821,17z/data=!4m6!3m5!1s0x477f34c70e28100b:0x704c87233c449b3a!8m2!3d45.609215!4d11.508821' },
+      { name: 'Autoscuola Costabissara', lat: 45.5866158, lng: 11.490969, place: 'https://www.google.com/maps/place/Autoscuola+Gasparella+Costabissara/@45.5866158,11.490969,17z/data=!4m6!3m5!1s0x477f345ea41d60dd:0x5c0b9b99e81dfd4a!8m2!3d45.5866158!4d11.490969' },
+      { name: 'Autoscuola Isola Vicentina', lat: 45.6340569, lng: 11.4381779, place: 'https://www.google.com/maps/place/Autoscuola+Gasparella+-+Isola+Vicentina/@45.6340569,11.4381779,17z/data=!4m6!3m5!1s0x477f4aab2452d0d3:0xb9d96c5836d2d8e8!8m2!3d45.6340569!4d11.4381779' },
+      { name: 'Autoscuola Montegalda', lat: 45.4433071, lng: 11.6735651, place: 'https://www.google.com/maps/place/Autoscuola+Gasparella+Montegalda/@45.4433071,11.6735651,17z/data=!4m6!3m5!1s0x477f2752a6fb9387:0xa88a27a75c607196!8m2!3d45.4433071!4d11.6735651' },
+      { name: 'Autoscuola Sossano', lat: 45.3568281, lng: 11.5083541, place: 'https://www.google.com/maps/place/Autoscuola+Gasparella+Sossano/@45.3568281,11.5083541,17z/data=!4m6!3m5!1s0x477f3d26ebe68833:0x176a33b5018a7c42!8m2!3d45.3568281!4d11.5083541' },
+      { name: 'Autoscuola Marano Vicentino', lat: 45.6924703, lng: 11.4279575, place: 'https://www.google.com/maps/place/Autoscuola+Gasparella+Marano+Vicentino/@45.6924703,11.4279575,17z/data=!4m6!3m5!1s0x4778b50001603f61:0xfa388ee57220c39a!8m2!3d45.6924703!4d11.4279575' },
+      { name: 'Autoscuola Villaverla', lat: 45.652668, lng: 11.488463, place: 'https://www.google.com/maps/search/?api=1&query=Autoscuola+Gasparella+Villaverla+Piazza+delle+Fornaci+7' },
+    ];
+
+    function haversineKm(lat1, lng1, lat2, lng2) {
+      const R = 6371;
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLng = (lng2 - lng1) * Math.PI / 180;
+      const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
+    const form = document.getElementById('finderForm');
+    const input = document.getElementById('finderInput');
+    const status = document.getElementById('finderStatus');
+    const result = document.getElementById('finderResult');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const query = input.value.trim();
+      if (!query) return;
+      status.textContent = 'Ricerca in corso…';
+      result.classList.remove('show');
+      try {
+        const url = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=it&q=' + encodeURIComponent(query);
+        const res = await fetch(url, { headers: { 'Accept-Language': 'it' } });
+        const data = await res.json();
+        if (!data || !data.length) {
+          status.textContent = 'Indirizzo non trovato, prova a essere più specifico (es. aggiungi la città).';
+          return;
+        }
+        const userLat = parseFloat(data[0].lat);
+        const userLng = parseFloat(data[0].lon);
+        let nearest = null, nearestDist = Infinity;
+        SEDI.forEach(s => {
+          const d = haversineKm(userLat, userLng, s.lat, s.lng);
+          if (d < nearestDist) { nearestDist = d; nearest = s; }
+        });
+        status.textContent = '';
+        document.getElementById('frName').textContent = nearest.name;
+        document.getElementById('frDist').textContent = '≈ ' + nearestDist.toFixed(1) + ' km da te';
+        document.getElementById('frDirections').href = 'https://www.google.com/maps/dir/?api=1&destination=' + nearest.lat + ',' + nearest.lng;
+        document.getElementById('frReviews').href = nearest.place;
+        document.getElementById('frMap').src = 'https://www.google.com/maps?q=' + nearest.lat + ',' + nearest.lng + '&z=15&output=embed';
+        result.classList.add('show');
+      } catch (err) {
+        status.textContent = 'Ricerca non riuscita, riprova tra qualche istante.';
+      }
+    });
+  })();
+</script>
+
+<section class="reviews-section rv">
+  <div class="reviews-inner">
+    <h2>La fiducia dei nostri studenti</h2>
+    <p class="reviews-sub">Non fidarti solo delle nostre parole: leggi le recensioni reali lasciate su Google dagli studenti di ogni sede.</p>
+    <div class="reviews-grid">
+        <a class="review-badge" href="https://www.google.com/maps/place/Autoscuola+Gasparella+-+Isola+Vicentina/@45.6340569,11.4381779,17z/data=!4m6!3m5!1s0x477f4aab2452d0d3:0xb9d96c5836d2d8e8!8m2!3d45.6340569!4d11.4381779" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1Z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.26 1.06-3.71 1.06-2.86 0-5.28-1.93-6.14-4.53H2.18v2.85A11 11 0 0 0 12 23Z"/><path fill="#FBBC05" d="M5.86 14.1a6.6 6.6 0 0 1 0-4.2V7.05H2.18a11 11 0 0 0 0 9.9l3.68-2.85Z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1a11 11 0 0 0-9.82 6.05l3.68 2.85C6.72 7.3 9.14 5.38 12 5.38Z"/></svg>Recensioni Isola Vicentina</a>
+        <a class="review-badge" href="https://www.google.com/maps/place/Autoscuola+Gasparella+Sossano/@45.3568281,11.5083541,17z/data=!4m6!3m5!1s0x477f3d26ebe68833:0x176a33b5018a7c42!8m2!3d45.3568281!4d11.5083541" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1Z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.26 1.06-3.71 1.06-2.86 0-5.28-1.93-6.14-4.53H2.18v2.85A11 11 0 0 0 12 23Z"/><path fill="#FBBC05" d="M5.86 14.1a6.6 6.6 0 0 1 0-4.2V7.05H2.18a11 11 0 0 0 0 9.9l3.68-2.85Z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1a11 11 0 0 0-9.82 6.05l3.68 2.85C6.72 7.3 9.14 5.38 12 5.38Z"/></svg>Recensioni Sossano</a>
+        <a class="review-badge" href="https://www.google.com/maps/place/Autoscuola+Gasparella+-+Barbarano+Mossano/@45.3946098,11.5690114,17z/data=!4m6!3m5!1s0x477f249ef2160f7f:0x5cb98b27a8869267!8m2!3d45.3946098!4d11.5690114" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1Z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.26 1.06-3.71 1.06-2.86 0-5.28-1.93-6.14-4.53H2.18v2.85A11 11 0 0 0 12 23Z"/><path fill="#FBBC05" d="M5.86 14.1a6.6 6.6 0 0 1 0-4.2V7.05H2.18a11 11 0 0 0 0 9.9l3.68-2.85Z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1a11 11 0 0 0-9.82 6.05l3.68 2.85C6.72 7.3 9.14 5.38 12 5.38Z"/></svg>Recensioni Barbarano</a>
+        <a class="review-badge" href="https://www.google.com/maps/place/Autoscuola+Gasparella+Costabissara/@45.5866158,11.490969,17z/data=!4m6!3m5!1s0x477f345ea41d60dd:0x5c0b9b99e81dfd4a!8m2!3d45.5866158!4d11.490969" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1Z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.26 1.06-3.71 1.06-2.86 0-5.28-1.93-6.14-4.53H2.18v2.85A11 11 0 0 0 12 23Z"/><path fill="#FBBC05" d="M5.86 14.1a6.6 6.6 0 0 1 0-4.2V7.05H2.18a11 11 0 0 0 0 9.9l3.68-2.85Z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1a11 11 0 0 0-9.82 6.05l3.68 2.85C6.72 7.3 9.14 5.38 12 5.38Z"/></svg>Recensioni Costabissara</a>
+        <a class="review-badge" href="https://www.google.com/maps/place/Autoscuola+Gasparella+Montegalda/@45.4433071,11.6735651,17z/data=!4m6!3m5!1s0x477f2752a6fb9387:0xa88a27a75c607196!8m2!3d45.4433071!4d11.6735651" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1Z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.26 1.06-3.71 1.06-2.86 0-5.28-1.93-6.14-4.53H2.18v2.85A11 11 0 0 0 12 23Z"/><path fill="#FBBC05" d="M5.86 14.1a6.6 6.6 0 0 1 0-4.2V7.05H2.18a11 11 0 0 0 0 9.9l3.68-2.85Z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1a11 11 0 0 0-9.82 6.05l3.68 2.85C6.72 7.3 9.14 5.38 12 5.38Z"/></svg>Recensioni Montegalda</a>
+        <a class="review-badge" href="https://www.google.com/maps/place/Autoscuola+Gasparella+Caldogno/@45.609215,11.508821,17z/data=!4m6!3m5!1s0x477f34c70e28100b:0x704c87233c449b3a!8m2!3d45.609215!4d11.508821" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1Z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.26 1.06-3.71 1.06-2.86 0-5.28-1.93-6.14-4.53H2.18v2.85A11 11 0 0 0 12 23Z"/><path fill="#FBBC05" d="M5.86 14.1a6.6 6.6 0 0 1 0-4.2V7.05H2.18a11 11 0 0 0 0 9.9l3.68-2.85Z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1a11 11 0 0 0-9.82 6.05l3.68 2.85C6.72 7.3 9.14 5.38 12 5.38Z"/></svg>Recensioni Caldogno</a>
+        <a class="review-badge" href="https://www.google.com/maps/place/Autoscuola+Gasparella+Marano+Vicentino/@45.6924703,11.4279575,17z/data=!4m6!3m5!1s0x4778b50001603f61:0xfa388ee57220c39a!8m2!3d45.6924703!4d11.4279575" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1Z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.26 1.06-3.71 1.06-2.86 0-5.28-1.93-6.14-4.53H2.18v2.85A11 11 0 0 0 12 23Z"/><path fill="#FBBC05" d="M5.86 14.1a6.6 6.6 0 0 1 0-4.2V7.05H2.18a11 11 0 0 0 0 9.9l3.68-2.85Z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1a11 11 0 0 0-9.82 6.05l3.68 2.85C6.72 7.3 9.14 5.38 12 5.38Z"/></svg>Recensioni Marano Vicentino</a>
+        <a class="review-badge" href="https://www.google.com/maps/search/?api=1&query=Autoscuola+Gasparella+Villaverla+Piazza+delle+Fornaci+7" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1Z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.26 1.06-3.71 1.06-2.86 0-5.28-1.93-6.14-4.53H2.18v2.85A11 11 0 0 0 12 23Z"/><path fill="#FBBC05" d="M5.86 14.1a6.6 6.6 0 0 1 0-4.2V7.05H2.18a11 11 0 0 0 0 9.9l3.68-2.85Z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1a11 11 0 0 0-9.82 6.05l3.68 2.85C6.72 7.3 9.14 5.38 12 5.38Z"/></svg>Recensioni Villaverla</a>
+    </div>
+  </div>
+</section>
+
+<section class="contact-section rv" id="footer-contatti">
+  <div class="contact-inner">
+    <h2>Contattaci</h2>
+    <p class="contact-sub">Compila il modulo, ti ricontattiamo noi per aiutarti a scegliere il corso giusto.</p>
+    <form class="contact-form" id="contactForm">
+      <input type="text" placeholder="Nome *" required />
+      <input type="text" placeholder="Cognome *" required />
+      <select class="full" required>
+        <option value="" disabled selected>Patente di interesse *</option>
+        <option value="AM">AM — Ciclomotore</option>
+        <option value="A">A — Moto (A1, A2, A)</option>
+        <option value="B">B — Auto (B, B96, BE)</option>
+        <option value="C">C — Camion (C1, C1E, C, CE)</option>
+        <option value="D">D — Bus (D1, D1E, D, DE)</option>
+        <option value="CQC">Corso CQC Merci e/o Persone</option>
+        <option value="RECUPERO">Recupero Punti</option>
+      </select>
+      <input type="tel" placeholder="Telefono" />
+      <input type="email" placeholder="Email *" required />
+      <select class="full" required>
+        <option value="" disabled selected>Sede in cui vorresti iscriverti *</option>
+        <option>Autoscuola Barbarano Mossano</option>
+        <option>Autoscuola Caldogno</option>
+        <option>Autoscuola Costabissara</option>
+        <option>Autoscuola Isola Vicentina</option>
+        <option>Autoscuola Montegalda</option>
+        <option>Autoscuola Sossano</option>
+        <option>Autoscuola Marano Vicentino</option>
+        <option>Autoscuola Villaverla</option>
+      </select>
+      <label class="check">
+        <input type="checkbox" required />
+        Ho letto l'<a href="privacy.html" target="_blank">informativa privacy</a> e accetto il trattamento dei dati personali *
+      </label>
+      <button type="submit">Invia</button>
+    </form>
+    <div class="contact-thanks" id="contactThanks">
+      <h3>Grazie!</h3>
+      <p>Abbiamo ricevuto la tua richiesta, ti ricontatteremo il prima possibile.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.getElementById('contactForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    this.style.display = 'none';
+    document.getElementById('contactThanks').classList.add('show');
+  });
+</script>
+
+<section class="follow-strip rv">
+  <div class="follow-grid">
+    <div class="follow-tile">Post Instagram</div>
+    <div class="follow-tile">Post Instagram</div>
+    <div class="follow-tile">Post Instagram</div>
+    <div class="follow-tile">Post Instagram</div>
+  </div>
+  <div class="follow-actions">
+    <a class="follow-btn dark" href="#footer-contatti">Contattaci</a>
+    <a class="follow-btn white" href="https://www.instagram.com/autoscuolegasparella/" target="_blank" rel="noopener">Seguici su Instagram</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <h4>Dettagli societari</h4>
+      <p>Gasparella srl<br>Via Degli Alpini, 7<br>36040 &ndash; Sossano (VI)<br>CF e P.IVA: 02503620243<br>Cap. Soc: 20.000&euro; i.v.<br>R.E.A: VI 235854</p>
+      <hr class="footer-divider" />
+      <h4 class="footer-sub-heading">Privacy Policy</h4>
+      <p><a href="privacy.html">Leggi l'informativa privacy completa</a></p>
+    </div>
+    <div>
+      <h4>Le nostre sedi</h4>
+      <ul>
+        <li><a href="https://maps.app.goo.gl/Xi2rXdnS9AFLUZM68" target="_blank" rel="noopener">Autoscuola Barbarano</a></li>
+        <li><a href="https://maps.app.goo.gl/8GwTXpxpiJAx4D9P7" target="_blank" rel="noopener">Autoscuola Caldogno</a></li>
+        <li><a href="https://maps.app.goo.gl/9cbMaUQau4mDAfKL9" target="_blank" rel="noopener">Autoscuola Costabissara</a></li>
+        <li><a href="https://maps.app.goo.gl/eM5753cM1pKAaPBK6" target="_blank" rel="noopener">Autoscuola Isola Vicentina</a></li>
+        <li><a href="https://maps.app.goo.gl/Uyp12GzgZsm5Pena9" target="_blank" rel="noopener">Autoscuola Montegalda</a></li>
+        <li><a href="https://maps.app.goo.gl/1BsrLTKLacLfeVqy9" target="_blank" rel="noopener">Autoscuola Sossano</a></li>
+        <li><a href="https://maps.app.goo.gl/FbzRmcYCGyZHGhpP6" target="_blank" rel="noopener">Autoscuola Marano Vicentino</a></li>
+        <li><a href="https://www.google.com/maps/search/?api=1&amp;query=Autoscuola+Gasparella+Villaverla+Piazza+delle+Fornaci+7" target="_blank" rel="noopener">Autoscuola Villaverla</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Chi siamo</h4>
+      <p>L'autoscuola apre la sua prima sede nel 1977 a Sossano, grazie al suo fondatore Luigi Gasparella e alla sorella Antonia. Successivamente vengono aperte le sedi di Montegalda, Costabissara, Isola Vicentina, Barbarano Mossano e Caldogno.</p>
+    </div>
+    <div>
+      <h4>Social page</h4>
+      <a class="social-link" href="https://www.facebook.com/p/Autoscuola-Gasparella-100046330225155/?locale=it_IT" target="_blank" rel="noopener">
+        <span class="social-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M14 9h3V6h-3c-1.7 0-3 1.3-3 3v2H9v3h2v6h3v-6h3l1-3h-4V9c0-.6.4-1 1-1z" fill="#fff"/></svg>
+        </span>
+        Facebook
+      </a>
+      <a class="social-link" href="https://www.instagram.com/autoscuolegasparella/" target="_blank" rel="noopener">
+        <span class="social-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="#fff" stroke-width="1.6"/><circle cx="12" cy="12" r="4" stroke="#fff" stroke-width="1.6"/></svg>
+        </span>
+        Instagram
+      </a>
+      <img src="https://www.autoscuolegasparellavicenza.it/wp-content/uploads/2024/08/LogoGaspaB-300x75.png" alt="Autoscuole Gasparella" class="footer-logo" />
+    </div>
+
+  </div>
+  <div class="footer-bottom">Copyright © Gasparella srl – 2026</div>
+</footer>
+
+<script>
+  // Nav background on scroll
+  const mainNav = document.getElementById('mainNav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 40) mainNav.classList.add('scrolled');
+    else mainNav.classList.remove('scrolled');
+  }, { passive: true });
+
+  // Mobile menu toggle
+  const burgerBtn = document.getElementById('burgerBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  burgerBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+  // Hero headline reveal
+  requestAnimationFrame(() => {
+    setTimeout(() => document.getElementById('heroH1').classList.add('reveal'), 150);
+  });
+
+  // Scroll reveal for sections
+  const rvEls = document.querySelectorAll('.rv');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add('in'); io.unobserve(entry.target); }
+    });
+  }, { threshold: 0.12 });
+  rvEls.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>

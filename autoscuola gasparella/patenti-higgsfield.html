@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Garage Dinamico Patenti — Autoscuole Gasparella</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* === RESET & BASE === */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow: hidden; font-family: 'Montserrat', sans-serif; background: #2d3236; color: #fff; }
+
+    /* === TOP BAR === */
+    .top-bar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 44px; background: rgba(26,29,32,0.96); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px; border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .top-bar .title { font-size: 13px; font-weight: 600; letter-spacing: 0.3px; color: #ddd; }
+    .top-bar .title span { color: #1280c2; }
+    .top-bar .home-link { font-size: 12px; color: #f59e0b; text-decoration: none; font-weight: 600; transition: color .2s; }
+    .top-bar .home-link:hover { color: #fbbf24; }
+
+    /* === GARAGE VIEWPORT === */
+    .garage-viewport {
+      position: fixed; top: 44px; left: 0; right: 0; bottom: 78px;
+      overflow: hidden;
+    }
+
+    /* === GARAGE SCENE — reference image as background === */
+    .garage-scene {
+      position: absolute; inset: 0;
+      background: #1a1d20;
+    }
+    .garage-scene::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(45,50,54,0.50) 0%, rgba(45,50,54,0.25) 30%, transparent 50%, rgba(45,50,54,0.15) 85%, rgba(45,50,54,0.60) 100%);
+      pointer-events: none; z-index: 1;
+    }
+    .garage-scene img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; object-position: center 20%;
+      filter: saturate(1.05) contrast(1.02);
+    }
+
+    /* === LANES CONTAINER === */
+    .lanes-container {
+      position: absolute; inset: 0; z-index: 2;
+      display: flex; flex-direction: row;
+      padding: 6% 2% 0 2%;
+    }
+
+    /* === INDIVIDUAL LANE === */
+    .lane {
+      flex: 1; position: relative;
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+      cursor: pointer; transition: opacity .35s ease, transform .35s ease;
+    }
+    .lane.hidden-lane { opacity: 0; pointer-events: none; transform: scale(0.92); }
+
+    /* === VEHICLE AREA === */
+    .vehicle-area {
+      position: relative; flex: 1;
+      display: flex; align-items: center; justify-content: center;
+      width: 100%; padding-bottom: 10px;
+      z-index: 2;
+    }
+
+    /* === SVG VEHICLE === */
+    .vehicle-svg {
+      width: 80%; max-width: 200px; height: auto;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
+      transition: transform .3s ease, filter .3s ease;
+    }
+    .lane:hover .vehicle-svg { transform: translateY(-4px) scale(1.04); filter: drop-shadow(0 8px 20px rgba(0,0,0,0.5)); }
+
+    /* === LANE RIBBON (category label) === */
+    .lane-ribbon {
+      position: relative; z-index: 3;
+      width: calc(100% - 6px); margin: 0 3px;
+      background: #0b3b5a; padding: 6px 2px 5px;
+      text-align: center; border-radius: 3px 3px 0 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .lane-ribbon .cat-code {
+      display: block; font-size: 22px; font-weight: 900; letter-spacing: 1px;
+      color: #1280c2; line-height: 1.1;
+    }
+    .lane-ribbon .cat-name {
+      display: block; font-size: 7px; font-weight: 600; letter-spacing: 1.2px;
+      text-transform: uppercase; color: rgba(255,255,255,0.85); line-height: 1.3;
+    }
+    .lane-ribbon .gasparella {
+      display: block; font-size: 6px; font-weight: 500; letter-spacing: 0.5px;
+      color: rgba(255,255,255,0.45); margin-top: 1px;
+    }
+
+    /* === SUBCATEGORY VEHICLES (hidden by default) === */
+    .sub-vehicles {
+      position: absolute; inset: 0; z-index: 3;
+      display: none; flex-direction: column; align-items: center; justify-content: center;
+      gap: 6px; padding: 10px 5px;
+    }
+    .sub-vehicles.active { display: flex; }
+    .sub-vehicle {
+      width: 72%; max-width: 140px; cursor: pointer;
+      text-align: center; transition: transform .25s ease;
+      padding: 4px 0;
+    }
+    .sub-vehicle:hover { transform: scale(1.06); }
+    .sub-vehicle svg {
+      width: 100%; height: auto;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35));
+    }
+    .sub-vehicle .sub-label {
+      display: block; font-size: 9px; font-weight: 700; color: #1280c2;
+      margin-top: 1px; letter-spacing: 0.5px;
+    }
+    .sub-vehicle .sub-desc {
+      display: block; font-size: 6px; font-weight: 500; color: rgba(255,255,255,0.5);
+      letter-spacing: 0.3px;
+    }
+
+    /* === BACK BUTTON === */
+    .back-btn {
+      display: none; position: absolute; top: 12px; left: 16px; z-index: 20;
+      background: rgba(18,128,194,0.85); border: none; border-radius: 6px;
+      color: #fff; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700;
+      padding: 8px 16px; cursor: pointer;
+      backdrop-filter: blur(4px); box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      transition: background .2s, transform .2s;
+    }
+    .back-btn:hover { background: #1280c2; transform: translateX(-2px); }
+    .back-btn.visible { display: block; }
+
+    /* === BOTTOM TAB BAR === */
+    .tab-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+      height: 78px; padding-bottom: 14px;
+      background: rgba(26,29,32,0.97); backdrop-filter: blur(10px);
+      display: flex;
+      box-shadow: 0 -6px 20px rgba(0,0,0,0.35);
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .tab-item {
+      flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 2px; cursor: pointer; transition: background .2s;
+      border: none; background: transparent; color: rgba(255,255,255,0.45);
+      font-family: 'Montserrat', sans-serif; position: relative;
+    }
+    .tab-item::after {
+      content: ''; position: absolute; top: 0; left: 20%; right: 20%; height: 2px;
+      border-radius: 0 0 3px 3px; background: #1280c2;
+      transform: scaleX(0); transition: transform .25s ease;
+    }
+    .tab-item.active::after { transform: scaleX(1); }
+    .tab-item.active { color: #1280c2; background: rgba(18,128,194,0.06); }
+    .tab-item:hover { color: rgba(255,255,255,0.75); }
+    .tab-item .tab-code { font-size: 18px; font-weight: 800; line-height: 1; }
+    .tab-item .tab-name { font-size: 7px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; }
+
+    /* === DETAIL MODAL === */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.75); backdrop-filter: blur(6px);
+      align-items: center; justify-content: center;
+      animation: modalFadeIn .3s ease;
+    }
+    .modal-overlay.open { display: flex; }
+    @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes modalSlideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+    .modal-card {
+      background: #2d3236; border-radius: 16px; max-width: 420px; width: 90%;
+      max-height: 85vh; overflow-y: auto; padding: 28px 24px 24px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.06);
+      animation: modalSlideUp .35s ease; position: relative;
+    }
+    .modal-card .close-btn {
+      position: absolute; top: 12px; right: 16px; background: none; border: none;
+      color: rgba(255,255,255,0.4); font-size: 24px; cursor: pointer; transition: color .2s;
+      font-family: 'Montserrat', sans-serif; line-height: 1;
+    }
+    .modal-card .close-btn:hover { color: #fff; }
+
+    .modal-card .modal-vehicle-svg {
+      width: 70%; max-width: 240px; margin: 0 auto 16px; display: block;
+      filter: drop-shadow(0 6px 20px rgba(0,0,0,0.4));
+    }
+    .modal-card .modal-badge {
+      display: inline-block; background: #1280c2; color: #fff;
+      font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 4px;
+      letter-spacing: 0.5px; margin-bottom: 8px;
+    }
+    .modal-card h2 { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+    .modal-card .modal-sub { font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 16px; font-weight: 500; }
+    .modal-card .modal-desc { font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.75); margin-bottom: 18px; }
+    .modal-card .modal-specs {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 18px;
+    }
+    .modal-card .spec-item {
+      background: rgba(255,255,255,0.04); border-radius: 8px; padding: 10px 12px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .modal-card .spec-item .spec-label { font-size: 9px; color: rgba(255,255,255,0.35); font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
+    .modal-card .spec-item .spec-value { font-size: 16px; font-weight: 700; color: #fff; margin-top: 2px; }
+    .modal-card .cta-btn {
+      display: block; width: 100%; padding: 14px; background: #1280c2; border: none;
+      border-radius: 10px; color: #fff; font-family: 'Montserrat', sans-serif;
+      font-size: 15px; font-weight: 700; cursor: pointer; transition: background .2s;
+      text-align: center;
+    }
+    .modal-card .cta-btn:hover { background: #0f6aa3; }
+
+    /* === UTILITIES === */
+    .hidden { display: none !important; }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 768px) {
+      .lane-ribbon .cat-code { font-size: 16px; }
+      .lane-ribbon .cat-name { font-size: 6px; }
+      .lane-ribbon .gasparella { font-size: 5px; }
+      .lane::before { inset: 4px 2px 60px 2px; }
+      .sub-vehicle { width: 60%; }
+      .vehicle-svg { width: 70%; }
+      .modal-card { padding: 20px 16px; }
+      .modal-card .modal-specs { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .top-bar .title { font-size: 11px; }
+      .lane-ribbon { padding: 4px 1px 3px; }
+      .lane-ribbon .cat-code { font-size: 13px; }
+      .vehicle-svg { width: 60%; }
+      .sub-vehicle { width: 50%; }
+      .tab-item .tab-code { font-size: 14px; }
+      .tab-item .tab-name { font-size: 6px; }
+    }
+
+    /* Scrollbar styling */
+    .modal-card::-webkit-scrollbar { width: 4px; }
+    .modal-card::-webkit-scrollbar-track { background: transparent; }
+    .modal-card::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+  </style>
+</head>
+<body>
+
+  <!-- ===== TOP BAR ===== -->
+  <header class="top-bar">
+    <span class="title">Demo di lavoro — <span>garage dinamico patenti</span></span>
+    <a href="#" class="home-link" onclick="resetView(); return false;">&#8592; Torna alla home</a>
+  </header>
+
+  <!-- ===== GARAGE VIEWPORT ===== -->
+  <div class="garage-viewport">
+
+    <!-- Garage scene background -->
+    <div class="garage-scene">
+      <img src="https://d2ol7oe51mr4n9.cloudfront.net/user_3Fp93g3AABsPKODQxzIxBVAjWHa/ee0629cd-5b8e-4b33-8b01-7cc664151d4b.jpg"
+           alt="Autoscuole Gasparella Garage"
+           onerror="this.parentElement.style.background='#2d3236'">
+    </div>
+
+    <!-- Back button -->
+    <button class="back-btn" id="backBtn" onclick="resetView()">&#8592; Indietro</button>
+
+    <!-- Lanes -->
+    <div class="lanes-container" id="lanesContainer">
+
+      <!-- LANE: AM -->
+      <div class="lane" data-category="AM" onclick="handleCategoryClick('AM', event)">
+        <div class="vehicle-area" id="vehicleArea-AM" data-vehicle="scooter" data-color="#cc2222">
+          <svg class="vehicle-svg" viewBox="0 0 120 80"></svg>
+        </div>
+        <div class="sub-vehicles" id="subVehicles-AM"></div>
+        <div class="lane-ribbon">
+          <span class="cat-code">AM</span>
+          <span class="cat-name">Ciclomotore</span>
+          <span class="gasparella">AUTOSCUOLE GASPARELLA</span>
+        </div>
+      </div>
+
+      <!-- LANE: A -->
+      <div class="lane" data-category="A" onclick="handleCategoryClick('A', event)">
+        <div class="vehicle-area" id="vehicleArea-A" data-vehicle="motorcycle" data-color="#e86a10">
+          <svg class="vehicle-svg" viewBox="0 0 130 80"></svg>
+        </div>
+        <div class="sub-vehicles" id="subVehicles-A"></div>
+        <div class="lane-ribbon">
+          <span class="cat-code">A</span>
+          <span class="cat-name">Motociclo</span>
+          <span class="gasparella">AUTOSCUOLE GASPARELLA</span>
+        </div>
+      </div>
+
+      <!-- LANE: B -->
+      <div class="lane" data-category="B" onclick="handleCategoryClick('B', event)">
+        <div class="vehicle-area" id="vehicleArea-B" data-vehicle="car" data-color="#e8e8e8">
+          <svg class="vehicle-svg" viewBox="0 0 140 80"></svg>
+        </div>
+        <div class="sub-vehicles" id="subVehicles-B"></div>
+        <div class="lane-ribbon">
+          <span class="cat-code">B</span>
+          <span class="cat-name">Autovettura</span>
+          <span class="gasparella">AUTOSCUOLE GASPARELLA</span>
+        </div>
+      </div>
+
+      <!-- LANE: C -->
+      <div class="lane" data-category="C" onclick="handleCategoryClick('C', event)">
+        <div class="vehicle-area" id="vehicleArea-C" data-vehicle="truck" data-color="#d4d4d4">
+          <svg class="vehicle-svg" viewBox="0 0 160 80"></svg>
+        </div>
+        <div class="sub-vehicles" id="subVehicles-C"></div>
+        <div class="lane-ribbon">
+          <span class="cat-code">C</span>
+          <span class="cat-name">Autocarro</span>
+          <span class="gasparella">AUTOSCUOLE GASPARELLA</span>
+        </div>
+      </div>
+
+      <!-- LANE: D -->
+      <div class="lane" data-category="D" onclick="handleCategoryClick('D', event)">
+        <div class="vehicle-area" id="vehicleArea-D" data-vehicle="bus" data-color="#2068b0">
+          <svg class="vehicle-svg" viewBox="0 0 200 80"></svg>
+        </div>
+        <div class="sub-vehicles" id="subVehicles-D"></div>
+        <div class="lane-ribbon">
+          <span class="cat-code">D</span>
+          <span class="cat-name">Autobus</span>
+          <span class="gasparella">AUTOSCUOLE GASPARELLA</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== BOTTOM TAB BAR ===== -->
+  <nav class="tab-bar">
+    <button class="tab-item active" data-tab="AM" onclick="handleTabClick('AM')">
+      <span class="tab-code">AM</span>
+      <span class="tab-name">Ciclomotore</span>
+    </button>
+    <button class="tab-item" data-tab="A" onclick="handleTabClick('A')">
+      <span class="tab-code">A</span>
+      <span class="tab-name">Moto</span>
+    </button>
+    <button class="tab-item" data-tab="B" onclick="handleTabClick('B')">
+      <span class="tab-code">B</span>
+      <span class="tab-name">Auto</span>
+    </button>
+    <button class="tab-item" data-tab="C" onclick="handleTabClick('C')">
+      <span class="tab-code">C</span>
+      <span class="tab-name">Camion</span>
+    </button>
+    <button class="tab-item" data-tab="D" onclick="handleTabClick('D')">
+      <span class="tab-code">D</span>
+      <span class="tab-name">Bus</span>
+    </button>
+  </nav>
+
+  <!-- ===== DETAIL MODAL ===== -->
+  <div class="modal-overlay" id="detailModal" onclick="if(event.target===this)closeModal()">
+    <div class="modal-card" id="modalContent">
+      <button class="close-btn" onclick="closeModal()">&times;</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script>
+  // ============================================================
+  //  VEHICLE DATA
+  // ============================================================
+  const VEHICLES = {
+    // --- Base vehicles ---
+    'AM': {
+      code: 'AM', name: 'Ciclomotore', fullName: 'Patente AM — Ciclomotore',
+      type: 'scooter', color: '#cc2222',
+      desc: 'La patente AM abilita alla guida di ciclomotori a due o tre ruote con cilindrata fino a 50 cc e velocità massima di 45 km/h.',
+      specs: { 'Cilindrata': '≤ 50 cc', 'Velocità': '≤ 45 km/h', 'Età minima': '14 anni', 'Ruote': '2 o 3' }
+    },
+    'A': {
+      code: 'A', name: 'Motociclo', fullName: 'Patente A — Motociclo',
+      type: 'motorcycle', color: '#e86a10',
+      desc: 'La patente A abilita alla guida di motocicli senza limiti di cilindrata o potenza. Include automaticamente le categorie A1 e A2.',
+      specs: { 'Cilindrata': 'Illimitata', 'Potenza': 'Illimitata', 'Età minima': '24 anni (diretta)', 'Trasporto': 'Passeggero' }
+    },
+    'B': {
+      code: 'B', name: 'Autovettura', fullName: 'Patente B — Autovettura',
+      type: 'car', color: '#e8e8e8',
+      desc: 'La patente B è la più comune e abilita alla guida di autoveicoli fino a 3.500 kg di massa complessiva e massimo 8 posti oltre al conducente.',
+      specs: { 'Massa': '≤ 3.500 kg', 'Posti': '≤ 9 (incluso conducente)', 'Età minima': '18 anni', 'Rimorchio': '≤ 750 kg' }
+    },
+    'C': {
+      code: 'C', name: 'Autocarro', fullName: 'Patente C — Autocarro',
+      type: 'truck', color: '#d4d4d4',
+      desc: 'La patente C abilita alla guida di autocarri con massa complessiva superiore a 3.500 kg. Include la categoria C1.',
+      specs: { 'Massa': '> 3.500 kg', 'Carico': 'Merci', 'Età minima': '21 anni', 'CQC': 'Richiesto' }
+    },
+    'D': {
+      code: 'D', name: 'Autobus', fullName: 'Patente D — Autobus',
+      type: 'bus', color: '#2068b0',
+      desc: 'La patente D abilita alla guida di autobus e autocarri per trasporto persone con più di 8 posti oltre il conducente.',
+      specs: { 'Posti': '> 9 passeggeri', 'Lunghezza': 'Illimitata', 'Età minima': '24 anni', 'CQC': 'Richiesto' }
+    },
+    // --- Subcategories ---
+    'A1': {
+      code: 'A1', name: 'Moto 125cc', fullName: 'Patente A1 — Motociclo leggero',
+      parent: 'A', type: 'motorcycle', color: '#d4770a',
+      desc: 'Abilita alla guida di motocicli di cilindrata massima 125 cc, potenza massima 11 kW (15 CV) e rapporto potenza/peso ≤ 0,1 kW/kg.',
+      specs: { 'Cilindrata': '≤ 125 cc', 'Potenza': '≤ 11 kW', 'Età minima': '16 anni', 'Rapporto P/P': '≤ 0,1 kW/kg' }
+    },
+    'A2': {
+      code: 'A2', name: 'Moto media potenza', fullName: 'Patente A2 — Motociclo media potenza',
+      parent: 'A', type: 'motorcycle', color: '#e88a30',
+      desc: 'Abilita alla guida di motocicli con potenza massima 35 kW (47 CV), rapporto potenza/peso ≤ 0,2 kW/kg. Dopo 2 anni si può ottenere la A.',
+      specs: { 'Potenza': '≤ 35 kW', 'Rapporto P/P': '≤ 0,2 kW/kg', 'Età minima': '18 anni', 'Propedeutica': 'A1 o 2 anni A2' }
+    },
+    'B96': {
+      code: 'B96', name: 'Auto + rimorchio', fullName: 'Patente B96 — Auto con rimorchio pesante',
+      parent: 'B', type: 'car', color: '#c8c8c8',
+      desc: 'Abilita alla guida di auto con rimorchio leggero di massa complessiva tra 750 e 3.500 kg. Richiede solo un corso pratico di 7 ore.',
+      specs: { 'Massa complessiva': '≤ 4.250 kg', 'Rimorchio': '750–3.500 kg', 'Corso': '7 ore pratiche', 'Nessun esame': 'Sì' }
+    },
+    'BE': {
+      code: 'BE', name: 'Auto + rimorchio leggero', fullName: 'Patente BE — Auto con rimorchio',
+      parent: 'B', type: 'car', color: '#d8d8d8',
+      desc: 'Abilita alla guida di autovetture con rimorchio di massa complessiva superiore a 750 kg (insieme fino a 7.000 kg).',
+      specs: { 'Massa max insieme': '≤ 7.000 kg', 'Rimorchio': '> 750 kg', 'Età minima': '18 anni', 'Esame': 'Teoria + pratica' }
+    },
+    'C1': {
+      code: 'C1', name: 'Camion piccolo', fullName: 'Patente C1 — Autocarro leggero',
+      parent: 'C', type: 'truck', color: '#b0b0b0',
+      desc: 'Abilita alla guida di autocarri con massa tra 3.500 e 7.500 kg. Include anche i veicoli della categoria B.',
+      specs: { 'Massa': '3.500–7.500 kg', 'Carico': 'Merci', 'Età minima': '18 anni', 'CQC': 'Richiesto' }
+    },
+    'C1E': {
+      code: 'C1E', name: 'C1 + rimorchio', fullName: 'Patente C1E — C1 con rimorchio',
+      parent: 'C', type: 'truck', color: '#b8b8b8',
+      desc: 'Abilita alla guida di un autocarro C1 con rimorchio di massa superiore a 750 kg, per un complesso fino a 12.000 kg.',
+      specs: { 'Complesso': '≤ 12.000 kg', 'Rimorchio': '> 750 kg', 'Propedeutica': 'Patente C1', 'CQC': 'Richiesto' }
+    },
+    'CE': {
+      code: 'CE', name: 'Camion + rimorchio', fullName: 'Patente CE — C con rimorchio pesante',
+      parent: 'C', type: 'truck', color: '#c0c0c0',
+      desc: 'Abilita alla guida di un autocarro C con rimorchio pesante. È il massimo livello per il trasporto merci su strada.',
+      specs: { 'Massa': 'Illimitata', 'Rimorchio': 'Pesante', 'Propedeutica': 'Patente C', 'CQC': 'Richiesto' }
+    },
+    'D1': {
+      code: 'D1', name: 'Minibus', fullName: 'Patente D1 — Minibus',
+      parent: 'D', type: 'bus', color: '#4080c0',
+      desc: 'Abilita alla guida di autobus con massimo 16 posti oltre il conducente e lunghezza fino a 8 metri.',
+      specs: { 'Posti': '≤ 16 passeggeri', 'Lunghezza': '≤ 8 m', 'Età minima': '21 anni', 'CQC': 'Richiesto' }
+    },
+    'D1E': {
+      code: 'D1E', name: 'D1 + rimorchio', fullName: 'Patente D1E — D1 con rimorchio',
+      parent: 'D', type: 'bus', color: '#4890c8',
+      desc: 'Abilita alla guida di un minibus D1 con rimorchio di massa superiore a 750 kg.',
+      specs: { 'Complesso': '≤ 12.000 kg', 'Rimorchio': '> 750 kg', 'Propedeutica': 'Patente D1', 'CQC': 'Richiesto' }
+    },
+    'DE': {
+      code: 'DE', name: 'Bus + rimorchio', fullName: 'Patente DE — D con rimorchio',
+      parent: 'D', type: 'bus', color: '#3070b8',
+      desc: 'Abilita alla guida di un autobus D con rimorchio pesante. Massimo livello per il trasporto persone.',
+      specs: { 'Massa': 'Illimitata', 'Rimorchio': 'Pesante', 'Propedeutica': 'Patente D', 'CQC': 'Richiesto' }
+    }
+  };
+
+  const SUBCATEGORIES = {
+    'A': ['A1', 'A2', 'A'],
+    'B': ['B', 'B96', 'BE'],
+    'C': ['C1', 'C1E', 'C', 'CE'],
+    'D': ['D1', 'D1E', 'D', 'DE']
+  };
+
+  const CATEGORY_ORDER = ['AM', 'A', 'B', 'C', 'D'];
+  let expandedCategory = null;
+
+  // ============================================================
+  //  VEHICLE SVG RENDERERS
+  // ============================================================
+  function renderVehicle(type, color) {
+    const svgs = {
+      scooter: `
+        <svg viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg">
+          <!-- Shadow -->
+          <ellipse cx="60" cy="72" rx="42" ry="6" fill="rgba(0,0,0,0.25)"/>
+          <!-- Rear wheel -->
+          <circle cx="30" cy="64" r="10" fill="#222" stroke="#444" stroke-width="1.5"/>
+          <circle cx="30" cy="64" r="3" fill="#888"/>
+          <!-- Front wheel -->
+          <circle cx="92" cy="62" r="10" fill="#222" stroke="#444" stroke-width="1.5"/>
+          <circle cx="92" cy="62" r="3" fill="#888"/>
+          <!-- Floorboard / body -->
+          <path d="M32 56 Q40 48 55 46 L75 46 Q85 48 88 54 L88 60 Q75 58 60 58 Q40 58 32 56Z" fill="${color}" stroke="#a01818" stroke-width="1"/>
+          <!-- Seat -->
+          <rect x="36" y="44" width="28" height="8" rx="4" fill="#111"/>
+          <!-- Handlebars -->
+          <line x1="88" y1="48" x2="95" y2="38" stroke="#333" stroke-width="2.5"/>
+          <line x1="80" y1="46" x2="95" y2="38" stroke="#333" stroke-width="2.5"/>
+          <!-- Headlight -->
+          <circle cx="95" cy="40" r="3" fill="#ffe066"/>
+          <!-- Mirror -->
+          <line x1="85" y1="42" x2="82" y2="36" stroke="#555" stroke-width="1.5"/>
+          <circle cx="82" cy="36" r="2" fill="#666"/>
+          <!-- Exhaust -->
+          <rect x="28" y="56" width="6" height="4" rx="1" fill="#555"/>
+          <!-- License plate -->
+          <rect x="26" y="60" width="8" height="5" rx="1" fill="#fff" stroke="#aaa" stroke-width="0.5"/>
+          <!-- Leg shield -->
+          <path d="M48 44 Q52 36 60 34 L72 34 Q76 38 74 44" fill="${color}" stroke="#a01818" stroke-width="0.5"/>
+        </svg>`,
+
+      motorcycle: `
+        <svg viewBox="0 0 130 80" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="65" cy="72" rx="46" ry="6" fill="rgba(0,0,0,0.25)"/>
+          <!-- Rear wheel -->
+          <circle cx="30" cy="62" r="10" fill="#222" stroke="#444" stroke-width="1.5"/>
+          <circle cx="30" cy="62" r="3" fill="#888"/>
+          <!-- Front wheel -->
+          <circle cx="105" cy="62" r="10" fill="#222" stroke="#444" stroke-width="1.5"/>
+          <circle cx="105" cy="62" r="3" fill="#888"/>
+          <!-- Engine / frame -->
+          <rect x="40" y="44" width="32" height="16" rx="6" fill="${color}" stroke="#b85508" stroke-width="1"/>
+          <!-- Fuel tank -->
+          <path d="M50 28 Q52 22 60 20 L72 20 Q76 24 74 30 L74 44 L48 44 Q46 36 50 28Z" fill="${color}" stroke="#b85508" stroke-width="0.8"/>
+          <!-- Seat -->
+          <path d="M40 38 Q36 34 38 30 L44 28 Q52 30 52 38Z" fill="#111"/>
+          <!-- Rear fender -->
+          <path d="M28 56 Q32 48 38 46 L38 52 Q34 54 32 58Z" fill="${color}" stroke="#b85508" stroke-width="0.5"/>
+          <!-- Handlebars -->
+          <line x1="100" y1="34" x2="108" y2="28" stroke="#444" stroke-width="2.5"/>
+          <line x1="88" y1="32" x2="108" y2="28" stroke="#444" stroke-width="2.5"/>
+          <!-- Headlight -->
+          <circle cx="110" cy="32" r="4" fill="#ffe066"/>
+          <!-- Exhaust pipes -->
+          <path d="M44 56 L38 60 L34 60" stroke="#777" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <!-- Fork -->
+          <line x1="100" y1="38" x2="105" y2="52" stroke="#555" stroke-width="2.5"/>
+          <!-- Swingarm -->
+          <line x1="44" y1="52" x2="30" y2="52" stroke="#555" stroke-width="2.5"/>
+        </svg>`,
+
+      car: `
+        <svg viewBox="0 0 140 80" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="70" cy="72" rx="52" ry="7" fill="rgba(0,0,0,0.25)"/>
+          <!-- Shadow under body -->
+          <rect x="18" y="48" width="104" height="22" rx="8" fill="${color}" stroke="#bbb" stroke-width="1.2"/>
+          <!-- Roof / cabin -->
+          <path d="M38 48 Q42 30 52 26 L90 26 Q98 30 100 48Z" fill="${color}" stroke="#bbb" stroke-width="1"/>
+          <!-- Windshield -->
+          <path d="M52 26 Q56 32 54 48 L42 48 Q40 34 52 26Z" fill="#a8d4f0" stroke="#bbb" stroke-width="0.5"/>
+          <!-- Rear window -->
+          <path d="M90 26 Q86 32 88 48 L98 48 Q100 34 90 26Z" fill="#a8d4f0" stroke="#bbb" stroke-width="0.5"/>
+          <!-- Side windows -->
+          <path d="M56 28 L56 46 L86 46 L86 28Z" fill="#8cc4e8" stroke="#bbb" stroke-width="0.5" opacity="0.7"/>
+          <!-- Wheels -->
+          <circle cx="38" cy="64" r="10" fill="#222" stroke="#444" stroke-width="1.5"/>
+          <circle cx="38" cy="64" r="3" fill="#888"/>
+          <circle cx="100" cy="64" r="10" fill="#222" stroke="#444" stroke-width="1.5"/>
+          <circle cx="100" cy="64" r="3" fill="#888"/>
+          <!-- Headlights -->
+          <rect x="120" y="50" width="4" height="8" rx="1.5" fill="#ffe066"/>
+          <rect x="120" y="60" width="4" height="8" rx="1.5" fill="#ff4444"/>
+          <!-- Taillights -->
+          <rect x="16" y="50" width="4" height="8" rx="1.5" fill="#ff2222"/>
+          <rect x="16" y="60" width="4" height="8" rx="1.5" fill="#ff4444"/>
+          <!-- Door line -->
+          <line x1="68" y1="48" x2="68" y2="68" stroke="rgba(0,0,0,0.1)" stroke-width="1"/>
+          <!-- Door handle -->
+          <rect x="72" y="56" width="8" height="2" rx="1" fill="rgba(0,0,0,0.15)"/>
+        </svg>`,
+
+      truck: `
+        <svg viewBox="0 0 160 80" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="80" cy="72" rx="60" ry="7" fill="rgba(0,0,0,0.25)"/>
+          <!-- Cargo box -->
+          <rect x="18" y="30" width="84" height="34" rx="3" fill="${color}" stroke="#aaa" stroke-width="1.2"/>
+          <!-- Cargo lines -->
+          <line x1="30" y1="38" x2="90" y2="38" stroke="rgba(0,0,0,0.08)" stroke-width="1"/>
+          <line x1="30" y1="46" x2="90" y2="46" stroke="rgba(0,0,0,0.08)" stroke-width="1"/>
+          <line x1="30" y1="54" x2="90" y2="54" stroke="rgba(0,0,0,0.08)" stroke-width="1"/>
+          <!-- Cab -->
+          <rect x="104" y="34" width="38" height="30" rx="4" fill="${color}" stroke="#aaa" stroke-width="1.2"/>
+          <!-- Windshield -->
+          <path d="M104 40 L106 36 L130 36 L130 42 L104 42Z" fill="#8cc4e8" stroke="#aaa" stroke-width="0.5"/>
+          <!-- Side window -->
+          <rect x="108" y="42" width="20" height="12" rx="2" fill="#8cc4e8" stroke="#aaa" stroke-width="0.5" opacity="0.6"/>
+          <!-- Front wheels -->
+          <circle cx="120" cy="64" r="10" fill="#222" stroke="#444" stroke-width="1.5"/>
+          <circle cx="120" cy="64" r="3" fill="#888"/>
+          <!-- Rear wheels (dual) -->
+          <circle cx="44" cy="64" r="10" fill="#222" stroke="#444" stroke-width="1.5"/>
+          <circle cx="44" cy="64" r="3" fill="#888"/>
+          <circle cx="60" cy="64" r="10" fill="#222" stroke="#444" stroke-width="1.5"/>
+          <circle cx="60" cy="64" r="3" fill="#888"/>
+          <!-- Headlights -->
+          <rect x="140" y="42" width="4" height="8" rx="1.5" fill="#ffe066"/>
+          <rect x="140" y="52" width="4" height="8" rx="1.5" fill="#ff4444"/>
+          <!-- Tail lights -->
+          <rect x="16" y="42" width="3" height="8" rx="1" fill="#ff2222"/>
+          <!-- Rear bumper -->
+          <rect x="16" y="60" width="6" height="4" rx="1" fill="#666"/>
+        </svg>`,
+
+      bus: `
+        <svg viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="100" cy="72" rx="76" ry="7" fill="rgba(0,0,0,0.25)"/>
+          <!-- Body -->
+          <rect x="14" y="30" width="172" height="36" rx="6" fill="${color}" stroke="#1858a0" stroke-width="1.2"/>
+          <!-- Blue stripe -->
+          <rect x="14" y="54" width="172" height="6" rx="2" fill="rgba(255,255,255,0.15)"/>
+          <!-- Windshield -->
+          <path d="M14 36 L18 30 L40 30 L40 48 L14 48Z" fill="#8cc4e8" stroke="#1858a0" stroke-width="0.5"/>
+          <!-- Windows -->
+          <rect x="42" y="32" width="22" height="16" rx="3" fill="#8cc4e8" stroke="rgba(255,255,255,0.08)" stroke-width="0.5" opacity="0.7"/>
+          <rect x="68" y="32" width="22" height="16" rx="3" fill="#8cc4e8" stroke="rgba(255,255,255,0.08)" stroke-width="0.5" opacity="0.7"/>
+          <rect x="94" y="32" width="22" height="16" rx="3" fill="#8cc4e8" stroke="rgba(255,255,255,0.08)" stroke-width="0.5" opacity="0.7"/>
+          <rect x="120" y="32" width="22" height="16" rx="3" fill="#8cc4e8" stroke="rgba(255,255,255,0.08)" stroke-width="0.5" opacity="0.7"/>
+          <rect x="146" y="32" width="22" height="16" rx="3" fill="#8cc4e8" stroke="rgba(255,255,255,0.08)" stroke-width="0.5" opacity="0.7"/>
+          <!-- Rear window -->
+          <rect x="172" y="32" width="12" height="16" rx="3" fill="#8cc4e8" stroke="#1858a0" stroke-width="0.5" opacity="0.5"/>
+          <!-- Wheels -->
+          <circle cx="50" cy="64" r="10" fill="#222" stroke="#444" stroke-width="1.5"/>
+          <circle cx="50" cy="64" r="3" fill="#888"/>
+          <circle cx="150" cy="64" r="10" fill="#222" stroke="#444" stroke-width="1.5"/>
+          <circle cx="150" cy="64" r="3" fill="#888"/>
+          <!-- Headlights -->
+          <rect x="184" y="40" width="4" height="10" rx="2" fill="#ffe066"/>
+          <rect x="184" y="52" width="4" height="8" rx="2" fill="#ff4444"/>
+          <!-- Tail lights -->
+          <rect x="12" y="40" width="3" height="10" rx="1.5" fill="#ff2222"/>
+          <!-- Door -->
+          <rect x="58" y="36" width="10" height="20" rx="2" fill="rgba(255,255,255,0.10)"/>
+          <!-- Side mirror -->
+          <line x1="14" y1="34" x2="6" y2="30" stroke="#555" stroke-width="1.5"/>
+          <circle cx="6" cy="30" r="2" fill="#666"/>
+          <!-- Destination sign -->
+          <rect x="20" y="30" width="30" height="6" rx="1.5" fill="#111"/>
+          <text x="35" y="35" font-size="4" fill="#ffcc00" text-anchor="middle" font-weight="bold">GASPARELLA</text>
+        </svg>`
+    };
+    return svgs[type] || '';
+  }
+
+  // ============================================================
+  //  LANE / CATEGORY MANAGEMENT
+  // ============================================================
+  function handleCategoryClick(cat, event) {
+    if (event) event.stopPropagation();
+    if (cat === 'AM') {
+      // AM has no subcategories — open detail directly
+      openDetail('AM');
+      return;
+    }
+    expandCategory(cat);
+  }
+
+  function expandCategory(cat) {
+    if (expandedCategory === cat) return;
+    expandedCategory = cat;
+
+    const backBtn = document.getElementById('backBtn');
+    backBtn.classList.add('visible');
+
+    // Hide all base vehicles, show subcategories in the clicked lane
+    CATEGORY_ORDER.forEach(code => {
+      const vehicleArea = document.getElementById(`vehicleArea-${code}`);
+      const subArea = document.getElementById(`subVehicles-${code}`);
+      const lane = vehicleArea.closest('.lane');
+
+      if (code === cat) {
+        // This lane: hide base vehicle, show subcategories
+        vehicleArea.style.display = 'none';
+        subArea.innerHTML = buildSubVehicles(cat);
+        subArea.classList.add('active');
+        lane.classList.remove('hidden-lane');
+      } else {
+        // Other lanes: hide everything
+        lane.classList.add('hidden-lane');
+        subArea.classList.remove('active');
+      }
+    });
+
+    // Update tabs
+    document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+    const tab = document.querySelector(`.tab-item[data-tab="${cat}"]`);
+    if (tab) tab.classList.add('active');
+  }
+
+  function resetView() {
+    if (!expandedCategory) return;
+    expandedCategory = null;
+
+    const backBtn = document.getElementById('backBtn');
+    backBtn.classList.remove('visible');
+
+    CATEGORY_ORDER.forEach(code => {
+      const vehicleArea = document.getElementById(`vehicleArea-${code}`);
+      const subArea = document.getElementById(`subVehicles-${code}`);
+      const lane = vehicleArea.closest('.lane');
+
+      vehicleArea.style.display = '';
+      subArea.classList.remove('active');
+      subArea.innerHTML = '';
+      lane.classList.remove('hidden-lane');
+    });
+
+    // Reset tabs
+    document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+    const amTab = document.querySelector(`.tab-item[data-tab="AM"]`);
+    if (amTab) amTab.classList.add('active');
+  }
+
+  function buildSubVehicles(parentCat) {
+    const subs = SUBCATEGORIES[parentCat] || [];
+    let html = '';
+    subs.forEach(code => {
+      const v = VEHICLES[code];
+      if (!v) return;
+      const svg = renderVehicle(v.type, v.color);
+      const label = code === parentCat ? `Patente ${code}` : v.name;
+      const subDesc = code === parentCat ? `(uguale al veicolo base)` : '';
+      html += `
+        <div class="sub-vehicle" onclick="event.stopPropagation(); openDetail('${code}')">
+          ${svg}
+          <span class="sub-label">${label}</span>
+          ${subDesc ? `<span class="sub-desc">${subDesc}</span>` : ''}
+        </div>`;
+    });
+    return html;
+  }
+
+  // ============================================================
+  //  TAB BAR
+  // ============================================================
+  function handleTabClick(cat) {
+    if (cat === 'AM') {
+      resetView();
+      openDetail('AM');
+      return;
+    }
+    expandCategory(cat);
+  }
+
+  // ============================================================
+  //  DETAIL MODAL
+  // ============================================================
+  function openDetail(code) {
+    const v = VEHICLES[code];
+    if (!v) return;
+
+    const svg = renderVehicle(v.type, v.color);
+    const specsHtml = Object.entries(v.specs || {}).map(([k, val]) =>
+      `<div class="spec-item"><div class="spec-label">${k}</div><div class="spec-value">${val}</div></div>`
+    ).join('');
+
+    const body = document.getElementById('modalBody');
+    body.innerHTML = `
+      <div class="modal-vehicle-svg">${svg}</div>
+      <div class="modal-badge">Patente ${v.code}</div>
+      <h2>${v.fullName}</h2>
+      <div class="modal-sub">${v.name}</div>
+      <div class="modal-desc">${v.desc}</div>
+      <div class="modal-specs">${specsHtml}</div>
+      <button class="cta-btn" onclick="closeModal(); alert('Grazie per il tuo interesse! Contattaci per prenotare una lezione di prova.')">
+        &#128222; Prenota una lezione
+      </button>
+    `;
+
+    document.getElementById('detailModal').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('detailModal').classList.remove('open');
+  }
+
+  // Close modal on Escape key
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  // ============================================================
+  //  INIT — highlight AM tab, load vehicles
+  // ============================================================
+  document.addEventListener('DOMContentLoaded', () => {
+    const amTab = document.querySelector(`.tab-item[data-tab="AM"]`);
+    if (amTab) amTab.classList.add('active');
+    // Populate base vehicle SVGs
+    document.querySelectorAll('.vehicle-area[data-vehicle]').forEach(el => {
+      const svg = el.querySelector('svg.vehicle-svg');
+      if (svg) svg.outerHTML = renderVehicle(el.dataset.vehicle, el.dataset.color);
+    });
+  });
+  </script>
+
+</body>
+</html>
+
+
