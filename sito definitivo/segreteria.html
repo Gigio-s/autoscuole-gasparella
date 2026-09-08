@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Area Segreteria - Prenotazioni corsi</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="icon" href="img/PittogrammaGaspa.png" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --blue:#1280c2; --blue-d:#0e6aa3; --bg:#f2f4f7; --dark:#2d3236; }
+  body { font-family: Arial, Helvetica, sans-serif; background: var(--bg); color: var(--dark); padding: 1.5rem; }
+  h1 { color: var(--blue); font-size: 1.4rem; margin-bottom: 1rem; }
+  .login { max-width: 360px; margin: 8vh auto; background:#fff; padding: 2rem; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.08); }
+  .login h1 { text-align:center; }
+  input[type=password] { width:100%; padding:.8rem; border:1px solid #ccd2d8; border-radius:8px; font-size:1rem; margin:.6rem 0 1rem; }
+  button { background:var(--blue); color:#fff; border:none; border-radius:999px; padding:.7rem 1.4rem; font-size:.95rem; font-weight:700; cursor:pointer; }
+  button:hover { background:var(--blue-d); }
+  button.small { padding:.35rem .8rem; font-size:.78rem; }
+  button.ghost { background:#e6ebf0; color:var(--dark); }
+  .msg { color:#c0392b; font-size:.85rem; min-height:1.1em; }
+  .bar { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:1rem; flex-wrap:wrap; }
+  .card { background:#fff; border-radius:12px; padding:1.1rem 1.3rem; margin-bottom:1rem; box-shadow:0 4px 16px rgba(0,0,0,.05); }
+  .card h3 { font-size:1.05rem; color:var(--blue-d); margin-bottom:.3rem; }
+  .meta { font-size:.82rem; color:#555; line-height:1.7; }
+  .meta b { color:var(--dark); }
+  .docs { margin-top:.7rem; display:flex; flex-wrap:wrap; gap:.5rem; }
+  .docs a { font-size:.8rem; background:var(--bg); color:var(--blue-d); padding:.4rem .7rem; border-radius:8px; text-decoration:none; border:1px solid #dbe2e8; }
+  .docs a:hover { background:#e2ecf4; }
+  .stato { display:inline-block; font-size:.72rem; font-weight:700; padding:.15rem .6rem; border-radius:999px; text-transform:uppercase; }
+  .s-nuova { background:#fdecea; color:#c0392b; }
+  .s-gestita { background:#e8f6ec; color:#1e7e34; }
+  .s-annullata { background:#eceff1; color:#607d8b; }
+  .actions { margin-top:.7rem; display:flex; gap:.4rem; flex-wrap:wrap; }
+  .hidden { display:none; }
+</style>
+</head>
+<body>
+
+  <div id="loginBox" class="login">
+    <h1>Area Segreteria</h1>
+    <p style="font-size:.85rem;color:#555;text-align:center;margin-bottom:.5rem">Prenotazioni corsi Autoscuole Gasparella</p>
+    <input type="password" id="pw" placeholder="Password" autocomplete="current-password" />
+    <button id="btnLogin" style="width:100%">Entra</button>
+    <p class="msg" id="loginMsg"></p>
+  </div>
+
+  <div id="app" class="hidden">
+    <div class="bar">
+      <h1 style="margin:0">Prenotazioni corsi</h1>
+      <div>
+        <button class="ghost small" id="btnReload">Aggiorna</button>
+        <button class="ghost small" id="btnLogout">Esci</button>
+      </div>
+    </div>
+    <p class="msg" id="appMsg"></p>
+    <div id="list"></div>
+  </div>
+
+<script>
+(function () {
+  'use strict';
+  var API = '/.netlify/functions/segreteria';
+  var pw = '';
+
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function itDate(iso){ try { return new Date(iso).toLocaleString('it-IT'); } catch(e){ return iso; } }
+
+  async function call(payload){
+    var res = await fetch(API, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+    var data = await res.json().catch(function(){ return {}; });
+    if (!res.ok) throw new Error(data.error || ('Errore ' + res.status));
+    return data;
+  }
+
+  function statoClass(s){ return s==='gestita'?'s-gestita':(s==='annullata'?'s-annullata':'s-nuova'); }
+
+  function render(items){
+    var list = document.getElementById('list');
+    if (!items.length){ list.innerHTML = '<p style="color:#555">Nessuna prenotazione.</p>'; return; }
+    list.innerHTML = items.map(function(r){
+      var docs = (r.documenti||[]).map(function(d){ return '<a href="'+esc(d.url)+'" target="_blank" rel="noopener">'+esc(d.label)+'</a>'; }).join('');
+      return '<div class="card">'
+        + '<h3>'+esc(r.nome)+' '+esc(r.cognome)+' <span class="stato '+statoClass(r.stato)+'">'+esc(r.stato)+'</span></h3>'
+        + '<div class="meta">'
+        + '<b>Corso:</b> '+esc(r.corso)+'<br>'
+        + '<b>Sede:</b> '+esc(r.sede||'-')+' &nbsp;|&nbsp; <b>Data richiesta:</b> '+esc(itDate(r.created_at))+'<br>'
+        + '<b>Tel:</b> '+esc(r.telefono)+' &nbsp;|&nbsp; <b>Email:</b> '+esc(r.email)+'<br>'
+        + '<b>CF:</b> '+esc(r.codice_fiscale)+' &nbsp;|&nbsp; <b>Carta id.:</b> '+esc(r.n_carta_identita)+' &nbsp;|&nbsp; <b>Patente:</b> '+esc(r.n_patente)
+        + (r.extra_ue ? '<br><b>Permesso soggiorno:</b> '+esc(r.n_permesso) : '')
+        + '</div>'
+        + '<div class="docs">'+ (docs || '<span style="font-size:.8rem;color:#999">Nessun documento</span>') +'</div>'
+        + '<div class="actions">'
+        + '<button class="small" data-stato="gestita" data-id="'+esc(r.id)+'">Segna gestita</button>'
+        + '<button class="ghost small" data-stato="annullata" data-id="'+esc(r.id)+'">Annulla</button>'
+        + '<button class="ghost small" data-stato="nuova" data-id="'+esc(r.id)+'">Riapri</button>'
+        + '</div>'
+        + '</div>';
+    }).join('');
+
+    Array.prototype.forEach.call(list.querySelectorAll('button[data-stato]'), function(btn){
+      btn.addEventListener('click', async function(){
+        try { await call({ password: pw, action:'setStato', id: btn.dataset.id, stato: btn.dataset.stato }); load(); }
+        catch(e){ document.getElementById('appMsg').textContent = e.message; }
+      });
+    });
+  }
+
+  async function load(){
+    document.getElementById('appMsg').textContent = 'Carico...';
+    try {
+      var data = await call({ password: pw });
+      document.getElementById('appMsg').textContent = '';
+      render(data.prenotazioni || []);
+    } catch(e){
+      document.getElementById('appMsg').textContent = e.message;
+      if (/password/i.test(e.message)) logout();
+    }
+  }
+
+  function login(){
+    var val = document.getElementById('pw').value;
+    document.getElementById('loginMsg').textContent = 'Verifico...';
+    pw = val;
+    call({ password: pw }).then(function(data){
+      document.getElementById('loginBox').classList.add('hidden');
+      document.getElementById('app').classList.remove('hidden');
+      render(data.prenotazioni || []);
+      sessionStorage.setItem('seg_pw', pw);
+    }).catch(function(e){
+      document.getElementById('loginMsg').textContent = e.message;
+      pw = '';
+    });
+  }
+
+  function logout(){
+    pw = '';
+    sessionStorage.removeItem('seg_pw');
+    document.getElementById('app').classList.add('hidden');
+    document.getElementById('loginBox').classList.remove('hidden');
+    document.getElementById('pw').value = '';
+  }
+
+  document.getElementById('btnLogin').addEventListener('click', login);
+  document.getElementById('pw').addEventListener('keydown', function(e){ if (e.key==='Enter') login(); });
+  document.getElementById('btnReload').addEventListener('click', load);
+  document.getElementById('btnLogout').addEventListener('click', logout);
+
+  // Ripristina sessione (solo per la durata della scheda)
+  var saved = sessionStorage.getItem('seg_pw');
+  if (saved) { pw = saved; call({ password: pw }).then(function(data){
+    document.getElementById('loginBox').classList.add('hidden');
+    document.getElementById('app').classList.remove('hidden');
+    render(data.prenotazioni || []);
+  }).catch(function(){ logout(); }); }
+})();
+</script>
+</body>
+</html>

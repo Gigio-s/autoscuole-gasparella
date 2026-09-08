@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Editor posizioni veicoli : C e D</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, Arial, sans-serif; background: #0f1216; color: #e8ebee; padding: 18px; }
+  h1 { font-size: 1.1rem; margin-bottom: .3rem; color:#fff; }
+  .hint { font-size: .82rem; color:#9aa4ad; margin-bottom: 14px; line-height:1.5; }
+  .hint b { color:#fbbf24; }
+
+  .toolbar { display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; margin-bottom:12px; }
+  .toolbar .group { display:flex; gap:.4rem; align-items:center; background:#1a1f26; padding:.45rem .7rem; border-radius:10px; }
+  .toolbar label { font-size:.78rem; color:#9aa4ad; }
+  button { font-family:inherit; font-size:.8rem; font-weight:700; border:none; border-radius:8px; padding:.5rem .8rem; cursor:pointer; background:#2a3138; color:#fff; }
+  button:hover { background:#38424b; }
+  button.pri { background:#1280c2; }
+  button.pri:hover { background:#0e6aa3; }
+  select, input[type=range] { font-family:inherit; }
+
+  .stage-wrap { width:100%; max-width:1180px; }
+  .garage-stage {
+    position: relative; width: 100%;
+    aspect-ratio: 2752 / 1536;
+    background: #1a1d21 url('https://d8j0ntlcm91z4.cloudfront.net/user_3Fp93g3AABsPKODQxzIxBVAjWHa/hf_20260702_003015_ff7d3f77-929e-4f30-89de-5576fe58d0b2.png') center / cover no-repeat;
+    overflow: hidden; border-radius: 12px; box-shadow: 0 20px 50px rgba(0,0,0,.5);
+    user-select: none; touch-action: none;
+  }
+  .vehicle {
+    position: absolute; transform: translate(-50%, -100%);
+    filter: drop-shadow(0 10px 14px rgba(0,0,0,.45));
+    cursor: grab; background:none; border:none; padding:0;
+  }
+  .vehicle.sel { outline: 2px dashed #fbbf24; outline-offset: 3px; }
+  .vehicle.drag { cursor: grabbing; }
+  .vehicle .crop { position: relative; width: 100%; overflow: hidden; display: block; }
+  .vehicle .crop img { position: absolute; display: block; max-width: none; pointer-events: none; }
+  .v-tag {
+    position:absolute; top:-1.2rem; left:50%; transform:translateX(-50%);
+    background:rgba(11,20,30,.92); color:#fff; font-size:.66rem; font-weight:800;
+    padding:.15rem .5rem; border-radius:999px; white-space:nowrap; letter-spacing:.03em;
+  }
+
+  .panel { margin-top:14px; display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:800px){ .panel { grid-template-columns:1fr; } }
+  .card { background:#1a1f26; border-radius:12px; padding:14px; }
+  .card h2 { font-size:.85rem; color:#fff; margin-bottom:.6rem; text-transform:uppercase; letter-spacing:.04em; }
+  .sel-info { font-size:.82rem; color:#cdd5dc; line-height:1.7; }
+  .sel-info b { color:#fbbf24; }
+  .row { display:flex; gap:.5rem; align-items:center; margin:.4rem 0; flex-wrap:wrap; }
+  .row label { font-size:.76rem; color:#9aa4ad; width:70px; }
+  textarea { width:100%; height:230px; background:#0f1216; color:#7fd0a0; border:1px solid #2a3138; border-radius:8px; padding:10px; font-family:ui-monospace,Menlo,Consolas,monospace; font-size:.72rem; line-height:1.5; }
+</style>
+</head>
+<body>
+  <h1>Editor posizioni veicoli : gruppo C e D</h1>
+  <p class="hint">
+    <b>Trascina</b> un mezzo per spostarlo. <b>Clicca</b> per selezionarlo, poi usa i tasti: larghezza con lo slider, <b>Avanti/Dietro</b> per l'ordine di sovrapposizione, frecce della tastiera per spostamenti fini.
+    Quando sei a posto, premi <b>Genera codice</b> in fondo e incolla il risultato in chat: applico io le posizioni al sito.
+  </p>
+
+  <div class="toolbar">
+    <div class="group">
+      <label>Gruppo:</label>
+      <button data-filter="all" class="pri">Tutti</button>
+      <button data-filter="c">Solo C</button>
+      <button data-filter="d">Solo D</button>
+    </div>
+    <div class="group">
+      <label>Selezionato:</label>
+      <button id="fwd">Avanti &uarr;</button>
+      <button id="bwd">Dietro &darr;</button>
+    </div>
+    <div class="group">
+      <label>Larghezza</label>
+      <input type="range" id="wRange" min="8" max="40" step="0.5" style="width:150px;">
+      <span id="wVal" style="font-size:.78rem;color:#fff;width:44px;">19%</span>
+    </div>
+    <div class="group">
+      <button id="reset">Ripristina iniziali</button>
+    </div>
+  </div>
+
+  <div class="stage-wrap">
+    <div class="garage-stage" id="stage"></div>
+  </div>
+
+  <div class="panel">
+    <div class="card">
+      <h2>Mezzo selezionato</h2>
+      <div class="sel-info" id="selInfo">Nessun mezzo selezionato. Clicca su un veicolo nella scena.</div>
+    </div>
+    <div class="card">
+      <h2>Codice da incollare</h2>
+      <button class="pri" id="gen" style="margin-bottom:.6rem;">Genera codice</button>
+      <textarea id="out" readonly placeholder="Premi 'Genera codice'..."></textarea>
+    </div>
+  </div>
+
+<script>
+(function(){
+  'use strict';
+  var CF = 'https://d8j0ntlcm91z4.cloudfront.net/user_3Fp93g3AABsPKODQxzIxBVAjWHa/';
+
+  // Stato iniziale (identico a patenti.html)
+  var INIT = [
+    { id:'C1',  group:'c', left:15, top:59, width:19, z:4, crop:'2400/1792', img:CF+'hf_20260729_075551_d62d2dca-5332-4e79-9e36-d0d47fb0204f.png', ist:'width:100%; left:0%; top:0%;' },
+    { id:'C1E', group:'c', left:38, top:59, width:19, z:3, crop:'2400/1792', img:CF+'hf_20260729_075553_40189ef2-6e04-43c2-90c5-58f07cd4531c.png', ist:'width:100%; left:0%; top:0%;' },
+    { id:'C',   group:'c', left:61, top:59, width:19, z:2, crop:'2400/1792', img:CF+'hf_20260729_075549_8e690672-ce4c-4a15-8376-609a4fc0b4e1.png', ist:'width:100%; left:0%; top:0%;' },
+    { id:'CE',  group:'c', left:84, top:59, width:19, z:1, crop:'2400/1792', img:CF+'hf_20260729_075554_79f247db-a676-4a60-be3e-5b8de0f6af08.png', ist:'width:100%; left:0%; top:0%;' },
+    { id:'D1',  group:'d', left:15, top:54, width:19, z:4, crop:'1640/870', img:CF+'hf_20260907_152829_3b4ed76c-02d0-4d68-9233-bd0c36c54486.png', ist:'width:100%; left:0%; top:-44.25%;' },
+    { id:'D1E', group:'d', left:38, top:54, width:19, z:3, crop:'1718/868', img:CF+'hf_20260907_152831_96e1612f-de06-4bf3-be59-80c0da9d5e44.png', ist:'width:100%; left:0%; top:-48.97%;' },
+    { id:'D',   group:'d', left:61, top:54, width:19, z:2, crop:'936/500',  img:CF+'hf_20260908_205805_76424971-590c-4f30-93ca-1a5925be4cc0.png', ist:'width:100%; left:0%; top:-43.6%;' },
+    { id:'DE',  group:'d', left:84, top:54, width:19, z:1, crop:'1802/868', img:CF+'hf_20260907_152834_c21f52d5-e451-42be-98e3-95d456b5d584.png', ist:'width:100%; left:0%; top:-53.8%;' }
+  ];
+  var V = JSON.parse(JSON.stringify(INIT));
+
+  var stage = document.getElementById('stage');
+  var sel = null; // id selezionato
+  var nodes = {};
+
+  function render(){
+    stage.innerHTML = '';
+    nodes = {};
+    V.forEach(function(v){
+      var a = document.createElement('div');
+      a.className = 'vehicle' + (sel===v.id?' sel':'');
+      a.style.left = v.left+'%'; a.style.top = v.top+'%';
+      a.style.width = v.width+'%'; a.style.zIndex = v.z;
+      a.dataset.id = v.id;
+      a.innerHTML = '<span class="v-tag">'+v.id+'</span><div class="crop" style="aspect-ratio:'+v.crop+';"><img src="'+v.img+'" style="'+v.ist+'"></div>';
+      stage.appendChild(a);
+      nodes[v.id] = a;
+      attachDrag(a, v);
+    });
+    updatePanel();
+  }
+
+  function get(id){ return V.find(function(x){return x.id===id;}); }
+
+  function attachDrag(node, v){
+    node.addEventListener('pointerdown', function(e){
+      e.preventDefault();
+      sel = v.id; syncSel();
+      var rect = stage.getBoundingClientRect();
+      node.classList.add('drag'); node.setPointerCapture(e.pointerId);
+      function move(ev){
+        var x = (ev.clientX - rect.left) / rect.width * 100;
+        var y = (ev.clientY - rect.top) / rect.height * 100;
+        v.left = Math.max(0, Math.min(100, Math.round(x*10)/10));
+        v.top  = Math.max(0, Math.min(100, Math.round(y*10)/10));
+        node.style.left = v.left+'%'; node.style.top = v.top+'%';
+        updatePanel();
+      }
+      function up(ev){
+        node.classList.remove('drag');
+        node.removeEventListener('pointermove', move);
+        node.removeEventListener('pointerup', up);
+      }
+      node.addEventListener('pointermove', move);
+      node.addEventListener('pointerup', up);
+    });
+  }
+
+  function syncSel(){
+    Object.keys(nodes).forEach(function(k){ nodes[k].classList.toggle('sel', k===sel); });
+    var v = get(sel);
+    if(v){ document.getElementById('wRange').value = v.width; document.getElementById('wVal').textContent = v.width+'%'; }
+    updatePanel();
+  }
+
+  function updatePanel(){
+    var v = get(sel);
+    var el = document.getElementById('selInfo');
+    if(!v){ el.textContent = 'Nessun mezzo selezionato. Clicca su un veicolo nella scena.'; return; }
+    el.innerHTML = '<b>'+v.id+'</b> (gruppo '+v.group.toUpperCase()+')<br>'+
+      'left: '+v.left+'% &nbsp; top: '+v.top+'%<br>'+
+      'larghezza: '+v.width+'% &nbsp; z-index: '+v.z;
+  }
+
+  // Toolbar
+  document.querySelectorAll('[data-filter]').forEach(function(b){
+    b.addEventListener('click', function(){
+      document.querySelectorAll('[data-filter]').forEach(function(x){x.classList.remove('pri');});
+      b.classList.add('pri');
+      var f = b.dataset.filter;
+      V.forEach(function(v){ if(nodes[v.id]) nodes[v.id].style.display = (f==='all'||v.group===f)?'':'none'; });
+    });
+  });
+
+  document.getElementById('wRange').addEventListener('input', function(){
+    var v = get(sel); if(!v) return;
+    v.width = parseFloat(this.value);
+    document.getElementById('wVal').textContent = v.width+'%';
+    nodes[v.id].style.width = v.width+'%'; updatePanel();
+  });
+
+  function reorder(dir){
+    var v = get(sel); if(!v) return;
+    v.z = Math.max(1, v.z + dir);
+    nodes[v.id].style.zIndex = v.z; updatePanel();
+  }
+  document.getElementById('fwd').addEventListener('click', function(){ reorder(1); });
+  document.getElementById('bwd').addEventListener('click', function(){ reorder(-1); });
+
+  document.addEventListener('keydown', function(e){
+    var v = get(sel); if(!v) return;
+    var step = e.shiftKey ? 1 : 0.2;
+    if(e.key==='ArrowLeft'){ v.left=Math.round((v.left-step)*10)/10; }
+    else if(e.key==='ArrowRight'){ v.left=Math.round((v.left+step)*10)/10; }
+    else if(e.key==='ArrowUp'){ v.top=Math.round((v.top-step)*10)/10; }
+    else if(e.key==='ArrowDown'){ v.top=Math.round((v.top+step)*10)/10; }
+    else return;
+    e.preventDefault();
+    nodes[v.id].style.left=v.left+'%'; nodes[v.id].style.top=v.top+'%'; updatePanel();
+  });
+
+  document.getElementById('reset').addEventListener('click', function(){
+    V = JSON.parse(JSON.stringify(INIT)); sel=null; render();
+  });
+
+  document.getElementById('gen').addEventListener('click', function(){
+    var lines = [];
+    lines.push('POSIZIONI VEICOLI (incolla in chat)');
+    lines.push('=====================================');
+    ['c','d'].forEach(function(g){
+      lines.push('Gruppo '+g.toUpperCase()+':');
+      V.filter(function(v){return v.group===g;}).forEach(function(v){
+        lines.push('  '+v.id+' -> left:'+v.left+'%; top:'+v.top+'%; width:'+v.width+'%; z-index:'+v.z+';');
+      });
+    });
+    document.getElementById('out').value = lines.join('\n');
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

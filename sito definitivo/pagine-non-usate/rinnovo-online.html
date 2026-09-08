@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Prenota il Rinnovo Patente Online &ndash; Autoscuole Gasparella Vicenza</title>
+<meta name="description" content="Prenota online il rinnovo della patente in una delle 8 sedi Autoscuole Gasparella in provincia di Vicenza. Scegli sede, giorno e orario, carica i documenti e arriva all'appuntamento senza attese." />
+<link rel="canonical" href="https://www.autoscuolegasparellavicenza.it/rinnovo-online.html" />
+<link rel="icon" href="img/PittogrammaGaspa.png" />
+<link rel="apple-touch-icon" href="img/PittogrammaGaspa.png" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Autoscuole Gasparella Vicenza" />
+<meta property="og:locale" content="it_IT" />
+<meta property="og:title" content="Prenota il Rinnovo Patente Online &ndash; Autoscuole Gasparella" />
+<meta property="og:description" content="Scegli sede, giorno e orario per il rinnovo della patente. 8 sedi in provincia di Vicenza." />
+<meta property="og:url" content="https://www.autoscuolegasparellavicenza.it/rinnovo-online.html" />
+<meta property="og:image" content="https://www.autoscuolegasparellavicenza.it/wp-content/uploads/2024/08/LogoGaspaB-1024x257.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="preconnect" href="https://fonts.bunny.net" />
+<link rel="preconnect" href="https://fonts.bunny.net" crossorigin />
+<link href="https://fonts.bunny.net/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  #demo-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+    background: #111827; color: #e5e7eb;
+    font-family: Montserrat, sans-serif; font-size: 0.72rem; font-weight: 500; letter-spacing: .02em;
+    text-align: center; padding: 9px 1rem;
+  }
+  #demo-bar a { color: #fbbf24; text-decoration: none; font-weight: 700; }
+  body { padding-top: 36px; }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue: #1280c2; --blue-d: #0e6aa3; --blue-l: #7fc4e8;
+    --bg: #f2f4f7; --white: #fff; --ink: #2d3236; --gray: #666;
+    --line: rgba(45,50,54,.13); --line-lt: rgba(255,255,255,.22);
+    --ok: #1a7f4b; --warn: #b45309;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; overflow-x: hidden; }
+  a { text-decoration: none; color: inherit; }
+  ul { list-style: none; }
+  img { max-width: 100%; display: block; }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 36px; z-index: 500; background: var(--blue);
+    display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 5%;
+  }
+  .logo img { height: 56px; width: auto; }
+  .nav-right { display: flex; align-items: center; gap: 2.2rem; }
+  .nav-links { display: flex; align-items: center; gap: 2.2rem; }
+  .nav-links a { font-size: 1.05rem; font-weight: 700; color: #fff; letter-spacing: .01em; transition: opacity .2s; }
+  .nav-links a:hover { opacity: .75; }
+  .nav-cta {
+    background: #fff; color: var(--blue-d) !important; padding: .45rem 1.05rem; border-radius: 999px;
+    font-size: .78rem; font-weight: 800; white-space: nowrap;
+  }
+  .nav-cta:hover { opacity: 1 !important; background: #eaf4fb; }
+  .nav-social { display: flex; align-items: center; gap: .7rem; }
+  .nav-social-icon {
+    width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,.16);
+    display: flex; align-items: center; justify-content: center; transition: background .25s ease;
+  }
+  .nav-social-icon:hover { background: rgba(255,255,255,.3); }
+  @media (max-width: 980px) { .nav-links { display: none; } }
+
+  /* HERO */
+  .rin-hero { background: var(--blue); color: #fff; padding: 3.2rem 5% 3.4rem; }
+  .rin-hero-in { max-width: 1080px; margin: 0 auto; }
+  .rin-back { font-size: .76rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.85); }
+  .rin-hero h1 { font-size: clamp(1.9rem, 4.4vw, 3rem); font-weight: 800; line-height: 1.1; margin: 1rem 0 .8rem; }
+  .rin-hero p { font-size: 1rem; max-width: 640px; color: rgba(255,255,255,.9); }
+  .rin-steps-bar { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: 1.8rem; }
+  .rin-steps-bar span {
+    font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    padding: .4rem .8rem; border: 1px solid rgba(255,255,255,.4); border-radius: 999px; color: rgba(255,255,255,.9);
+  }
+
+  /* LAYOUT */
+  .rin-wrap { max-width: 1080px; margin: -2rem auto 0; padding: 0 5% 5rem; position: relative; z-index: 2; }
+  .card { background: var(--white); border-radius: 14px; box-shadow: 0 14px 40px rgba(0,0,0,.09); padding: 2rem 1.9rem; margin-bottom: 1.4rem; }
+  .card > h2 { font-size: 1.15rem; font-weight: 800; margin-bottom: .3rem; }
+  .card > h2 .num {
+    display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%;
+    background: var(--blue); color: #fff; font-size: .8rem; font-weight: 800; margin-right: .6rem;
+  }
+  .card > p.hint { font-size: .84rem; color: var(--gray); margin-bottom: 1.3rem; }
+
+  /* SEDI */
+  .sede-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px,1fr)); gap: .7rem; }
+  .sede-pill {
+    border: 1.5px solid var(--line); border-radius: 10px; padding: .85rem 1rem; cursor: pointer;
+    background: #fff; text-align: left; font-family: inherit; transition: border-color .2s, background .2s;
+  }
+  .sede-pill:hover { border-color: var(--blue-l); }
+  .sede-pill.selected { border-color: var(--blue); background: #eaf4fb; }
+  .sede-pill b { display: block; font-size: .9rem; font-weight: 700; color: var(--ink); }
+  .sede-pill small { font-size: .74rem; color: var(--gray); }
+
+  /* CALENDARIO */
+  .cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+  .cal-month { font-size: 1rem; font-weight: 800; text-transform: capitalize; }
+  .cal-nav { display: flex; gap: .4rem; }
+  .cal-nav button {
+    width: 34px; height: 34px; border-radius: 8px; border: 1.5px solid var(--line); background: #fff;
+    cursor: pointer; font-size: 1rem; color: var(--ink); font-family: inherit;
+  }
+  .cal-nav button:hover:not(:disabled) { border-color: var(--blue); color: var(--blue-d); }
+  .cal-nav button:disabled { opacity: .35; cursor: not-allowed; }
+  .cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: .35rem; }
+  .cal-dow { font-size: .66rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--gray); text-align: center; padding-bottom: .4rem; }
+  .cal-day {
+    aspect-ratio: 1; border-radius: 9px; border: 1.5px solid var(--line); background: #fff;
+    font-family: inherit; font-size: .88rem; font-weight: 700; color: var(--ink); cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; position: relative;
+  }
+  .cal-day:hover:not(:disabled) { border-color: var(--blue-l); }
+  .cal-day.selected { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .cal-day:disabled { background: #f7f8fa; color: #c3c7cc; border-color: #eef0f2; cursor: not-allowed; }
+  .cal-day .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--ok); }
+  .cal-day.selected .dot { background: #fff; }
+  .cal-day.few .dot { background: var(--warn); }
+  .cal-day.empty { border: none; background: none; cursor: default; }
+  .cal-legend { display: flex; gap: 1.2rem; flex-wrap: wrap; margin-top: 1rem; font-size: .74rem; color: var(--gray); }
+  .cal-legend i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: .35rem; }
+
+  /* SLOT */
+  .slot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(88px,1fr)); gap: .55rem; }
+  .slot-btn {
+    padding: .65rem .4rem; border-radius: 9px; border: 1.5px solid var(--line); background: #fff;
+    font-size: .84rem; font-weight: 700; cursor: pointer; color: var(--ink); font-family: inherit;
+  }
+  .slot-btn:hover:not(:disabled) { border-color: var(--blue-l); }
+  .slot-btn.selected { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .slot-btn:disabled { background: #f7f8fa; color: #c3c7cc; border-color: #eef0f2; cursor: not-allowed; text-decoration: line-through; }
+  .empty-note { font-size: .85rem; color: var(--gray); padding: 1rem; background: var(--bg); border-radius: 9px; }
+
+  /* FORM */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem 1.2rem; }
+  .form-grid .full { grid-column: 1 / -1; }
+  label.fl { display: block; font-size: .76rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--gray); margin-bottom: .35rem; }
+  input[type=text], input[type=tel], input[type=email], input[type=date], select {
+    width: 100%; padding: .75rem .85rem; border: 1.5px solid var(--line); border-radius: 9px;
+    font-family: inherit; font-size: .92rem; color: var(--ink); background: #fff;
+  }
+  input:focus, select:focus { outline: none; border-color: var(--blue); }
+  @media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; } }
+
+  /* UPLOAD */
+  .up-row { display: flex; align-items: center; gap: 1rem; padding: .95rem 0; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+  .up-row:last-of-type { border-bottom: none; }
+  .up-info { flex: 1 1 240px; }
+  .up-info b { display: block; font-size: .9rem; font-weight: 700; }
+  .up-info small { font-size: .76rem; color: var(--gray); }
+  .up-file { flex: 0 0 auto; }
+  .up-file input[type=file] { font-size: .8rem; font-family: inherit; max-width: 230px; }
+  .up-state { font-size: .76rem; font-weight: 700; min-width: 90px; }
+  .up-state.ok { color: var(--ok); }
+  .up-state.err { color: #b91c1c; }
+
+  /* GDPR */
+  .gdpr-box { background: #f7f9fb; border: 1px solid var(--line); border-left: 3px solid var(--blue); border-radius: 9px; padding: 1.2rem 1.3rem; margin-bottom: 1.2rem; }
+  .gdpr-box h3 { font-size: .82rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; margin-bottom: .6rem; }
+  .gdpr-box p, .gdpr-box li { font-size: .8rem; color: #4b5158; line-height: 1.65; }
+  .gdpr-box ul { margin: .5rem 0 .5rem 1.1rem; list-style: disc; }
+  .gdpr-box a { color: var(--blue-d); font-weight: 600; text-decoration: underline; }
+  label.check { display: flex; align-items: flex-start; gap: .65rem; font-size: .82rem; color: #4b5158; line-height: 1.55; margin-bottom: .8rem; }
+  label.check input { margin-top: .25rem; accent-color: var(--blue-d); flex-shrink: 0; }
+  label.check b { color: var(--ink); }
+
+  /* RIEPILOGO */
+  .recap { background: var(--bg); border-radius: 10px; padding: 1.1rem 1.2rem; margin-bottom: 1.2rem; }
+  .recap div { display: flex; justify-content: space-between; gap: 1rem; font-size: .86rem; padding: .3rem 0; }
+  .recap div span:first-child { color: var(--gray); }
+  .recap div span:last-child { font-weight: 700; text-align: right; }
+  .btn-main {
+    display: block; width: 100%; padding: 1rem; background: var(--blue); color: #fff; border: none; border-radius: 999px;
+    font-family: inherit; font-size: .86rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; cursor: pointer;
+  }
+  .btn-main:hover:not(:disabled) { background: var(--blue-d); }
+  .btn-main:disabled { background: #c9ced4; cursor: not-allowed; }
+  .form-err { color: #b91c1c; font-size: .82rem; font-weight: 600; margin-top: .8rem; min-height: 1.2em; }
+  .thanks { display: none; text-align: center; padding: 2.4rem 1.4rem; }
+  .thanks.show { display: block; }
+  .thanks h2 { font-size: 1.4rem; font-weight: 800; color: var(--blue-d); margin-bottom: .6rem; }
+  .thanks p { font-size: .9rem; color: var(--gray); max-width: 480px; margin: 0 auto .6rem; }
+
+  /* FOOTER */
+  footer { background: var(--ink); color: rgba(255,255,255,.8); padding: 3rem 5% 0; }
+  .footer-in { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; padding-bottom: 2rem; }
+  footer h4 { color: #fff; font-size: .76rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 1rem; }
+  footer p { font-size: .84rem; line-height: 1.8; color: rgba(255,255,255,.7); }
+  footer a { color: var(--blue-l); }
+  .footer-bottom { border-top: 1px solid rgba(255,255,255,.1); padding: 1.2rem 0; text-align: center; font-size: .72rem; color: rgba(255,255,255,.4); }
+  @media (max-width: 640px) { .footer-in { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div id="demo-bar">Demo di lavoro — clone 1:1 del sito attuale, base di partenza per le modifiche. <a href="#gdpr">Studio Digital</a></div>
+
+<nav>
+  <a href="index.html" class="logo">
+    <img src="img/LogoGaspaW.png" alt="Autoscuole Gasparella" />
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="patenti.html">Categorie Patenti</a></li>
+      <li><a href="le-nostre-autoscuole.html">Le Nostre Autoscuole</a></li>
+      <li><a href="servizi.html">Servizi</a></li>
+      <li><a href="storia.html">La Nostra Storia</a></li>
+      <li><a href="rinnovo-online.html" class="nav-cta">Rinnova online</a></li>
+    </ul>
+    <div class="nav-social">
+      <a class="nav-social-icon" href="https://www.facebook.com/p/Autoscuola-Gasparella-100046330225155/?locale=it_IT" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M14 9h3V6h-3c-1.7 0-3 1.3-3 3v2H9v3h2v6h3v-6h3l1-3h-4V9c0-.6.4-1 1-1z" fill="#fff"/></svg>
+      </a>
+      <a class="nav-social-icon" href="https://www.instagram.com/autoscuolegasparella/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="#fff" stroke-width="1.6"/><circle cx="12" cy="12" r="4" stroke="#fff" stroke-width="1.6"/></svg>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<header class="rin-hero">
+  <div class="rin-hero-in">
+    <a href="rinnovo-patente.html" class="rin-back">&larr; Tutto sul rinnovo patente</a>
+    <h1>Prenota il rinnovo della tua patente</h1>
+    <p>Scegli la sede più comoda, il giorno e l'orario. Carica in anticipo i documenti: quando arrivi in sede trovi tutto già pronto e devi solo completare la visita e il pagamento.</p>
+    <div class="rin-steps-bar">
+      <span>1 · Sede</span><span>2 · Giorno</span><span>3 · Orario</span><span>4 · I tuoi dati</span><span>5 · Documenti</span><span>6 · Conferma</span>
+    </div>
+  </div>
+</header>
+
+<div class="rin-wrap">
+
+  <!-- 1 · SEDE -->
+  <section class="card">
+    <h2><span class="num">1</span>Scegli la sede</h2>
+    <p class="hint">Tutte le sedi Autoscuole Gasparella in provincia di Vicenza.</p>
+    <div class="sede-grid" id="sedeGrid"></div>
+  </section>
+
+  <!-- 2 · CALENDARIO -->
+  <section class="card">
+    <h2><span class="num">2</span>Scegli il giorno</h2>
+    <p class="hint">Le domeniche e i giorni festivi non sono prenotabili. La disponibilità mostrata è indicativa e viene confermata dalla segreteria.</p>
+    <div class="cal-head">
+      <div class="cal-month" id="calMonth"></div>
+      <div class="cal-nav">
+        <button type="button" id="calPrev" aria-label="Mese precedente">&lsaquo;</button>
+        <button type="button" id="calNext" aria-label="Mese successivo">&rsaquo;</button>
+      </div>
+    </div>
+    <div class="cal-grid" id="calGrid"></div>
+    <div class="cal-legend">
+      <span><i style="background:#1a7f4b"></i>Buona disponibilità</span>
+      <span><i style="background:#b45309"></i>Ultimi posti</span>
+      <span><i style="background:#c3c7cc"></i>Non disponibile</span>
+    </div>
+  </section>
+
+  <!-- 3 · ORARIO -->
+  <section class="card">
+    <h2><span class="num">3</span>Scegli l'orario</h2>
+    <p class="hint">Gli orari già occupati sono barrati.</p>
+    <div id="slotWrap"><p class="empty-note">Seleziona prima una sede e un giorno.</p></div>
+  </section>
+
+  <!-- 4 · DATI -->
+  <section class="card">
+    <h2><span class="num">4</span>I tuoi dati</h2>
+    <p class="hint">Servono alla segreteria per confermarti l'appuntamento.</p>
+    <div class="form-grid">
+      <div><label class="fl" for="fNome">Nome *</label><input type="text" id="fNome" required /></div>
+      <div><label class="fl" for="fCognome">Cognome *</label><input type="text" id="fCognome" required /></div>
+      <div><label class="fl" for="fTel">Telefono *</label><input type="tel" id="fTel" required /></div>
+      <div><label class="fl" for="fMail">Email *</label><input type="email" id="fMail" required /></div>
+      <div><label class="fl" for="fNascita">Data di nascita *</label><input type="date" id="fNascita" required /></div>
+      <div>
+        <label class="fl" for="fCat">Categoria da rinnovare *</label>
+        <select id="fCat">
+          <option value="AM">AM</option><option value="A">A</option>
+          <option value="B" selected>B</option><option value="C">C</option>
+          <option value="D">D</option><option value="CQC">CQC</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · DOCUMENTI -->
+  <section class="card">
+    <h2><span class="num">5</span>Carica i documenti</h2>
+    <p class="hint">Facoltativo, ma caricandoli in anticipo riduci l'attesa in sede. Formati ammessi: JPG, PNG o PDF, massimo 5 MB per file.</p>
+
+    <div class="up-row">
+      <div class="up-info"><b>Fototessera</b><small>Recente, sfondo chiaro, volto scoperto.</small></div>
+      <div class="up-file"><input type="file" accept="image/jpeg,image/png,application/pdf" data-doc="Fototessera" /></div>
+      <div class="up-state"></div>
+    </div>
+    <div class="up-row">
+      <div class="up-info"><b>Documento d'identità</b><small>Carta d'identità o passaporto, fronte e retro.</small></div>
+      <div class="up-file"><input type="file" accept="image/jpeg,image/png,application/pdf" data-doc="Documento d'identità" /></div>
+      <div class="up-state"></div>
+    </div>
+    <div class="up-row">
+      <div class="up-info"><b>Patente in scadenza</b><small>Fronte e retro della patente da rinnovare.</small></div>
+      <div class="up-file"><input type="file" accept="image/jpeg,image/png,application/pdf" data-doc="Patente" /></div>
+      <div class="up-state"></div>
+    </div>
+
+    <div class="gdpr-box" style="margin-top:1.4rem;">
+      <h3>Non caricare qui il certificato medico</h3>
+      <p>Il certificato medico e ogni altra documentazione sanitaria <b>non vanno caricati su questo modulo</b>: sono dati relativi alla salute e li raccogliamo esclusivamente in sede, di persona, il giorno dell'appuntamento. Se ricevessimo per errore un documento sanitario tramite questo modulo, verrà cancellato senza essere conservato.</p>
+    </div>
+  </section>
+
+  <!-- 6 · PRIVACY + CONFERMA -->
+  <section class="card" id="gdpr">
+    <h2><span class="num">6</span>Privacy e conferma</h2>
+
+    <div class="gdpr-box">
+      <h3>Informativa sintetica (art. 13 GDPR)</h3>
+      <p><b>Titolare del trattamento:</b> Gasparella S.r.l., Via Degli Alpini 7, 36040 Sossano (VI), P.IVA 02503620243 — michelagasparella@gmail.com</p>
+      <p><b>Finalità e base giuridica:</b> i dati anagrafici e di contatto sono trattati per gestire la richiesta di appuntamento e fornirti il servizio richiesto (art. 6.1.b, misure precontrattuali). I documenti che carichi facoltativamente sono trattati sulla base del tuo consenso esplicito (art. 6.1.a) al solo scopo di preparare in anticipo la pratica di rinnovo.</p>
+      <p><b>Categorie di dati:</b> trattiamo esclusivamente dati comuni. Non richiediamo né vogliamo ricevere tramite questo modulo dati relativi alla salute o ad altre categorie particolari (art. 9).</p>
+      <p><b>Conservazione:</b> i documenti caricati sono cancellati entro <b>30 giorni</b> dalla data dell'appuntamento o dalla rinuncia alla prenotazione. I soli dati di contatto sono conservati per il tempo necessario agli obblighi amministrativi e fiscali.</p>
+      <p><b>Destinatari:</b> i dati possono essere comunicati al fornitore del servizio di hosting e al fornitore del gestionale utilizzato per l'agenda appuntamenti, entrambi nominati responsabili del trattamento ex art. 28. Non sono diffusi né ceduti a terzi per finalità di marketing.</p>
+      <p><b>Trasferimenti:</b> i dati sono conservati su server situati nell'Unione Europea.</p>
+      <p><b>I tuoi diritti:</b> puoi chiedere in ogni momento accesso, rettifica, cancellazione, limitazione e portabilità dei dati, opporti al trattamento e revocare il consenso senza che ciò pregiudichi la liceità del trattamento già effettuato. Hai inoltre diritto di reclamo al Garante per la protezione dei dati personali.</p>
+      <p><b>Natura del conferimento:</b> il conferimento dei dati anagrafici è necessario per gestire l'appuntamento; il caricamento dei documenti è del tutto facoltativo e la sua mancanza non pregiudica la prenotazione.</p>
+      <p>Informativa completa nella <a href="privacy.html" target="_blank" rel="noopener">privacy policy</a>.</p>
+    </div>
+
+    <label class="check">
+      <input type="checkbox" id="cPrivacy" />
+      <span>Ho letto l'informativa e acconsento al trattamento dei miei dati anagrafici e di contatto per la <b>gestione della richiesta di appuntamento</b>. *</span>
+    </label>
+    <label class="check">
+      <input type="checkbox" id="cDoc" />
+      <span>Acconsento al trattamento dei <b>documenti che carico volontariamente</b> per la preparazione anticipata della pratica, e dichiaro di non aver caricato documentazione sanitaria. <i>(obbligatorio solo se alleghi file)</i></span>
+    </label>
+    <label class="check">
+      <input type="checkbox" id="cVerita" />
+      <span>Dichiaro che i dati inseriti sono veritieri e che i documenti caricati sono miei o che sono autorizzato a trasmetterli. *</span>
+    </label>
+
+    <div class="recap" id="recap"></div>
+
+    <button type="button" class="btn-main" id="btnSend" disabled>Invia richiesta di appuntamento</button>
+    <div class="form-err" id="formErr"></div>
+    <p class="hint" style="margin-top:1rem;font-size:.78rem;">La richiesta <b>non è confermata automaticamente</b>: la segreteria della sede la verifica e ti ricontatta per la conferma definitiva.</p>
+  </section>
+
+  <section class="card thanks" id="thanks">
+    <h2>Richiesta inviata</h2>
+    <p id="thanksRecap"></p>
+    <p>Riceverai una conferma dalla segreteria della sede entro un giorno lavorativo. Fino ad allora l'appuntamento è da considerarsi <b>provvisorio</b>.</p>
+  </section>
+
+</div>
+
+<footer>
+  <div class="footer-in">
+    <div>
+      <h4>Gasparella srl</h4>
+      <p>Via Degli Alpini, 7<br>36040 &ndash; Sossano (VI)<br>CF e P.IVA: 02503620243<br><a href="tel:3336161355">333 616 1355</a></p>
+    </div>
+    <div>
+      <h4>Link utili</h4>
+      <p><a href="rinnovo-patente.html">Rinnovo patente</a><br><a href="le-nostre-autoscuole.html">Le nostre sedi</a><br><a href="privacy.html">Privacy policy</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom">Copyright © Gasparella srl – 2026</div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var SEDI = [
+    { id: 'sossano',    nome: 'Sossano',           via: 'Via degli Alpini 13' },
+    { id: 'barbarano',  nome: 'Barbarano Mossano', via: 'Via Padre A. Pagani 7' },
+    { id: 'montegalda', nome: 'Montegalda',        via: 'Piazza G. Marconi 7' },
+    { id: 'costabis',   nome: 'Costabissara',      via: 'Via Gioberti 18' },
+    { id: 'isola',      nome: 'Isola Vicentina',   via: 'Via Pasubio 67' },
+    { id: 'caldogno',   nome: 'Caldogno',          via: 'Via Barco 36' },
+    { id: 'marano',     nome: 'Marano Vicentino',  via: 'Piazza Silvia 86/A' },
+    { id: 'villaverla', nome: 'Villaverla',        via: 'Piazza delle Fornaci 7' }
+  ];
+  var ORARI = ['09:00','09:30','10:00','10:30','11:00','11:30','15:00','15:30','16:00','16:30','17:00','17:30'];
+  var MESI = ['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
+  var DOW = ['Lun','Mar','Mer','Gio','Ven','Sab','Dom'];
+  var MAX_MB = 5;
+
+  var state = { sede: null, data: null, orario: null, files: {} };
+  var today = new Date(); today.setHours(0,0,0,0);
+  var viewY = today.getFullYear(), viewM = today.getMonth();
+
+  function key(d) { return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate(); }
+
+  /* =====================================================================
+     ADATTATORE GESTIONALE
+     ---------------------------------------------------------------------
+     Unico punto di contatto fra la pagina e il sistema esterno.
+     Per collegare il gestionale reale basta portare MODE a 'api' e
+     implementare i tre metodi dentro API: il resto della pagina NON si tocca.
+
+     Tutti i metodi tornano una Promise: la pagina è già scritta per
+     aspettare risposte di rete (stati di caricamento, errori, ecc.).
+
+     >>> SICUREZZA: la chiave API non va MAI messa qui. Questo file è
+     pubblico e chiunque può leggerlo. Le chiamate devono puntare a un
+     endpoint del NOSTRO backend, che custodisce la credenziale e fa da
+     proxy verso il gestionale.
+     ===================================================================== */
+  var Gestionale = (function () {
+
+    var MODE = 'mock';                  // 'mock' = demo | 'api' = gestionale reale
+    var BASE = '/api';                  // endpoint del nostro backend proxy
+
+    /* ---- implementazione REALE (da completare quando si sa il gestionale) ---- */
+    var API = {
+      // Attesa: { "2026-07-21": ["09:00","09:30"], "2026-07-22": [] }  (slot LIBERI)
+      disponibilitaMese: function (sedeId, anno, mese) {
+        return fetch(BASE + '/disponibilita?sede=' + encodeURIComponent(sedeId) + '&anno=' + anno + '&mese=' + (mese + 1))
+          .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); });
+      },
+      // Attesa: { ok: true, id: "PR-2026-00123", stato: "da_confermare" }
+      creaPrenotazione: function (payload) {
+        return fetch(BASE + '/prenotazioni', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); });
+      },
+      sedi: function () {
+        return fetch(BASE + '/sedi').then(function (r) { return r.json(); });
+      }
+    };
+
+    /* ---- implementazione MOCK (demo): stessa forma dei dati della reale ---- */
+    function hash(str) {
+      var h = 0;
+      for (var i = 0; i < str.length; i++) { h = ((h << 5) - h + str.charCodeAt(i)) | 0; }
+      return Math.abs(h);
+    }
+    var MOCK = {
+      disponibilitaMese: function (sedeId, anno, mese) {
+        var out = {};
+        var giorni = new Date(anno, mese + 1, 0).getDate();
+        for (var g = 1; g <= giorni; g++) {
+          var d = new Date(anno, mese, g);
+          if (!prenotabile(d)) continue;
+          var base = hash(sedeId + key(d)), liberi = [];
+          for (var i = 0; i < ORARI.length; i++) { if ((base >> i) % 3 !== 0) liberi.push(ORARI[i]); }
+          out[key(d)] = liberi;
+        }
+        return new Promise(function (res) { setTimeout(function () { res(out); }, 220); });
+      },
+      creaPrenotazione: function (payload) {
+        return new Promise(function (res) {
+          setTimeout(function () { res({ ok: true, id: 'DEMO-' + Date.now(), stato: 'da_confermare' }); }, 400);
+        });
+      },
+      sedi: function () { return Promise.resolve(SEDI); }
+    };
+
+    var impl = (MODE === 'api') ? API : MOCK;
+    return {
+      mode: MODE,
+      disponibilitaMese: function (s, a, m) { return impl.disponibilitaMese(s, a, m); },
+      creaPrenotazione: function (p) { return impl.creaPrenotazione(p); },
+      sedi: function () { return impl.sedi(); }
+    };
+  })();
+
+  /* cache disponibilità: chiave "sedeId|anno-mese" -> { "y-m-d": [slot liberi] } */
+  var dispCache = {};
+  var caricamento = false;
+  function cacheKey(sedeId, y, m) { return sedeId + '|' + y + '-' + m; }
+  function liberiOf(d) {
+    if (!state.sede) return null;
+    var box = dispCache[cacheKey(state.sede.id, d.getFullYear(), d.getMonth())];
+    if (!box) return null;                       // mese non ancora caricato
+    return box[key(d)] || [];
+  }
+  function caricaMese() {
+    if (!state.sede) { renderCal(); return; }
+    var ck = cacheKey(state.sede.id, viewY, viewM);
+    if (dispCache[ck]) { renderCal(); return; }
+    caricamento = true; renderCal();
+    Gestionale.disponibilitaMese(state.sede.id, viewY, viewM)
+      .then(function (box) { dispCache[ck] = box; })
+      .catch(function () { dispCache[ck] = {}; })
+      .then(function () { caricamento = false; renderCal(); });
+  }
+  function prenotabile(d) {
+    if (d < today) return false;
+    if (d.getDay() === 0) return false;          // domenica
+    if (d.getDay() === 6) return false;          // sabato chiuso
+    return true;
+  }
+
+  /* ---- SEDI ---- */
+  var sedeGrid = document.getElementById('sedeGrid');
+  SEDI.forEach(function (s) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'sede-pill';
+    b.innerHTML = '<b>Autoscuola ' + s.nome + '</b><small>' + s.via + '</small>';
+    b.addEventListener('click', function () {
+      document.querySelectorAll('.sede-pill').forEach(function (x) { x.classList.remove('selected'); });
+      b.classList.add('selected');
+      state.sede = s; state.orario = null; state.data = null;
+      caricaMese(); renderSlot(); update();
+    });
+    sedeGrid.appendChild(b);
+  });
+
+  /* ---- CALENDARIO ---- */
+  var calGrid = document.getElementById('calGrid');
+  var calMonth = document.getElementById('calMonth');
+  var calPrev = document.getElementById('calPrev');
+  var calNext = document.getElementById('calNext');
+
+  function renderCal() {
+    calGrid.innerHTML = '';
+    calMonth.textContent = MESI[viewM] + ' ' + viewY + (caricamento ? ' · caricamento…' : '');
+    DOW.forEach(function (d) {
+      var el = document.createElement('div'); el.className = 'cal-dow'; el.textContent = d; calGrid.appendChild(el);
+    });
+    var first = new Date(viewY, viewM, 1);
+    var offset = (first.getDay() + 6) % 7;              // lunedì = 0
+    var giorni = new Date(viewY, viewM + 1, 0).getDate();
+    for (var i = 0; i < offset; i++) {
+      var sp = document.createElement('div'); sp.className = 'cal-day empty'; calGrid.appendChild(sp);
+    }
+    for (var g = 1; g <= giorni; g++) {
+      (function (g) {
+        var d = new Date(viewY, viewM, g);
+        var btn = document.createElement('button');
+        btn.type = 'button'; btn.className = 'cal-day';
+        var ok = prenotabile(d);
+        btn.disabled = !ok || !state.sede;
+        var lbl = document.createElement('span'); lbl.textContent = g; btn.appendChild(lbl);
+        if (ok && state.sede) {
+          var liberi = liberiOf(d);
+          if (liberi === null || liberi.length === 0) { btn.disabled = true; }
+          else {
+            var dot = document.createElement('span'); dot.className = 'dot'; btn.appendChild(dot);
+            if (liberi.length <= 3) btn.classList.add('few');
+            btn.title = liberi.length + ' orari disponibili';
+          }
+        }
+        if (state.data && key(state.data) === key(d)) btn.classList.add('selected');
+        btn.addEventListener('click', function () {
+          state.data = d; state.orario = null;
+          renderCal(); renderSlot(); update();
+        });
+        calGrid.appendChild(btn);
+      })(g);
+    }
+    var firstOfView = new Date(viewY, viewM, 1);
+    calPrev.disabled = (firstOfView <= new Date(today.getFullYear(), today.getMonth(), 1));
+  }
+  calPrev.addEventListener('click', function () {
+    viewM--; if (viewM < 0) { viewM = 11; viewY--; } caricaMese();
+  });
+  calNext.addEventListener('click', function () {
+    viewM++; if (viewM > 11) { viewM = 0; viewY++; } caricaMese();
+  });
+
+  /* ---- SLOT ---- */
+  var slotWrap = document.getElementById('slotWrap');
+  function renderSlot() {
+    if (!state.sede || !state.data) {
+      slotWrap.innerHTML = '<p class="empty-note">Seleziona prima una sede e un giorno.</p>';
+      return;
+    }
+    var liberi = liberiOf(state.data) || [];
+    var grid = document.createElement('div'); grid.className = 'slot-grid';
+    ORARI.forEach(function (t) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'slot-btn'; b.textContent = t;
+      if (liberi.indexOf(t) === -1) { b.disabled = true; }
+      if (state.orario === t) b.classList.add('selected');
+      b.addEventListener('click', function () {
+        state.orario = t; renderSlot(); update();
+      });
+      grid.appendChild(b);
+    });
+    slotWrap.innerHTML = ''; slotWrap.appendChild(grid);
+  }
+
+  /* ---- UPLOAD ---- */
+  document.querySelectorAll('input[type=file]').forEach(function (inp) {
+    inp.addEventListener('change', function () {
+      var stateEl = inp.closest('.up-row').querySelector('.up-state');
+      var nome = inp.getAttribute('data-doc');
+      var f = inp.files[0];
+      if (!f) { delete state.files[nome]; stateEl.textContent = ''; stateEl.className = 'up-state'; update(); return; }
+      var okType = ['image/jpeg','image/png','application/pdf'].indexOf(f.type) !== -1;
+      if (!okType) {
+        inp.value = ''; delete state.files[nome];
+        stateEl.textContent = 'Formato non valido'; stateEl.className = 'up-state err'; update(); return;
+      }
+      if (f.size > MAX_MB * 1024 * 1024) {
+        inp.value = ''; delete state.files[nome];
+        stateEl.textContent = 'Oltre ' + MAX_MB + ' MB'; stateEl.className = 'up-state err'; update(); return;
+      }
+      state.files[nome] = f.name;
+      stateEl.textContent = 'Caricato'; stateEl.className = 'up-state ok';
+      update();
+    });
+  });
+
+  /* ---- RIEPILOGO + VALIDAZIONE ---- */
+  var recap = document.getElementById('recap');
+  var btn = document.getElementById('btnSend');
+  var err = document.getElementById('formErr');
+  var campi = ['fNome','fCognome','fTel','fMail','fNascita'];
+
+  function val(id) { return (document.getElementById(id).value || '').trim(); }
+  function nDoc() { return Object.keys(state.files).length; }
+
+  function update() {
+    var righe = [
+      ['Sede', state.sede ? 'Autoscuola ' + state.sede.nome : '—'],
+      ['Giorno', state.data ? state.data.toLocaleDateString('it-IT', { weekday:'long', day:'numeric', month:'long', year:'numeric' }) : '—'],
+      ['Orario', state.orario || '—'],
+      ['Categoria', document.getElementById('fCat').value],
+      ['Documenti allegati', nDoc() ? nDoc() + ' file' : 'nessuno']
+    ];
+    recap.innerHTML = righe.map(function (r) {
+      return '<div><span>' + r[0] + '</span><span>' + r[1] + '</span></div>';
+    }).join('');
+
+    var datiOk = campi.every(function (c) { return val(c) !== ''; });
+    var mailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val('fMail'));
+    var cP = document.getElementById('cPrivacy').checked;
+    var cV = document.getElementById('cVerita').checked;
+    var cD = document.getElementById('cDoc').checked;
+    var docOk = nDoc() === 0 || cD;                 // consenso doc obbligatorio solo se ci sono file
+    btn.disabled = !(state.sede && state.data && state.orario && datiOk && mailOk && cP && cV && docOk);
+
+    if (!btn.disabled) { err.textContent = ''; }
+    else if (nDoc() > 0 && !cD) { err.textContent = 'Hai allegato dei file: serve il consenso al trattamento dei documenti.'; }
+    else { err.textContent = ''; }
+  }
+
+  campi.concat(['fCat']).forEach(function (c) {
+    document.getElementById(c).addEventListener('input', update);
+    document.getElementById(c).addEventListener('change', update);
+  });
+  ['cPrivacy','cDoc','cVerita'].forEach(function (c) {
+    document.getElementById(c).addEventListener('change', update);
+  });
+
+  btn.addEventListener('click', function () {
+    // Payload nel formato che passeremo al backend proxy.
+    // NB: i FILE non vanno in JSON. Con il backend reale la richiesta diventa
+    // multipart/form-data (campi + allegati) verso il nostro endpoint, che poi
+    // parla col gestionale. Qui in demo passiamo solo i nomi dei file.
+    var payload = {
+      sede: state.sede.id,
+      sedeNome: state.sede.nome,
+      data: key(state.data),
+      orario: state.orario,
+      cliente: {
+        nome: val('fNome'), cognome: val('fCognome'),
+        telefono: val('fTel'), email: val('fMail'),
+        dataNascita: val('fNascita'), categoria: document.getElementById('fCat').value
+      },
+      allegati: Object.keys(state.files),
+      consensi: {
+        privacy: document.getElementById('cPrivacy').checked,
+        documenti: document.getElementById('cDoc').checked,
+        veridicita: document.getElementById('cVerita').checked,
+        timestamp: new Date().toISOString()   // prova del consenso, art. 7.1 GDPR
+      }
+    };
+
+    btn.disabled = true;
+    btn.textContent = 'Invio in corso…';
+    err.textContent = '';
+
+    Gestionale.creaPrenotazione(payload).then(function (res) {
+      if (!res || !res.ok) throw new Error('risposta non valida');
+      document.getElementById('thanksRecap').textContent =
+        'Appuntamento richiesto presso Autoscuola ' + state.sede.nome + ' per ' +
+        state.data.toLocaleDateString('it-IT', { weekday:'long', day:'numeric', month:'long' }) +
+        ' alle ' + state.orario + '. Codice richiesta: ' + res.id + '.';
+      document.querySelectorAll('.rin-wrap .card').forEach(function (c) {
+        if (c.id !== 'thanks') c.style.display = 'none';
+      });
+      document.getElementById('thanks').classList.add('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }).catch(function () {
+      btn.disabled = false;
+      btn.textContent = 'Invia richiesta di appuntamento';
+      err.textContent = 'Invio non riuscito. Riprova tra qualche istante o chiamaci allo 333 616 1355.';
+    });
+  });
+
+  renderCal(); renderSlot(); update();
+})();
+</script>
+
+</body>
+</html>

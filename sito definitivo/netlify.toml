@@ -1,0 +1,25 @@
+# Configurazione Netlify per Autoscuole Gasparella
+# Il sito e' statico: la root del repo viene pubblicata cosi' com'e'.
+# Le funzioni serverless stanno in netlify/functions ed espongono /.netlify/functions/<nome>
+
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+[functions]
+  # Node 18+ ha fetch e FormData globali
+  node_bundler = "esbuild"
+
+# Header di sicurezza di base su tutto il sito
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# L'area segreteria non deve essere indicizzata
+[[headers]]
+  for = "/segreteria.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"

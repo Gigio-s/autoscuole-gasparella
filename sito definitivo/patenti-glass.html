@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Concept UI &ndash; Naviga le patenti | Autoscuole Gasparella</title>
+<meta name="description" content="Prototipo di interfaccia per la scelta della categoria di patente, Autoscuole Gasparella." />
+<link rel="preconnect" href="https://fonts.bunny.net" />
+<link rel="preconnect" href="https://fonts.bunny.net" crossorigin />
+<link rel="preconnect" href="https://d8j0ntlcm91z4.cloudfront.net" />
+<link rel="dns-prefetch" href="https://unpkg.com" />
+<link href="https://fonts.bunny.net/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { zoom: 0.9; }
+  @media (max-width: 900px) { html { zoom: 1; overflow-x: hidden; } }
+  :root {
+    --blue: #1280c2; --blue-d: #0e6aa3; --dark: #2d3236; --ink: #1f2937; --muted: #6b7280;
+    --glass-bg: rgba(255,255,255,.6); --glass-brd: rgba(255,255,255,.75);
+    --glow: #34d399; --glow-cyan: #38bdf8;
+  }
+  body {
+    font-family: 'Montserrat', sans-serif; color: var(--ink); min-height: 100vh; overflow-x: hidden;
+    background:
+      radial-gradient(circle at 12% 15%, rgba(56,189,248,.14), transparent 45%),
+      radial-gradient(circle at 88% 12%, rgba(52,211,153,.12), transparent 42%),
+      radial-gradient(circle at 50% 100%, rgba(18,128,194,.08), transparent 50%),
+      linear-gradient(160deg, #eef2f7 0%, #e6edf5 100%);
+  }
+  a { text-decoration: none; color: inherit; }
+  button { font-family: inherit; }
+
+  .glass-page { max-width: 1180px; margin: 0 auto; padding: 2.4rem 5% 3rem; }
+
+  .glass-header { text-align: center; margin-bottom: .6rem; }
+  .glass-header img { height: 46px; width: auto; margin: 0 auto 1.1rem; }
+
+  .glass-breadcrumb { display: flex; align-items: center; justify-content: center; gap: .5rem; font-size: .85rem; color: var(--muted); flex-wrap: wrap; }
+  .glass-breadcrumb .crumb { cursor: pointer; font-weight: 600; }
+  .glass-breadcrumb .crumb.active { color: var(--blue); font-weight: 800; cursor: default; }
+  .glass-breadcrumb .sep { color: #b7c0cc; }
+
+  .glass-title { text-align: center; font-size: clamp(1.6rem, 3.4vw, 2.3rem); font-weight: 800; color: var(--ink); margin: 2.4rem 0 .5rem; }
+  .glass-subtitle { text-align: center; font-size: .95rem; color: var(--muted); max-width: 480px; margin: 0 auto 2.4rem; }
+
+  .view-stage { display: grid; }
+  .view {
+    grid-column: 1; grid-row: 1;
+    opacity: 0; pointer-events: none; z-index: 1;
+    transform: translateX(34px) scale(.98);
+    transition: opacity .5s cubic-bezier(.22,.85,.3,1), transform .55s cubic-bezier(.22,.85,.3,1);
+    will-change: transform, opacity;
+  }
+  .view.v-active { opacity: 1; pointer-events: auto; z-index: 2; transform: translateX(0) scale(1); }
+  .view.v-hidden-left { opacity: 0; transform: translateX(-34px) scale(.98); }
+  .view.v-hidden-right { opacity: 0; transform: translateX(34px) scale(.98); }
+
+  /* ── CAROSELLO 3D ── */
+  .carousel-wrap { display: flex; align-items: center; justify-content: center; gap: 1rem; }
+  .car-arrow {
+    width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
+    background: var(--glass-bg); border: 1px solid var(--glass-brd); backdrop-filter: blur(12px);
+    box-shadow: 0 10px 24px rgba(20,40,70,.08); cursor: pointer; font-size: 1.3rem; color: var(--blue);
+    display: flex; align-items: center; justify-content: center; transition: transform .15s;
+    z-index: 20; position: relative;
+  }
+  .car-arrow:hover { transform: scale(1.08); }
+  .carousel-track {
+    position: relative; width: 100%; max-width: 760px; height: 290px;
+    perspective: 1500px; perspective-origin: 50% 42%;
+  }
+
+  .car-card {
+    position: absolute; top: 50%; left: 50%; margin: -112px 0 0 -74px;
+    width: 148px; height: 224px; border-radius: 22px; cursor: pointer;
+    background: var(--glass-bg); border: 1px solid var(--glass-brd); backdrop-filter: blur(16px);
+    box-shadow: 0 18px 38px rgba(20,40,70,.1), inset 0 1px 0 rgba(255,255,255,.85), inset 0 -8px 14px -8px rgba(20,40,70,.18);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .8rem;
+    transform-style: preserve-3d;
+    transition: transform .55s cubic-bezier(.22,.85,.3,1), opacity .55s, box-shadow .35s;
+  }
+  .car-card::before {
+    content: ''; position: absolute; inset: 0; border-radius: 22px; pointer-events: none;
+    background: linear-gradient(125deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 38%);
+  }
+  .car-card.active {
+    border-color: rgba(52,211,153,.6);
+    box-shadow: 0 0 0 1px rgba(52,211,153,.4), 0 30px 55px rgba(20,40,70,.16), 0 0 42px rgba(52,211,153,.28),
+      inset 0 1px 0 rgba(255,255,255,.9), inset 0 -8px 14px -8px rgba(20,40,70,.18);
+  }
+  .car-card .cc-icon { width: 64px; height: 64px; color: var(--blue-d); position: relative; z-index: 2; }
+  .car-card.active .cc-icon { color: #0f9e6e; filter: drop-shadow(0 0 8px rgba(52,211,153,.45)); }
+  .car-card b { font-size: 1rem; font-weight: 800; color: var(--ink); position: relative; z-index: 2; }
+
+  .car-refl {
+    position: absolute; left: 0; top: 100%; width: 100%; height: 60%;
+    transform: scaleY(-1); pointer-events: none; opacity: .28;
+    display: flex; align-items: flex-start; justify-content: center; padding-top: 1.3rem;
+    background: var(--glass-bg); border-radius: 22px;
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,.55), transparent 82%);
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,.55), transparent 82%);
+  }
+  .car-refl .cc-icon { width: 56px; height: 56px; color: var(--blue-d); }
+  .car-card.active .car-refl .cc-icon { color: #0f9e6e; }
+
+  @media (max-width: 640px) {
+    .carousel-track { height: 240px; }
+    .car-card { width: 118px; height: 178px; margin: -89px 0 0 -59px; }
+    .car-card .cc-icon { width: 50px; height: 50px; }
+  }
+
+  .car-dots { display: flex; align-items: center; justify-content: center; gap: .5rem; margin-top: 1.6rem; }
+  .car-dot { width: 8px; height: 8px; border-radius: 50%; background: #cdd6e0; cursor: pointer; transition: all .2s; }
+  .car-dot.active { width: 22px; border-radius: 5px; background: var(--blue); }
+
+  .carousel-hint { text-align: center; font-size: .8rem; color: var(--muted); margin-top: 1.3rem; }
+
+  /* ── DETTAGLIO ── */
+  .detail-wrap { display: grid; grid-template-columns: 300px 1fr; gap: 2.2rem; align-items: start; }
+  @media (max-width: 760px) { .detail-wrap { grid-template-columns: 1fr; } }
+
+  .detail-visual-wrap { position: relative; }
+  .detail-back {
+    position: absolute; left: -20px; top: 50%; transform: translateY(-50%); z-index: 5;
+    width: 42px; height: 42px; border-radius: 50%; background: #fff; border: 1px solid #e6eaf0;
+    box-shadow: 0 10px 22px rgba(20,40,70,.12); cursor: pointer; font-size: 1.2rem; color: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+  }
+  @media (max-width: 760px) { .detail-back { left: 6px; top: 24px; transform: none; } }
+
+  .detail-visual {
+    background: var(--glass-bg); border: 1px solid var(--glass-brd); backdrop-filter: blur(18px);
+    border-radius: 26px; min-height: 400px; padding: 2rem 1.5rem;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    box-shadow: 0 25px 50px rgba(20,40,70,.1);
+  }
+  .detail-visual .dv-icon { width: 150px; height: 150px; color: #0f9e6e; filter: drop-shadow(0 0 16px rgba(52,211,153,.4)); margin-bottom: 1rem; }
+  .detail-visual b { font-size: 1.25rem; font-weight: 800; color: var(--ink); }
+  .detail-visual span { font-size: .82rem; color: var(--muted); margin-top: .3rem; text-align: center; }
+
+  .pill-list { display: flex; flex-direction: column; gap: .85rem; }
+  .pill-item {
+    display: flex; align-items: center; gap: 1rem; cursor: pointer;
+    background: var(--glass-bg); border: 1px solid var(--glass-brd); backdrop-filter: blur(14px);
+    border-radius: 18px; padding: 1rem 1.3rem;
+    transition: transform .18s, box-shadow .18s;
+    opacity: 0; transform: translateY(16px);
+    animation: pillIn .5s cubic-bezier(.22,.85,.3,1) forwards;
+  }
+  @keyframes pillIn { to { opacity: 1; transform: translateY(0); } }
+  .detail-visual.pop-in { animation: dvIn .5s cubic-bezier(.22,.85,.3,1); }
+  @keyframes dvIn { from { opacity: 0; transform: translateY(10px) scale(.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  .pill-item:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(20,40,70,.1); }
+  .pill-item.featured { border-color: rgba(52,211,153,.55); box-shadow: 0 0 0 1px rgba(52,211,153,.3), 0 15px 30px rgba(20,40,70,.08); }
+  .pill-icon {
+    width: 46px; height: 46px; border-radius: 14px; flex-shrink: 0;
+    background: rgba(18,128,194,.1); display: flex; align-items: center; justify-content: center; color: var(--blue);
+  }
+  .pill-item.featured .pill-icon { background: rgba(52,211,153,.16); color: #0f9e6e; }
+  .pill-text { flex: 1; }
+  .pill-text b { display: block; font-size: .96rem; font-weight: 800; color: var(--ink); }
+  .pill-text span { font-size: .8rem; color: var(--muted); }
+  .pill-chevron { color: var(--blue); font-size: 1.2rem; flex-shrink: 0; }
+
+  /* ── AI ASSISTANT ORB ── */
+  .ai-orb {
+    position: fixed; right: 26px; bottom: 26px; width: 70px; height: 70px; border-radius: 50%; z-index: 999;
+    background: linear-gradient(150deg, #f2fbf8, #e3f6ef);
+    border: 1px solid rgba(52,211,153,.5); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 0 6px rgba(52,211,153,.12), 0 15px 32px rgba(20,40,70,.2);
+    animation: ai-pulse 3s ease-in-out infinite;
+  }
+  @keyframes ai-pulse {
+    0%, 100% { box-shadow: 0 0 0 6px rgba(52,211,153,.12), 0 15px 32px rgba(20,40,70,.2); }
+    50%      { box-shadow: 0 0 0 11px rgba(52,211,153,.18), 0 15px 32px rgba(20,40,70,.2); }
+  }
+  .ai-orb svg { width: 36px; height: 36px; }
+  .ai-tip {
+    position: fixed; right: 104px; bottom: 46px; z-index: 998;
+    background: #1f2937; color: #fff; font-size: .76rem; font-weight: 700;
+    padding: .5rem .85rem; border-radius: 10px; opacity: 0; pointer-events: none;
+    transform: translateX(8px); transition: opacity .2s, transform .2s;
+  }
+  .ai-tip.show { opacity: 1; transform: translateX(0); }
+  @media (max-width: 600px) {
+    .ai-orb { right: 16px; bottom: 16px; width: 60px; height: 60px; }
+    .ai-orb svg { width: 30px; height: 30px; }
+    .ai-tip { right: 84px; bottom: 30px; }
+  }
+
+  .concept-note {
+    max-width: 760px; margin: 3.5rem auto 0; background: #fff3cd; border: 1px solid #f2dca0; color: #7a5c00;
+    border-radius: 14px; padding: 1.2rem 1.5rem; font-size: .85rem; line-height: 1.65;
+  }
+  .concept-note strong { color: #5c4600; }
+</style>
+</head>
+<body>
+
+<div class="glass-page">
+  <header class="glass-header">
+    <img src="img/LogoGaspaB-300x75.png" alt="Autoscuole Gasparella" />
+    <nav class="glass-breadcrumb" id="breadcrumb"></nav>
+  </header>
+
+  <main>
+    <div class="view-stage">
+      <section class="view v-active" id="viewCarousel">
+        <h1 class="glass-title">Quale patente ti serve?</h1>
+        <p class="glass-subtitle">Scegli una categoria per scoprire sottocategorie, requisiti e documenti.</p>
+        <div class="carousel-wrap">
+          <button class="car-arrow" id="carPrev" aria-label="Precedente">&lsaquo;</button>
+          <div class="carousel-track" id="carTrack"></div>
+          <button class="car-arrow" id="carNext" aria-label="Successiva">&rsaquo;</button>
+        </div>
+        <div class="car-dots" id="carDots"></div>
+        <p class="carousel-hint">Clicca sulla categoria al centro per aprirla</p>
+      </section>
+
+      <section class="view v-hidden-right" id="viewDetail">
+        <div class="detail-wrap">
+          <div class="detail-visual-wrap">
+            <button class="detail-back" id="detailBack" aria-label="Indietro">&lsaquo;</button>
+            <div class="detail-visual" id="detailVisual"></div>
+          </div>
+          <div class="pill-list" id="pillList"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<div class="ai-orb" id="aiOrb" title="Scrivici">
+  <svg viewBox="0 0 48 48" fill="none">
+    <rect x="10" y="14" width="28" height="22" rx="9" fill="#fff" stroke="#0f9e6e" stroke-width="2.4"/>
+    <circle cx="19" cy="25" r="2.6" fill="#0f9e6e"/>
+    <circle cx="29" cy="25" r="2.6" fill="#0f9e6e"/>
+    <path d="M18 31 Q24 35 30 31" stroke="#0f9e6e" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+    <path d="M24 14 L24 8" stroke="#0f9e6e" stroke-width="2.4" stroke-linecap="round"/>
+    <circle cx="24" cy="6" r="2.4" fill="#0f9e6e"/>
+  </svg>
+</div>
+<span class="ai-tip" id="aiTip">Scrivici su WhatsApp</span>
+
+<script>
+(function () {
+  var ICONS = {
+    am: '<svg viewBox="0 0 120 70" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="54" r="12"/><circle cx="92" cy="54" r="12"/><path d="M24 54 L44 54 L54 30 L70 30"/><path d="M70 30 L70 14"/><path d="M62 14 L78 14"/><path d="M54 30 Q60 22 70 30"/><path d="M44 54 L80 54 L92 54"/><path d="M80 54 L80 40 L92 40"/></svg>',
+    a:  '<svg viewBox="0 0 120 70" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="22" cy="54" r="13"/><circle cx="96" cy="54" r="13"/><path d="M22 54 L40 54 L52 34 Q60 26 72 30 L86 36 L96 54"/><path d="M40 54 L86 54"/><path d="M52 34 L44 24 L56 24"/><path d="M72 30 L78 20"/></svg>',
+    b:  '<svg viewBox="0 0 120 70" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 50 L14 42 Q14 36 20 34 L34 26 Q40 20 50 20 L74 20 Q82 20 88 26 L100 34 Q106 36 106 42 L106 50"/><path d="M14 50 L106 50"/><circle cx="34" cy="52" r="10"/><circle cx="86" cy="52" r="10"/><path d="M40 34 L80 34"/></svg>',
+    c:  '<svg viewBox="0 0 120 70" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 50 L10 26 L60 26 L60 50"/><path d="M60 34 L78 34 Q84 34 86 40 L92 50 L60 50"/><path d="M10 50 L104 50"/><circle cx="28" cy="52" r="9"/><circle cx="80" cy="52" r="9"/><path d="M66 34 L66 44 M78 34 L86 34"/></svg>',
+    d:  '<svg viewBox="0 0 120 70" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="22" width="100" height="28" rx="8"/><path d="M10 50 L110 50"/><circle cx="30" cy="52" r="9"/><circle cx="90" cy="52" r="9"/><path d="M28 22 L28 40 M50 22 L50 40 M72 22 L72 40 M94 22 L94 40"/></svg>'
+  };
+
+  // Dati reali: mappano alle sottocategorie e alle pagine già esistenti sul sito (non modificate).
+  var CATEGORIES = [
+    {
+      key: 'am', label: 'AM', title: 'Patente AM', age: 'Et&agrave; minima 14 anni', href: 'patente-am.html',
+      subs: [
+        { label: 'Patente AM', sub: 'Ciclomotori 2/3 ruote e quadricicli leggeri', href: 'patente-am.html#am' }
+      ]
+    },
+    {
+      key: 'a', label: 'A', title: 'Patente A', age: 'Da 16 a 24 anni secondo la sottocategoria', href: 'patente-a.html',
+      subs: [
+        { label: 'Patente A1', sub: 'Et&agrave; minima 16 anni', href: 'patente-a.html#a1' },
+        { label: 'Patente A2', sub: 'Et&agrave; minima 18 anni', href: 'patente-a.html#a2' },
+        { label: 'Patente A', sub: 'Et&agrave; minima 24 anni (20 se gi&agrave; A2 da 2 anni)', href: 'patente-a.html#a' }
+      ]
+    },
+    {
+      key: 'b', label: 'B', title: 'Patente B', age: 'Et&agrave; minima 18 anni', href: 'patente-b.html',
+      subs: [
+        { label: 'Patente B', sub: 'Auto fino a 3,5t e 9 posti', href: 'patente-b.html#b' },
+        { label: 'Patente B96', sub: 'Auto con rimorchio pesante', href: 'patente-b.html#b96' },
+        { label: 'Patente BE', sub: 'Auto + rimorchio, fino a 7t totali', href: 'patente-b.html#be' }
+      ]
+    },
+    {
+      key: 'c', label: 'C', title: 'Patente C', age: 'Da 18 a 21 anni secondo la sottocategoria', href: 'patente-c.html',
+      subs: [
+        { label: 'Patente C1 / C1E', sub: 'Et&agrave; minima 18 anni, fino a 7,5t', href: 'patente-c.html#c1-c1e' },
+        { label: 'Patente C / CE', sub: 'Et&agrave; minima 21 anni', href: 'patente-c.html#c-ce' }
+      ]
+    },
+    {
+      key: 'd', label: 'D', title: 'Patente D', age: 'Da 21 a 24 anni secondo la sottocategoria', href: 'patente-d.html',
+      subs: [
+        { label: 'Patente D1 / D1E', sub: 'Et&agrave; minima 21 anni, fino a 16 posti', href: 'patente-d.html#d1-d1e' },
+        { label: 'Patente D / DE', sub: 'Et&agrave; minima 24 anni (21 con CQC)', href: 'patente-d.html#d-de' }
+      ]
+    }
+  ];
+
+  var current = 2; // parte da "B", come nel concept grafico
+  var view = 'carousel';
+
+  var carTrack = document.getElementById('carTrack');
+  var carDots = document.getElementById('carDots');
+  var breadcrumb = document.getElementById('breadcrumb');
+  var viewCarousel = document.getElementById('viewCarousel');
+  var viewDetail = document.getElementById('viewDetail');
+  var detailVisual = document.getElementById('detailVisual');
+  var pillList = document.getElementById('pillList');
+
+  function renderBreadcrumb() {
+    var html = '<span class="crumb" id="crumbHome">Home</span><span class="sep">&rsaquo;</span>';
+    if (view === 'carousel') {
+      html += '<span class="crumb active">Patenti</span>';
+    } else {
+      html += '<span class="crumb" id="crumbPatenti">Patenti</span><span class="sep">&rsaquo;</span>';
+      html += '<span class="crumb active">' + CATEGORIES[current].label + '</span>';
+    }
+    breadcrumb.innerHTML = html;
+    document.getElementById('crumbHome').addEventListener('click', function () { window.location.href = 'index.html'; });
+    var cp = document.getElementById('crumbPatenti');
+    if (cp) cp.addEventListener('click', showCarousel);
+  }
+
+  // Le card e i pallini vengono creati UNA SOLA VOLTA: le transizioni CSS animano
+  // solo se lo stesso elemento del DOM cambia stile, non se viene ricreato da zero.
+  // Per questo teniamo dei riferimenti stabili e li aggiorniamo, invece di ricostruire
+  // l'HTML del carosello a ogni click (che causava lo "scatto").
+  var carCards = [];
+  var carDotEls = [];
+
+  function buildCarousel() {
+    carTrack.innerHTML = '';
+    carCards = [];
+    CATEGORIES.forEach(function (cat, idx) {
+      var card = document.createElement('div');
+      card.className = 'car-card';
+      card.innerHTML =
+        '<div class="cc-icon">' + ICONS[cat.key] + '</div><b>' + cat.label + '</b>' +
+        '<div class="car-refl"><div class="cc-icon">' + ICONS[cat.key] + '</div></div>';
+      card.addEventListener('click', function () {
+        if (idx === current) { showDetail(idx); } else { current = idx; updateCarousel(); updateDots(); }
+      });
+      carTrack.appendChild(card);
+      carCards.push(card);
+    });
+    updateCarousel();
+  }
+
+  function updateCarousel() {
+    var narrow = window.innerWidth < 640;
+    var step = narrow ? 108 : 175;
+    var zStep = narrow ? 95 : 150;
+
+    carCards.forEach(function (card, idx) {
+      var offset = idx - current;
+      var absOff = Math.abs(offset);
+      card.classList.toggle('active', offset === 0);
+
+      if (absOff > 2) {
+        card.style.opacity = '0';
+        card.style.pointerEvents = 'none';
+        card.style.transform = 'translateX(' + (offset * step) + 'px) translateZ(-420px) rotateY(' + (offset > 0 ? -55 : 55) + 'deg) scale(.6)';
+      } else {
+        var tx = offset * step;
+        var tz = -absOff * zStep;
+        var ry = offset * -30;
+        var sc = offset === 0 ? 1.08 : (absOff === 1 ? 0.86 : 0.7);
+        var op = offset === 0 ? 1 : (absOff === 1 ? 0.82 : 0.48);
+        card.style.transform = 'translateX(' + tx + 'px) translateZ(' + tz + 'px) rotateY(' + ry + 'deg) scale(' + sc + ')';
+        card.style.opacity = String(op);
+        card.style.pointerEvents = 'auto';
+      }
+      card.style.zIndex = String(10 - absOff);
+    });
+  }
+
+  function buildDots() {
+    carDots.innerHTML = '';
+    carDotEls = [];
+    CATEGORIES.forEach(function (cat, idx) {
+      var dot = document.createElement('div');
+      dot.className = 'car-dot';
+      dot.addEventListener('click', function () { current = idx; updateCarousel(); updateDots(); });
+      carDots.appendChild(dot);
+      carDotEls.push(dot);
+    });
+    updateDots();
+  }
+
+  function updateDots() {
+    carDotEls.forEach(function (dot, idx) { dot.classList.toggle('active', idx === current); });
+  }
+
+  function renderDetail() {
+    var cat = CATEGORIES[current];
+    detailVisual.innerHTML =
+      '<div class="dv-icon">' + ICONS[cat.key] + '</div>' +
+      '<b>' + cat.title + '</b><span>' + cat.age + '</span>';
+    detailVisual.classList.remove('pop-in');
+    void detailVisual.offsetWidth; // forza il reflow per far ripartire l'animazione
+    detailVisual.classList.add('pop-in');
+
+    pillList.innerHTML = '';
+    var stagger = 0;
+    cat.subs.forEach(function (s, i) {
+      var pill = document.createElement('a');
+      pill.href = s.href;
+      pill.className = 'pill-item' + (i === 0 ? ' featured' : '');
+      pill.style.animationDelay = (stagger * 0.07) + 's';
+      stagger++;
+      pill.innerHTML =
+        '<div class="pill-icon">' + ICONS[cat.key] + '</div>' +
+        '<div class="pill-text"><b>' + s.label + '</b><span>' + s.sub + '</span></div>' +
+        '<span class="pill-chevron">&rsaquo;</span>';
+      pillList.appendChild(pill);
+    });
+    var full = document.createElement('a');
+    full.href = cat.href;
+    full.className = 'pill-item';
+    full.style.animationDelay = (stagger * 0.07) + 's';
+    full.innerHTML =
+      '<div class="pill-icon">&#128196;</div>' +
+      '<div class="pill-text"><b>Documenti e domande frequenti</b><span>Tutti i dettagli su ' + cat.title + '</span></div>' +
+      '<span class="pill-chevron">&rsaquo;</span>';
+    pillList.appendChild(full);
+  }
+
+  function showCarousel() {
+    view = 'carousel';
+    // torniamo indietro: il carosello rientra da sinistra, il dettaglio esce verso destra
+    viewDetail.classList.remove('v-active');
+    viewDetail.classList.add('v-hidden-right');
+    viewCarousel.classList.remove('v-hidden-left', 'v-hidden-right');
+    viewCarousel.classList.add('v-active');
+    renderBreadcrumb();
+  }
+  function showDetail(idx) {
+    current = idx;
+    view = 'detail';
+    renderDetail();
+    // andiamo avanti: il dettaglio entra da destra, il carosello esce verso sinistra
+    viewCarousel.classList.remove('v-active');
+    viewCarousel.classList.add('v-hidden-left');
+    viewDetail.classList.remove('v-hidden-left', 'v-hidden-right');
+    viewDetail.classList.add('v-active');
+    renderBreadcrumb();
+  }
+
+  document.getElementById('carPrev').addEventListener('click', function () {
+    current = (current - 1 + CATEGORIES.length) % CATEGORIES.length;
+    updateCarousel(); updateDots();
+  });
+  document.getElementById('carNext').addEventListener('click', function () {
+    current = (current + 1) % CATEGORIES.length;
+    updateCarousel(); updateDots();
+  });
+  document.getElementById('detailBack').addEventListener('click', showCarousel);
+
+  var aiOrb = document.getElementById('aiOrb');
+  var aiTip = document.getElementById('aiTip');
+  aiOrb.addEventListener('mouseenter', function () { aiTip.classList.add('show'); });
+  aiOrb.addEventListener('mouseleave', function () { aiTip.classList.remove('show'); });
+  aiOrb.addEventListener('click', function () {
+    window.open('https://wa.me/393664303206?text=Ciao%2C%20vorrei%20informazioni%20sulle%20Autoscuole%20Gasparella', '_blank');
+  });
+
+  var resizeTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(updateCarousel, 150);
+  });
+
+  buildCarousel();
+  buildDots();
+  renderBreadcrumb();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "name": "gasparella-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Backend serverless (Netlify Functions) per il form prenotazione corsi Autoscuole Gasparella",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0"
+  }
+}
