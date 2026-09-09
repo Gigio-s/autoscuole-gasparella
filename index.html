@@ -169,6 +169,11 @@
   .hero-card .contact-line a.call:hover { background: var(--gold-deep); }
   .hero-card .contact-line a.mail { background: transparent; color: var(--ink); border: 1px solid var(--line); }
   .hero-card .contact-line a.mail:hover { border-color: var(--gold); color: var(--gold-deep); }
+  @media (max-width: 600px) {
+    .hero-card .contact-line { flex-direction: column; align-items: stretch; }
+    .hero-card .contact-line a { width: 100%; justify-content: center; padding-left: 1rem; padding-right: 1rem; }
+    .hero-card .contact-line a.mail { text-transform: none; letter-spacing: .01em; word-break: break-all; }
+  }
 
   /* ── SECTION LABEL / RIBBON ── */
   .ribbon-wrap { padding: 7rem 0 0; text-align: center; }
@@ -562,6 +567,7 @@
   <a href="storia.html">La Nostra Storia</a>
   <a href="https://rinnovi.ipatente.cloud/" target="_blank" rel="noopener">Rinnova online</a>
   <a href="corsi-cqc.html#calendario">Prenota corsi</a>
+  <a class="gold" href="https://www.facebook.com/p/Autoscuola-Gasparella-100046330225155/?locale=it_IT" target="_blank" rel="noopener">Facebook</a>
   <a class="gold" href="https://www.instagram.com/autoscuolegasparella/" target="_blank" rel="noopener">Instagram</a>
 </div>
 
