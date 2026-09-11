@@ -34,9 +34,8 @@
 
     /* ---------- RINNOVO ---------- */
     rinnovo: {
-      testo: 'Per il rinnovo puoi prenotare online sede, giorno e orario: la visita medica si fa direttamente in sede.',
+      testo: 'Per il rinnovo la visita medica si fa direttamente in una nostra sede. Contattaci per prenotare giorno e orario.',
       opzioni: [
-        { label: 'Prenota il rinnovo online', href: 'https://rinnovi.ipatente.cloud/' },
         { label: 'Cosa devo portare?',        vai: 'rinnovo_doc' },
         { label: 'Ogni quanto si rinnova?',   vai: 'rinnovo_scad' },
         { label: 'Torna all\'inizio',         vai: 'start' }
@@ -45,7 +44,6 @@
     rinnovo_doc: {
       testo: 'Servono la patente in scadenza, un documento d\'identità valido, la tessera sanitaria e una fototessera recente. La visita medica si fa direttamente in sede.',
       opzioni: [
-        { label: 'Prenota il rinnovo online', href: 'https://rinnovi.ipatente.cloud/' },
         { label: 'Ho un caso particolare',    vai: 'umano' },
         { label: 'Torna all\'inizio',         vai: 'start' }
       ]
@@ -54,7 +52,6 @@
       testo: 'Dipende dalla tua età e dalla categoria della patente. Nella pagina dedicata trovi la tabella completa delle scadenze.',
       opzioni: [
         { label: 'Vedi la tabella scadenze', link: 'rinnovo-patente.html' },
-        { label: 'Prenota il rinnovo',       href: 'https://rinnovi.ipatente.cloud/' },
         { label: 'Torna all\'inizio',        vai: 'start' }
       ]
     },
