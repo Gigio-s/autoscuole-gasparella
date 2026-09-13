@@ -330,11 +330,38 @@
     .cp-book-top { margin-bottom: 1.4rem; }
     .cp-book-bottom { margin-top: 1.6rem; }
     .cp-hidden { display: none; }
+
+    /* Avviso ben visibile: corso intero + chiusura 5 giorni prima */
+    .cqc-notice { background: #eef6fc; border: 1px solid #cfe4f5; border-left: 4px solid var(--blue); border-radius: 0 12px 12px 0; padding: 1rem 1.3rem; margin-bottom: 1.7rem; }
+    .cqc-notice p { font-size: 1.02rem; color: var(--dark); line-height: 1.55; margin: 0; }
+    .cqc-notice p + p { margin-top: .5rem; }
+    .cqc-notice b { color: var(--blue-d); }
+
+    /* Etichetta grande del formato (Sabato / Serale) */
+    .cp-fmt { flex: 0 0 auto; min-width: 82px; text-align: center; background: var(--blue); color: #fff; font-size: .82rem; font-weight: 800; letter-spacing: .04em; padding: .55rem .5rem; border-radius: 9px; line-height: 1.15; }
+    /* Testi elenchi un po' piu' grandi */
+    .cp-item .cp-txt b { font-size: 1.08rem; }
+    .cp-item .cp-txt span { font-size: .86rem; }
+    .ccal-course .cc-info b { font-size: 1rem; }
+    .ccal-course .cc-info span { font-size: .84rem; }
+    /* Calendario e lista solo informativi (non cliccabili) */
+    .ccal-day.has-course { cursor: default; }
+    .ccal-day.has-course:hover { background: #eaf4fb; }
+    .ccal-course { cursor: default; }
+    .ccal-course:hover { border-color: rgba(45,50,54,.12); box-shadow: none; }
+    /* SOLD OUT: card sempre leggibile, badge rosso a destra */
+    .cp-item.soldout { cursor: not-allowed; background: #fdf3f3; border-color: #eab8b8; }
+    .cp-item.soldout .cp-fmt { background: #b23b3b; }
+    .cp-soldout { margin-left: auto; flex: 0 0 auto; background: #d33; color: #fff; font-size: .74rem; font-weight: 800; letter-spacing: .12em; padding: .42rem .9rem; border-radius: 999px; white-space: nowrap; }
   </style>
 
   <section class="cqc-cal" id="calendario">
     <h2>Prenota un corso</h2>
     <p class="sub">Scegli il corso, poi la sede: vedrai il calendario delle lezioni e potrai inviare la richiesta di iscrizione.</p>
+    <div class="cqc-notice">
+      <p>&#10003; L'iscrizione &egrave; per <b>tutto il corso</b>, non per le singole lezioni.</p>
+      <p>&#9888; Le iscrizioni <b>chiudono 5 giorni prima</b> dell'inizio del corso.</p>
+    </div>
 
     <div id="cpCourses">
       <div class="cp-step-t">1 &middot; Scegli il corso</div>
@@ -351,7 +378,7 @@
     <div id="cpCal" class="cp-hidden">
       <button type="button" class="cp-back" id="cpBackSedi">&larr; Altre sedi</button>
       <div class="cp-selected" id="cpSelFull"></div>
-      <button type="button" class="cp-book cp-book-top" data-book>Prenotati a questo corso &rarr;</button>
+      <button type="button" class="cp-book cp-book-top" data-book>Prenota il corso intero &rarr;</button>
       <div class="ccal-head">
         <div class="ccal-month" id="ccalMonth"></div>
         <div class="ccal-nav">
@@ -360,9 +387,9 @@
         </div>
       </div>
       <div class="ccal-grid" id="ccalGrid"></div>
-      <div class="ccal-legend"><i></i> Giorno di lezione del corso selezionato</div>
+      <div class="ccal-legend"><i></i> Calendario delle lezioni (a scopo informativo) &middot; la prenotazione &egrave; per il corso intero</div>
       <div class="ccal-list" id="ccalList"></div>
-      <button type="button" class="cp-book cp-book-bottom" data-book>Prenotati a questo corso &rarr;</button>
+      <button type="button" class="cp-book cp-book-bottom" data-book>Prenota il corso intero &rarr;</button>
     </div>
 
     <div class="cqc-form-wrap" id="cqcFormWrap">
@@ -439,16 +466,14 @@
 
     // Ogni corso ha un nome e le sedi in cui è disponibile; ogni sede ha la sua serie di lezioni [data, orario].
     var CORSI = [
-      { nome: 'Rinnovo CQC Merci', sedi: [
+      { nome: 'Rinnovo CQC Merci e Persone', sedi: [
         { sede:'Sossano', formato:'Sabato mattina', s:[['2026-09-12','08:00–13:00'],['2026-09-19','08:00–13:00'],['2026-09-26','08:00–12:00'],['2026-10-03','08:00–13:00'],['2026-10-10','08:00–13:00'],['2026-10-17','08:00–12:00'],['2026-10-24','08:00–15:00']] },
         { sede:'Isola Vicentina', formato:'Sabato', s:[['2026-09-12','08:00–13:00'],['2026-09-19','08:00–13:00'],['2026-09-26','08:00–12:00'],['2026-10-03','08:00–13:00'],['2026-10-10','08:00–13:00'],['2026-10-17','08:00–12:00'],['2026-10-24','08:00–15:00']] },
         { sede:'Isola Vicentina', formato:'Sabato', s:[['2026-11-21','08:00–13:00'],['2026-11-28','08:00–13:00'],['2026-12-05','08:00–12:00'],['2026-12-12','08:00–13:00'],['2026-12-19','08:00–13:00'],['2027-01-09','08:00–12:00'],['2027-01-16','08:00–15:00']] },
         { sede:'Costabissara', formato:'Serale', s:[['2026-09-14','18:30–20:30'],['2026-09-16','18:30–20:30'],['2026-09-17','18:00–21:00'],['2026-09-21','18:30–20:30'],['2026-09-23','18:30–20:30'],['2026-09-24','18:00–21:00'],['2026-09-28','18:30–20:30'],['2026-09-30','18:30–20:30'],['2026-10-01','18:00–21:00'],['2026-10-05','18:30–20:30'],['2026-10-07','18:30–20:30'],['2026-10-08','18:00–21:00'],['2026-10-12','18:00–22:00'],['2026-10-14','19:00–22:00']] },
         { sede:'Montegalda', formato:'Sabato', s:[['2026-10-24','08:00–13:00'],['2026-10-31','08:00–13:00'],['2026-11-07','08:00–12:00'],['2026-11-14','08:00–13:00'],['2026-11-21','08:00–13:00'],['2026-11-28','08:00–12:00'],['2026-12-05','08:00–15:00']] },
         { sede:'Barbarano Mossano', formato:'Serale', s:[['2026-11-09','19:00–21:00'],['2026-11-11','19:00–21:00'],['2026-11-12','18:30–21:30'],['2026-11-16','19:00–21:00'],['2026-11-18','19:00–21:00'],['2026-11-19','18:30–21:30'],['2026-11-23','19:00–21:00'],['2026-11-25','19:00–21:00'],['2026-11-26','18:30–21:30'],['2026-11-30','19:00–21:00'],['2026-12-02','19:00–21:00'],['2026-12-03','18:30–21:30'],['2026-12-09','18:30–21:30'],['2026-12-10','18:00–22:00']] },
-        { sede:'Barbarano Mossano', formato:'Sabato mattina', s:[['2026-11-07','08:00–13:00'],['2026-11-14','08:00–13:00'],['2026-11-21','08:00–12:00'],['2026-11-28','08:00–13:00'],['2026-12-05','08:00–13:00'],['2026-12-12','08:00–12:00'],['2026-12-19','08:00–15:00']] }
-      ]},
-      { nome: 'Rinnovo CQC Merci e Persone', sedi: [
+        { sede:'Barbarano Mossano', formato:'Sabato mattina', s:[['2026-11-07','08:00–13:00'],['2026-11-14','08:00–13:00'],['2026-11-21','08:00–12:00'],['2026-11-28','08:00–13:00'],['2026-12-05','08:00–13:00'],['2026-12-12','08:00–12:00'],['2026-12-19','08:00–15:00']] },
         { sede:'Montegalda', formato:'Serale', s:[['2026-09-22','18:30–21:30'],['2026-09-24','19:00–21:00'],['2026-09-25','19:00–21:00'],['2026-09-29','18:30–21:30'],['2026-10-01','19:00–21:00'],['2026-10-02','19:00–21:00'],['2026-10-06','18:30–21:30'],['2026-10-08','19:00–21:00'],['2026-10-09','19:00–21:00'],['2026-10-13','18:30–21:30'],['2026-10-15','19:00–21:00'],['2026-10-16','19:00–21:00'],['2026-10-20','18:00–22:00'],['2026-10-22','19:00–22:00']] }
       ]},
       { nome: 'Conseguimento CQC Merci - 140 ore', sedi: [
@@ -474,14 +499,36 @@
     var listEl = document.getElementById('ccalList');
 
     function itDate(str) { var p = str.split('-'); return parseInt(p[2],10) + ' ' + MESI[parseInt(p[1],10)-1] + ' ' + p[0]; }
+    function dateOnly(str) { var p = str.split('-'); return new Date(parseInt(p[0],10), parseInt(p[1],10)-1, parseInt(p[2],10)); }
+
+    // Iscrizioni chiuse da 5 giorni prima dell'inizio del corso (o dopo l'inizio)
+    function isSoldOut(sede) {
+      var start = dateOnly(sede.s[0][0]);
+      var cutoff = new Date(start.getFullYear(), start.getMonth(), start.getDate() - 5);
+      var today = new Date(); today.setHours(0,0,0,0);
+      return today.getTime() >= cutoff.getTime();
+    }
+
+    // Etichetta grande del formato (SABATO / SERALE ...)
+    function fmtBadge(formato) {
+      var f = (formato || '').toLowerCase();
+      if (f.indexOf('serale') !== -1 && f.indexOf('sabato') !== -1) return 'SERALE<br>+ SABATO';
+      if (f.indexOf('serale') !== -1) return 'SERALE';
+      if (f.indexOf('sabato') !== -1) return 'SABATO';
+      return formato.toUpperCase();
+    }
 
     function renderCourses() {
       elCourseList.innerHTML = '';
       CORSI.forEach(function (c, i) {
+        var disp = c.sedi.filter(function (s) { return !isSoldOut(s); }).length;
+        var allOut = disp === 0;
         var b = document.createElement('button');
-        b.type = 'button'; b.className = 'cp-item';
-        b.innerHTML = '<span class="cp-txt"><b>' + c.nome + '</b><span>' + c.sedi.length + (c.sedi.length === 1 ? ' sede disponibile' : ' sedi disponibili') + '</span></span><span class="cp-arrow">&rsaquo;</span>';
-        b.addEventListener('click', function () { openCourse(i); });
+        b.type = 'button'; b.className = 'cp-item' + (allOut ? ' soldout' : '');
+        b.innerHTML = '<span class="cp-txt"><b>' + c.nome + '</b><span>' +
+          (allOut ? 'Iscrizioni chiuse' : (disp + (disp === 1 ? ' sede disponibile' : ' sedi disponibili'))) +
+          '</span></span>' + (allOut ? '<span class="cp-soldout">SOLD OUT</span>' : '<span class="cp-arrow">&rsaquo;</span>');
+        if (!allOut) b.addEventListener('click', function () { openCourse(i); });
         elCourseList.appendChild(b);
       });
     }
@@ -491,10 +538,13 @@
       elSelCourse.innerHTML = 'Corso: <b>' + state.corso.nome + '</b>';
       elSedeList.innerHTML = '';
       state.corso.sedi.forEach(function (s, j) {
+        var out = isSoldOut(s);
         var b = document.createElement('button');
-        b.type = 'button'; b.className = 'cp-item';
-        b.innerHTML = '<span class="cp-txt"><b>Sede di ' + s.sede + '</b><span>' + s.formato + ' &middot; ' + s.s.length + ' incontri &middot; dal ' + itDate(s.s[0][0]) + '</span></span><span class="cp-arrow">&rsaquo;</span>';
-        b.addEventListener('click', function () { openSede(j); });
+        b.type = 'button'; b.className = 'cp-item' + (out ? ' soldout' : '');
+        b.innerHTML = '<span class="cp-fmt">' + fmtBadge(s.formato) + '</span>' +
+          '<span class="cp-txt"><b>Sede di ' + s.sede + '</b><span>' + s.formato + ' &middot; ' + s.s.length + ' incontri &middot; dal ' + itDate(s.s[0][0]) + '</span></span>' +
+          (out ? '<span class="cp-soldout">SOLD OUT</span>' : '<span class="cp-arrow">&rsaquo;</span>');
+        if (!out) b.addEventListener('click', function () { openSede(j); });
         elSedeList.appendChild(b);
       });
       elCourses.classList.add('cp-hidden');
@@ -532,7 +582,6 @@
         if (ses) {
           cell.className = 'ccal-day has-course'; cell.title = 'Lezione ' + ses[1];
           var dot = document.createElement('span'); dot.className = 'dot'; cell.appendChild(dot);
-          cell.addEventListener('click', book);
         }
         grid.appendChild(cell);
       }
@@ -542,17 +591,16 @@
       listEl.innerHTML = '';
       state.sede.s.forEach(function (x) {
         var p = x[0].split('-');
-        var btn = document.createElement('button');
-        btn.type = 'button'; btn.className = 'ccal-course';
-        btn.innerHTML = '<span class="cc-date"><b>' + parseInt(p[2],10) + '</b><span>' + MESI[parseInt(p[1],10)-1].slice(0,3) + '</span></span>'
-          + '<span class="cc-info"><b>' + itDate(x[0]) + '</b><span>' + x[1] + '</span></span>'
-          + '<span class="cc-go">Prenotati &rarr;</span>';
-        btn.addEventListener('click', book);
-        listEl.appendChild(btn);
+        var row = document.createElement('div');
+        row.className = 'ccal-course';
+        row.innerHTML = '<span class="cc-date"><b>' + parseInt(p[2],10) + '</b><span>' + MESI[parseInt(p[1],10)-1].slice(0,3) + '</span></span>'
+          + '<span class="cc-info"><b>' + itDate(x[0]) + '</b><span>' + x[1] + '</span></span>';
+        listEl.appendChild(row);
       });
     }
 
     function book() {
+      if (!state.sede || isSoldOut(state.sede)) return;
       var testo = state.corso.nome + ' - Sede di ' + state.sede.sede + ' (' + state.sede.formato + ', dal ' + itDate(state.sede.s[0][0]) + ')';
       document.getElementById('cqcSel').textContent = 'Corso selezionato: ' + testo;
       var wrap = document.getElementById('cqcFormWrap');
