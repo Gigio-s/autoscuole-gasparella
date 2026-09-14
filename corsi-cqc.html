@@ -355,6 +355,24 @@
     .cp-item.soldout { cursor: not-allowed; background: #fdf3f3; border-color: #eab8b8; }
     .cp-item.soldout .cp-fmt { background: #b23b3b; }
     .cp-soldout { margin-left: auto; flex: 0 0 auto; background: #d33; color: #fff; font-size: .74rem; font-weight: 800; letter-spacing: .12em; padding: .42rem .9rem; border-radius: 999px; white-space: nowrap; }
+
+    /* --- Mobile: box corsi/sedi leggibili e senza accavallamenti (non tocca il desktop) --- */
+    @media (max-width: 600px) {
+      .cqc-cal { padding: 1.5rem 1.1rem 1.7rem; }
+      .cqc-cal h2 { font-size: 1.35rem; }
+      .cqc-cal .sub { font-size: .88rem; }
+      .cqc-notice { padding: .85rem 1rem; }
+      .cqc-notice p { font-size: .9rem; }
+      .cp-item { gap: .55rem; padding: .8rem .8rem; flex-wrap: wrap; }
+      .cp-fmt { min-width: 54px; font-size: .66rem; padding: .38rem .35rem; letter-spacing: .02em; }
+      .cp-txt { flex: 1 1 auto; min-width: 0; }
+      .cp-item .cp-txt b { font-size: .92rem; }
+      .cp-item .cp-txt span { font-size: .76rem; }
+      .cp-soldout { font-size: .58rem; padding: .3rem .55rem; letter-spacing: .06em; }
+      .cp-selected { font-size: .82rem; }
+      .cp-cost { font-size: .9rem; padding: .5rem .7rem; }
+      .cp-book { width: 100%; justify-content: center; padding: .9rem 1rem; }
+    }
   </style>
 
   <section class="cqc-cal" id="calendario">
