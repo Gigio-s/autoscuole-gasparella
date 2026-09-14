@@ -242,7 +242,7 @@
 
 <header class="patente-hero">
   <div class="wrap">
-    <a href="index.html#corsi" class="ph-back">&larr; Torna ai servizi</a>
+    <a href="#calendario" class="ph-back" id="phBackCorsi">&larr; Torna ai corsi</a>
     <h1>CORSI</h1>
   </div>
 </header>
@@ -325,6 +325,8 @@
     .cp-back:hover { text-decoration: underline; }
     .cp-selected { font-size: .85rem; color: #666; margin-bottom: 1.2rem; }
     .cp-selected b { color: var(--dark); }
+    .cp-cost { display: block; margin-top: .55rem; font-size: 1rem; color: var(--dark); background: #eef6fc; border: 1px solid #cfe4f5; border-radius: 8px; padding: .55rem .8rem; line-height: 1.45; }
+    .cp-cost b { color: var(--blue-d); }
     .cp-book { display: inline-flex; align-items: center; gap: .5rem; background: var(--blue); color: #fff; border: none; border-radius: 999px; font-family: inherit; font-size: .8rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; padding: .85rem 1.9rem; cursor: pointer; }
     .cp-book:hover { background: var(--blue-d); }
     .cp-book-top { margin-bottom: 1.4rem; }
@@ -466,7 +468,7 @@
 
     // Ogni corso ha un nome e le sedi in cui è disponibile; ogni sede ha la sua serie di lezioni [data, orario].
     var CORSI = [
-      { nome: 'Rinnovo CQC Merci e Persone', sedi: [
+      { nome: 'Rinnovo CQC Merci e Persone', costo: '350 €', pagamento: 'Pagamento unico, in ufficio', sedi: [
         { sede:'Sossano', formato:'Sabato mattina', s:[['2026-09-12','08:00–13:00'],['2026-09-19','08:00–13:00'],['2026-09-26','08:00–12:00'],['2026-10-03','08:00–13:00'],['2026-10-10','08:00–13:00'],['2026-10-17','08:00–12:00'],['2026-10-24','08:00–15:00']] },
         { sede:'Isola Vicentina', formato:'Sabato', s:[['2026-09-12','08:00–13:00'],['2026-09-19','08:00–13:00'],['2026-09-26','08:00–12:00'],['2026-10-03','08:00–13:00'],['2026-10-10','08:00–13:00'],['2026-10-17','08:00–12:00'],['2026-10-24','08:00–15:00']] },
         { sede:'Isola Vicentina', formato:'Sabato', s:[['2026-11-21','08:00–13:00'],['2026-11-28','08:00–13:00'],['2026-12-05','08:00–12:00'],['2026-12-12','08:00–13:00'],['2026-12-19','08:00–13:00'],['2027-01-09','08:00–12:00'],['2027-01-16','08:00–15:00']] },
@@ -476,7 +478,7 @@
         { sede:'Barbarano Mossano', formato:'Sabato mattina', s:[['2026-11-07','08:00–13:00'],['2026-11-14','08:00–13:00'],['2026-11-21','08:00–12:00'],['2026-11-28','08:00–13:00'],['2026-12-05','08:00–13:00'],['2026-12-12','08:00–12:00'],['2026-12-19','08:00–15:00']] },
         { sede:'Montegalda', formato:'Serale', s:[['2026-09-22','18:30–21:30'],['2026-09-24','19:00–21:00'],['2026-09-25','19:00–21:00'],['2026-09-29','18:30–21:30'],['2026-10-01','19:00–21:00'],['2026-10-02','19:00–21:00'],['2026-10-06','18:30–21:30'],['2026-10-08','19:00–21:00'],['2026-10-09','19:00–21:00'],['2026-10-13','18:30–21:30'],['2026-10-15','19:00–21:00'],['2026-10-16','19:00–21:00'],['2026-10-20','18:00–22:00'],['2026-10-22','19:00–22:00']] }
       ]},
-      { nome: 'Conseguimento CQC Merci - 140 ore', sedi: [
+      { nome: 'Conseguimento CQC Merci - 140 ore', costo: '2000 €', pagamento: 'Pagamento in ufficio, divisibile in 4 rate da 500 €', sedi: [
         { sede:'Sossano', formato:'Serale + sabato', s:[['2026-10-19','19:00–21:00'],['2026-10-21','19:00–21:00'],['2026-10-22','19:00–21:00'],['2026-10-26','19:00–21:00'],['2026-10-28','19:00–21:00'],['2026-10-29','19:00–21:00'],['2026-10-31','08:00–12:00'],['2026-11-02','19:00–21:00'],['2026-11-04','19:00–21:00'],['2026-11-07','08:00–12:00'],['2026-11-09','19:00–21:00'],['2026-11-11','19:00–21:00'],['2026-11-14','08:00–12:00'],['2026-11-16','19:00–21:00'],['2026-11-18','19:00–21:00'],['2026-11-20','18:00–21:00'],['2026-11-21','08:00–13:00'],['2026-11-23','19:00–21:00'],['2026-11-25','19:00–21:00'],['2026-11-28','08:00–12:00'],['2026-11-30','19:00–21:00'],['2026-12-02','19:00–21:00'],['2026-12-05','08:00–13:00'],['2026-12-09','18:30–21:30'],['2026-12-11','18:00–22:00'],['2026-12-12','08:00–13:00'],['2026-12-14','19:00–21:00'],['2026-12-16','19:00–21:00'],['2026-12-19','08:00–12:00'],['2026-12-21','19:00–21:00'],['2026-12-23','19:00–21:00'],['2027-01-09','08:00–12:00'],['2027-01-11','19:00–21:00'],['2027-01-13','19:00–21:00'],['2027-01-16','08:00–12:00'],['2027-01-18','19:00–21:00'],['2027-01-20','18:30–21:30'],['2027-01-23','08:00–12:00'],['2027-01-25','19:00–21:00'],['2027-01-27','19:00–21:00'],['2027-01-30','08:00–13:00'],['2027-02-01','19:00–21:00'],['2027-02-03','19:00–21:00'],['2027-02-06','08:00–12:00'],['2027-02-08','19:00–21:00'],['2027-02-10','19:00–21:00'],['2027-02-13','08:00–11:00'],['2027-02-15','19:00–21:30']] }
       ]},
       { nome: 'Conseguimento KB - Taxi e NCC', sedi: [
@@ -527,6 +529,7 @@
         b.type = 'button'; b.className = 'cp-item' + (allOut ? ' soldout' : '');
         b.innerHTML = '<span class="cp-txt"><b>' + c.nome + '</b><span>' +
           (allOut ? 'Iscrizioni chiuse' : (disp + (disp === 1 ? ' sede disponibile' : ' sedi disponibili'))) +
+          (c.costo ? ' &middot; <b style="color:var(--blue-d)">' + c.costo + '</b>' : '') +
           '</span></span>' + (allOut ? '<span class="cp-soldout">SOLD OUT</span>' : '<span class="cp-arrow">&rsaquo;</span>');
         if (!allOut) b.addEventListener('click', function () { openCourse(i); });
         elCourseList.appendChild(b);
@@ -535,7 +538,8 @@
 
     function openCourse(i) {
       state.corso = CORSI[i];
-      elSelCourse.innerHTML = 'Corso: <b>' + state.corso.nome + '</b>';
+      elSelCourse.innerHTML = 'Corso: <b>' + state.corso.nome + '</b>' +
+        (state.corso.costo ? '<span class="cp-cost"><b>Costo: ' + state.corso.costo + '</b>' + (state.corso.pagamento ? ' &middot; ' + state.corso.pagamento : '') + '</span>' : '');
       elSedeList.innerHTML = '';
       state.corso.sedi.forEach(function (s, j) {
         var out = isSoldOut(s);
@@ -554,7 +558,8 @@
 
     function openSede(j) {
       state.sede = state.corso.sedi[j];
-      elSelFull.innerHTML = '<b>' + state.corso.nome + '</b> - Sede di ' + state.sede.sede + ' (' + state.sede.formato + ')';
+      elSelFull.innerHTML = '<b>' + state.corso.nome + '</b> - Sede di ' + state.sede.sede + ' (' + state.sede.formato + ')' +
+        (state.corso.costo ? '<span class="cp-cost"><b>Costo: ' + state.corso.costo + '</b>' + (state.corso.pagamento ? ' &middot; ' + state.corso.pagamento : '') + '</span>' : '');
       var first = state.sede.s[0][0].split('-');
       view = new Date(parseInt(first[0],10), parseInt(first[1],10)-1, 1);
       elSedi.classList.add('cp-hidden');
@@ -601,7 +606,8 @@
 
     function book() {
       if (!state.sede || isSoldOut(state.sede)) return;
-      var testo = state.corso.nome + ' - Sede di ' + state.sede.sede + ' (' + state.sede.formato + ', dal ' + itDate(state.sede.s[0][0]) + ')';
+      var testo = state.corso.nome + ' - Sede di ' + state.sede.sede + ' (' + state.sede.formato + ', dal ' + itDate(state.sede.s[0][0]) + ')' +
+        (state.corso.costo ? ' - Costo: ' + state.corso.costo + (state.corso.pagamento ? ' (' + state.corso.pagamento + ')' : '') : '');
       document.getElementById('cqcSel').textContent = 'Corso selezionato: ' + testo;
       var wrap = document.getElementById('cqcFormWrap');
       wrap.classList.add('show');
@@ -616,6 +622,13 @@
     });
     document.getElementById('cpBackSedi').addEventListener('click', function () {
       elCal.classList.add('cp-hidden'); elSedi.classList.remove('cp-hidden');
+    });
+    var phBack = document.getElementById('phBackCorsi');
+    if (phBack) phBack.addEventListener('click', function (e) {
+      e.preventDefault();
+      elSedi.classList.add('cp-hidden'); elCal.classList.add('cp-hidden'); elCourses.classList.remove('cp-hidden');
+      var fw = document.getElementById('cqcFormWrap'); if (fw) fw.classList.remove('show');
+      document.getElementById('calendario').scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
     document.getElementById('ccalPrev').addEventListener('click', function () { view.setMonth(view.getMonth() - 1); renderCal(); });
     document.getElementById('ccalNext').addEventListener('click', function () { view.setMonth(view.getMonth() + 1); renderCal(); });

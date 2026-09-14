@@ -127,7 +127,7 @@
   .hero-photo:hover .hero-photo-overlay, .hero-photo:focus-visible .hero-photo-overlay { opacity: 1; }
   .hero-text { flex: 1 1 auto; }
   .hero-text h1 {
-    font-family: var(--serif); font-size: clamp(2.2rem, 5vw, 4.1rem); font-weight: 800; line-height: 1.06;
+    font-family: var(--serif); font-size: clamp(2.9rem, 6.2vw, 5.2rem); font-weight: 800; line-height: 1.05;
     letter-spacing: -.01em; margin-bottom: 1.3rem; max-width: 640px;
     overflow: hidden;
   }
@@ -136,12 +136,12 @@
   .hero-text h1.reveal .line span { transform: translateY(0); }
   .hero-text h1 .line:nth-child(2) span { transition-delay: .12s; }
   .hero-text h2.sub {
-    display: inline-block; font-size: .82rem; font-weight: 700; letter-spacing: .3em; text-transform: uppercase;
+    display: inline-block; font-size: .95rem; font-weight: 700; letter-spacing: .3em; text-transform: uppercase;
     color: var(--paper); border-top: 1px solid rgba(255,255,255,.45); border-bottom: 1px solid rgba(255,255,255,.45);
     padding: .48rem 0; margin-bottom: 1.3rem;
   }
-  .hero-text p.tag { font-family: var(--serif); font-size: 1.12rem; font-weight: 600; margin-bottom: .35rem; color: var(--paper); }
-  .hero-text p.tag2 { font-size: .78rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.72); }
+  .hero-text p.tag { font-family: var(--serif); font-size: 1.32rem; font-weight: 600; margin-bottom: .4rem; color: var(--paper); }
+  .hero-text p.tag2 { font-size: .92rem; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.72); }
   @media (max-width: 780px) {
     .hero-inner { flex-direction: column; padding-top: 2rem; }
     .hero-photo { max-width: 72%; }
@@ -194,17 +194,17 @@
   }
   .patente-card {
     position: relative; background: var(--paper-2); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);
-    padding: 2.6rem 1.4rem 2.2rem; text-align: center; transition: background .3s ease;
+    padding: 3rem 1.4rem 2.5rem; text-align: center; transition: background .3s ease;
   }
   .patente-card:hover { background: var(--paper); }
   .p-index { position: absolute; top: 1rem; left: 1.1rem; font-family: var(--serif); font-size: .74rem; font-weight: 700; color: var(--gold); letter-spacing: .08em; }
   .patente-card model-viewer {
-    width: 100px; height: 78px; margin: 1.1rem auto .9rem; display: block;
+    width: 158px; height: 122px; margin: 1.1rem auto 1rem; display: block;
     pointer-events: none; transition: transform .35s cubic-bezier(.16,.7,.24,1); --poster-color: transparent;
   }
   .patente-card:hover model-viewer { transform: scale(1.22) translateY(-4px); }
-  .patente-card h3 { font-family: var(--serif); font-size: 1.05rem; font-weight: 700; color: var(--ink); letter-spacing: .01em; margin-top: .3rem; }
-  .patente-card span { display: block; font-size: .64rem; font-weight: 700; color: var(--gray); margin-top: .5rem; letter-spacing: .1em; text-transform: uppercase; }
+  .patente-card h3 { font-family: var(--serif); font-size: 1.2rem; font-weight: 700; color: var(--ink); letter-spacing: .01em; margin-top: .3rem; }
+  .patente-card span { display: block; font-size: .72rem; font-weight: 700; color: var(--gray); margin-top: .5rem; letter-spacing: .1em; text-transform: uppercase; }
   .patente-card::before {
     content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--gold);
     transform: scaleX(0); transform-origin: left; transition: transform .4s cubic-bezier(.16,.7,.24,1);
@@ -1048,6 +1048,92 @@
     });
   }, { threshold: 0.12 });
   rvEls.forEach(el => io.observe(el));
+</script>
+
+<script>
+/* Colora di blu (brand) la carrozzeria dei modelli 3D della home.
+   Solo i materiali della scocca vengono ritinti; gomme, vetri, cromature,
+   motore e loghi restano originali. Indici materiali verificati per ogni .glb. */
+(function () {
+  var BLUE = '#1280c2';
+  var BLUE_RGB = [18, 128, 194];
+  /* Modelli con carrozzeria su materiali dedicati: basta ritingere quegli indici
+     (gomme/vetri/cromo/motore restano il loro materiale originale). */
+  var BODY = {
+    'ducati_v4r':            [0, 1, 2],
+    '1965_fiat_nuova_500_f': [0, 2, 4],
+    'scania_truck':          [2],
+    'autobus_abco':          [1, 4]
+  };
+  function keyFor(src, map) {
+    if (!src) return null;
+    for (var k in map) { if (src.indexOf(k) !== -1) return k; }
+    return null;
+  }
+  function reveal(mv) { mv.style.opacity = '1'; }
+  function paintFlat(mv, key) {
+    var mats = mv.model.materials;
+    BODY[key].forEach(function (i) {
+      if (!mats[i]) return;
+      var p = mats[i].pbrMetallicRoughness;
+      var t = p.baseColorTexture;
+      if (t && t.texture) { try { t.setTexture(null); } catch (e) {} }
+      p.setBaseColorFactor(BLUE);
+    });
+    reveal(mv);
+  }
+  /* Vespa: scocca e ruote condividono lo stesso materiale/texture (scocca rossa,
+     gomme e sella nere). Ricoloriamo la texture: il rosso diventa blu, il resto
+     resta com'e' (cosi' le gomme e la sella restano nere). */
+  function paintVespa(mv) {
+    var p = mv.model.materials[0].pbrMetallicRoughness;
+    var ti = p.baseColorTexture;
+    if (!ti || !ti.texture || !ti.texture.source) { reveal(mv); return; }
+    ti.texture.source.createThumbnail(1024, 1024).then(function (url) {
+      var img = new Image();
+      img.onload = function () {
+        try {
+          var w = img.naturalWidth || 1024, h = img.naturalHeight || 1024;
+          var c = document.createElement('canvas'); c.width = w; c.height = h;
+          var g = c.getContext('2d'); g.drawImage(img, 0, 0, w, h);
+          var id = g.getImageData(0, 0, w, h), d = id.data;
+          for (var i = 0; i < d.length; i += 4) {
+            var r = d[i], gg = d[i + 1], bb = d[i + 2];
+            if (r > 60 && r > gg * 1.35 && r > bb * 1.35) {
+              var f = Math.min(1.35, r / 175);
+              d[i]     = Math.min(255, BLUE_RGB[0] * f);
+              d[i + 1] = Math.min(255, BLUE_RGB[1] * f);
+              d[i + 2] = Math.min(255, BLUE_RGB[2] * f);
+            }
+          }
+          g.putImageData(id, 0, 0);
+          mv.createTexture(c.toDataURL('image/png')).then(function (tex) {
+            p.baseColorTexture.setTexture(tex); reveal(mv);
+          }).catch(function () { reveal(mv); });
+        } catch (e) { reveal(mv); }
+      };
+      img.onerror = function () { reveal(mv); };
+      img.src = url;
+    }).catch(function () { reveal(mv); });
+  }
+  function paint(mv) {
+    try {
+      if (!mv.model) return;
+      var src = mv.getAttribute('src') || '';
+      if (src.indexOf('vespa_hp') !== -1) { paintVespa(mv); return; }
+      var key = keyFor(src, BODY);
+      if (key) paintFlat(mv, key); else reveal(mv);
+    } catch (e) { reveal(mv); }
+  }
+  document.querySelectorAll('model-viewer').forEach(function (mv) {
+    mv.style.transition = 'opacity .3s ease';
+    mv.style.opacity = '0';
+    /* sicurezza: se qualcosa va storto, mostra comunque il modello dopo 3s */
+    setTimeout(function () { if (mv.style.opacity === '0') mv.style.opacity = '1'; }, 3000);
+    if (mv.loaded) paint(mv);
+    mv.addEventListener('load', function () { paint(mv); });
+  });
+})();
 </script>
 
 <script src="chatbot.js" defer></script>

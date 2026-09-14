@@ -127,13 +127,13 @@
 
   /* ============================ CSS ============================ */
   var css = ''
-    + '.gb-fab{position:fixed;right:22px;bottom:92px;width:56px;height:56px;border-radius:50%;background:#1280c2;'
+    + '.gb-fab{position:fixed;right:22px;bottom:132px;width:56px;height:56px;border-radius:50%;background:#1280c2;'
     + 'border:none;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.28);z-index:998;display:flex;align-items:center;'
     + 'justify-content:center;transition:transform .2s ease}'
     + '.gb-fab:hover{transform:scale(1.08)}'
     + '.gb-fab svg{width:28px;height:28px}'
     + '.gb-badge{position:absolute;top:-2px;right:-2px;width:14px;height:14px;border-radius:50%;background:#fbbf24;border:2px solid #fff}'
-    + '.gb-panel{position:fixed;right:22px;bottom:92px;width:340px;max-width:calc(100vw - 32px);height:480px;'
+    + '.gb-panel{position:fixed;right:22px;bottom:132px;width:340px;max-width:calc(100vw - 32px);height:480px;'
     + 'max-height:calc(100vh - 130px);background:#fff;border-radius:16px;box-shadow:0 20px 50px rgba(0,0,0,.28);'
     + 'z-index:999;display:none;flex-direction:column;overflow:hidden;font-family:Montserrat,system-ui,sans-serif}'
     + '.gb-panel.open{display:flex}'
@@ -154,7 +154,8 @@
     + '.gb-opt.go:hover{background:#0e6aa3}'
     + '.gb-foot{font-size:.62rem;color:#8b9199;text-align:center;padding:.5rem .8rem;background:#fff;flex-shrink:0;line-height:1.4}'
     + '@media(max-width:600px){.gb-fab{right:14px;bottom:78px;width:50px;height:50px}'
-    + '.gb-panel{right:8px;left:8px;width:auto;bottom:78px;height:70vh}}';
+    + '.gb-panel{right:8px;left:8px;width:auto;bottom:78px;height:70vh}}'
+    + '@media(min-width:601px){.wa-float{bottom:62px !important}}';
 
   var st = document.createElement('style');
   st.textContent = css;
