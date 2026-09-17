@@ -310,7 +310,11 @@
     grid-column: 1 / -1; display: flex; align-items: flex-start; gap: .6rem;
     font-size: .78rem; color: var(--gray); line-height: 1.5;
   }
-  .contact-form label.check input { width: auto; margin-top: .2rem; accent-color: var(--gold-deep); }
+  .contact-form label.check input {
+    width: 20px; height: 20px; flex: 0 0 auto; margin-top: .1rem;
+    -webkit-appearance: checkbox; appearance: auto;
+    accent-color: var(--gold-deep); cursor: pointer;
+  }
   .contact-form label.check a { color: var(--gold-deep); font-weight: 600; }
   .contact-form button {
     grid-column: 1 / -1; justify-self: center; padding: .95rem 3rem; background: transparent;
@@ -758,6 +762,10 @@
   <div class="finder-inner">
     <h2>Trova l'autoscuola più vicina a te</h2>
     <p class="finder-sub">Inserisci il tuo indirizzo o la tua città: ti mostriamo subito la sede Gasparella più vicina, con indicazioni e recensioni Google.<br><small style="opacity:.7;">Avviando la ricerca verrà caricata una mappa di Google, che potrà installare propri cookie. Dettagli nella <a href="legale/cookie-policy.html" style="color:inherit;text-decoration:underline;">privacy policy</a>.</small></p>
+    <div style="max-width:720px;margin:0 auto 1.6rem;display:flex;align-items:flex-start;gap:.7rem;background:#eef6fc;border:1px solid #cfe4f5;border-left:4px solid #1280c2;border-radius:0 12px 12px 0;padding:.85rem 1.1rem;text-align:left;">
+      <span style="flex:0 0 auto;background:#1280c2;color:#fff;font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:.3rem .6rem;border-radius:999px;">Novità</span>
+      <p style="margin:0;font-size:.95rem;color:#2d3236;line-height:1.5;"><b style="color:#0e6aa3;">Sede Caldogno</b> - Dalla prossima settimana la sede di Caldogno osserva il nuovo orario: <b>09:30-12:00</b> e <b>15:00-19:00</b>.</p>
+    </div>
     <form class="finder-form" id="finderForm">
       <input type="text" id="finderInput" placeholder="Es. Vicenza, via Roma 10" autocomplete="off" required />
       <button type="submit">Cerca</button>
@@ -911,8 +919,6 @@
         <option value="D">D - Bus (D1, D1E, D, DE)</option>
         <option value="CQC">Corso CQC Merci e/o Persone</option>
         <option value="KB">Corso KB (Taxi e NCC)</option>
-        <option value="TAXI">Taxi</option>
-        <option value="NCC">NCC</option>
         <option value="RECUPERO">Recupero Punti</option>
       </select>
       <input type="tel" id="ctTel" placeholder="Telefono" />

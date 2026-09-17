@@ -77,7 +77,7 @@ exports.handler = async function (event) {
       const mappa = r.documenti || {};
       for (const campo of Object.keys(mappa)) {
         try {
-          const { data: sd, error: se } = await supabase.storage.from(BUCKET).createSignedUrl(mappa[campo], 604800);
+          const { data: sd, error: se } = await supabase.storage.from(BUCKET).createSignedUrl(mappa[campo], 1209600);
           if (!se && sd && sd.signedUrl) {
             const url = sd.signedUrl.startsWith('http') ? sd.signedUrl : SUPABASE_URL + sd.signedUrl;
             docs.push({ label: LABELS[campo] || campo, url: url });

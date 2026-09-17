@@ -42,7 +42,7 @@
       ]
     },
     rinnovo_doc: {
-      testo: 'Servono la patente in scadenza, un documento d\'identità valido, la tessera sanitaria e una fototessera recente. La visita medica si fa direttamente in sede.',
+      testo: 'Servono la patente in scadenza, un documento d\'identità valido, la tessera sanitaria e una fototessera recente e senza occhiali. La visita medica si fa direttamente in sede.',
       opzioni: [
         { label: 'Ho un caso particolare',    vai: 'umano' },
         { label: 'Torna all\'inizio',         vai: 'start' }
@@ -153,8 +153,9 @@
     + '.gb-opt.go{background:#1280c2;color:#fff;border-color:#1280c2}'
     + '.gb-opt.go:hover{background:#0e6aa3}'
     + '.gb-foot{font-size:.62rem;color:#8b9199;text-align:center;padding:.5rem .8rem;background:#fff;flex-shrink:0;line-height:1.4}'
-    + '@media(max-width:600px){.gb-fab{right:14px;bottom:78px;width:50px;height:50px}'
-    + '.gb-panel{right:8px;left:8px;width:auto;bottom:78px;height:70vh}}'
+    + '@media(max-width:600px){.gb-fab{right:14px;bottom:112px;width:50px;height:50px}'
+    + '.gb-panel{right:8px;left:8px;width:auto;bottom:112px;height:70vh}'
+    + '.wa-float{bottom:52px !important}}'
     + '@media(min-width:601px){.wa-float{bottom:62px !important}}';
 
   var st = document.createElement('style');
