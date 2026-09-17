@@ -74,7 +74,7 @@
     position: relative; margin: 0 auto;
     height: min(calc(100vh - 120px), 760px); width: auto; max-width: 100%;
     aspect-ratio: 2752 / 1536;
-    background: #1a1d21 url('foto%20categorie%20patenti/hf_20260702_003015_ff7d3f77-929e-4f30-89de-5576fe58d0b2.webp') center / cover no-repeat;
+    background: #1a1d21 url('foto%20categorie%20patenti/hf_20260702_003015_ff7d3f77-929e-4f30-89de-5576fe58d0b2.png') center / cover no-repeat;
     overflow: hidden;
     border-radius: 14px;
     box-shadow: 0 6px 34px rgba(0,0,0,.3);
@@ -316,35 +316,35 @@
   <!-- ═══ BASE VEHICLES ═══ -->
   <button class="vehicle" id="v-am" data-group="am" style="left:16.7%; top:83.3%;">
     <div class="crop" data-rx="8" data-ry="10" data-scale="1.20" style="aspect-ratio:1/1; transform:rotateX(8deg) rotateY(10deg) scale(1.94);">
-      <img src="foto%20categorie%20patenti/moto-am-bianco.webp" style="width:100%; left:0%; top:0%;" alt="Patente AM" />
+      <img src="foto%20categorie%20patenti/moto-am-bianco.png" style="width:100%; left:0%; top:0%;" alt="Patente AM" />
     </div>
     <span class="v-label">Patente AM</span>
   </button>
 
   <button class="vehicle" id="v-a" data-group="a" style="left:32.9%; top:77%;">
     <div class="crop" data-rx="8" data-ry="7" data-scale="1.06" style="aspect-ratio:1/1; transform:rotateX(8deg) rotateY(7deg) scale(1.63);">
-      <img src="foto%20categorie%20patenti/moto-a-blu.webp" style="width:100%; left:0%; top:0%;" alt="Patente A" />
+      <img src="foto%20categorie%20patenti/moto-a-blu.png" style="width:100%; left:0%; top:0%;" alt="Patente A" />
     </div>
     <span class="v-label">Patente A</span>
   </button>
 
   <button class="vehicle" id="v-b" data-group="b" style="left:50.5%; top:70%;">
     <div class="crop" data-rx="0" data-ry="0" style="aspect-ratio:2528/1696; transform:rotateX(0deg) rotateY(0deg) scale(2.07);">
-      <img src="foto%20categorie%20patenti/hf_20260723_141506_205cd4ff-0933-4220-86b6-75cceedd4b2f.webp" style="width:100%; left:0%; top:0%;" alt="Patente B - auto Autoscuole Gasparella" />
+      <img src="foto%20categorie%20patenti/hf_20260723_141506_205cd4ff-0933-4220-86b6-75cceedd4b2f.png" style="width:100%; left:0%; top:0%;" alt="Patente B - auto Autoscuole Gasparella" />
     </div>
     <span class="v-label">Patente B</span>
   </button>
 
   <button class="vehicle" id="v-c" data-group="c" style="left:67.6%; top:64.9%;">
     <div class="crop" data-rx="0" data-ry="0" style="aspect-ratio:2400/1792; transform:rotateX(0deg) rotateY(0deg) scale(2.02);">
-      <img src="foto%20categorie%20patenti/hf_20260729_075549_8e690672-ce4c-4a15-8376-609a4fc0b4e1.webp" style="width:100%; left:0%; top:0%;" alt="Camion Patente C con logo Autoscuole Gasparella" />
+      <img src="foto%20categorie%20patenti/hf_20260729_075549_8e690672-ce4c-4a15-8376-609a4fc0b4e1.png" style="width:100%; left:0%; top:0%;" alt="Camion Patente C con logo Autoscuole Gasparella" />
     </div>
     <span class="v-label">Patente C</span>
   </button>
 
   <button class="vehicle" id="v-d" data-group="d" style="left:83.2%; top:48.3%;">
     <div class="crop" data-rx="11" data-ry="-9" style="aspect-ratio:936/500; transform:rotateX(11deg) rotateY(-9deg) scale(1.6);">
-      <img src="foto%20categorie%20patenti/hf_20260908_205805_76424971-590c-4f30-93ca-1a5925be4cc0.webp" style="width:100%; left:0%; top:-43.6%;" alt="Patente D" />
+      <img src="foto%20categorie%20patenti/hf_20260908_205805_76424971-590c-4f30-93ca-1a5925be4cc0.png" style="width:100%; left:0%; top:-43.6%;" alt="Patente D" />
     </div>
     <span class="v-label">Patente D</span>
   </button>
@@ -352,21 +352,21 @@
   <!-- ═══ A SUBCATEGORIES ═══ -->
   <a class="vehicle sub-vehicle" data-sub="a" href="patente-a.html#a1" style="width:13%; left:49%; top:70.3%;">
     <div class="crop" data-rx="8" data-ry="7" style="aspect-ratio:1/1; transform:rotateX(8deg) rotateY(7deg) scale(2);">
-      <img src="foto%20categorie%20patenti/moto-a1-blu.webp" style="width:100%; left:0%; top:0%;" alt="Patente A1" />
+      <img src="foto%20categorie%20patenti/moto-a1-blu.png" style="width:100%; left:0%; top:0%;" alt="Patente A1" />
     </div>
     <span class="moto-tag">A1</span>
     <span class="v-label">Patente A1</span>
   </a>
   <a class="vehicle sub-vehicle" data-sub="a" href="patente-a.html#a2" style="width:13%; left:72%; top:57.2%;">
     <div class="crop" data-rx="8" data-ry="7" style="aspect-ratio:1/1; transform:rotateX(8deg) rotateY(7deg) scale(1.56);">
-      <img src="foto%20categorie%20patenti/moto-a2-blu.webp" style="width:100%; left:0%; top:0%;" alt="Patente A2" />
+      <img src="foto%20categorie%20patenti/moto-a2-blu.png" style="width:100%; left:0%; top:0%;" alt="Patente A2" />
     </div>
     <span class="moto-tag">A2</span>
     <span class="v-label">Patente A2</span>
   </a>
   <a class="vehicle sub-vehicle" data-sub="a" href="patente-a.html#a" style="width:13%; left:21.4%; top:82%;">
     <div class="crop" data-rx="8" data-ry="7" style="aspect-ratio:1/1; transform:rotateX(8deg) rotateY(7deg) scale(2.04);">
-      <img src="foto%20categorie%20patenti/moto-a-blu.webp" style="width:100%; left:0%; top:0%;" alt="Patente A" />
+      <img src="foto%20categorie%20patenti/moto-a-blu.png" style="width:100%; left:0%; top:0%;" alt="Patente A" />
     </div>
     <span class="moto-tag">A</span>
     <span class="v-label">Patente A</span>
@@ -375,19 +375,19 @@
   <!-- ═══ B SUBCATEGORIES ═══ -->
   <a class="vehicle sub-vehicle" data-sub="b" href="patente-b.html#b" style="width:17%; z-index:3; left:19.6%; top:82%;">
     <div class="crop" data-rx="0" data-ry="0" style="aspect-ratio:2528/1696; transform:rotateX(0deg) rotateY(0deg) scale(2.49);">
-      <img src="foto%20categorie%20patenti/hf_20260723_141506_205cd4ff-0933-4220-86b6-75cceedd4b2f.webp" style="width:100%; left:0%; top:0%;" alt="Patente B - auto Autoscuole Gasparella" />
+      <img src="foto%20categorie%20patenti/hf_20260723_141506_205cd4ff-0933-4220-86b6-75cceedd4b2f.png" style="width:100%; left:0%; top:0%;" alt="Patente B - auto Autoscuole Gasparella" />
     </div>
     <span class="v-label">Patente B</span>
   </a>
   <a class="vehicle sub-vehicle" data-sub="b" href="patente-b.html#b96" style="width:17%; z-index:2; left:46.5%; top:67.4%;">
     <div class="crop" data-rx="9" data-ry="3" style="aspect-ratio:2752/1536; transform:rotateX(9deg) rotateY(3deg) scale(3.0);">
-      <img src="foto%20categorie%20patenti/hf_20260908_211403_6f8692a1-6140-43d0-8767-b7d5ae479447.webp" style="width:100%; left:0%; top:0%;" alt="Patente B96" />
+      <img src="foto%20categorie%20patenti/hf_20260908_211403_6f8692a1-6140-43d0-8767-b7d5ae479447.png" style="width:100%; left:0%; top:0%;" alt="Patente B96" />
     </div>
     <span class="v-label">Patente B96</span>
   </a>
   <a class="vehicle sub-vehicle" data-sub="b" href="patente-b.html#be" style="width:17%; z-index:1; left:70.8%; top:55.4%;">
     <div class="crop" data-rx="9" data-ry="3" style="aspect-ratio:2752/1536; transform:rotateX(9deg) rotateY(3deg) scale(2.58);">
-      <img src="foto%20categorie%20patenti/hf_20260908_211401_851e54b9-6752-4b1b-9679-abf638d88a73.webp" style="width:100%; left:0%; top:0%;" alt="Patente BE" />
+      <img src="foto%20categorie%20patenti/hf_20260908_211401_851e54b9-6752-4b1b-9679-abf638d88a73.png" style="width:100%; left:0%; top:0%;" alt="Patente BE" />
     </div>
     <span class="v-label">Patente BE</span>
   </a>
@@ -395,25 +395,25 @@
   <!-- ═══ C SUBCATEGORIES ═══ -->
   <a class="vehicle sub-vehicle" data-sub="c" href="patente-c.html#c1-c1e" style="width:19%; left:47%; top:75.2%; z-index:-1;">
     <div class="crop" data-rx="0" data-ry="0" style="aspect-ratio:2400/1792; transform:rotateX(0deg) rotateY(0deg) scale(2.16);">
-      <img src="foto%20categorie%20patenti/hf_20260729_075551_d62d2dca-5332-4e79-9e36-d0d47fb0204f.webp" style="width:100%; left:0%; top:0%;" alt="Camion Patente C1 con logo Autoscuole Gasparella" />
+      <img src="foto%20categorie%20patenti/hf_20260729_075551_d62d2dca-5332-4e79-9e36-d0d47fb0204f.png" style="width:100%; left:0%; top:0%;" alt="Camion Patente C1 con logo Autoscuole Gasparella" />
     </div>
     <span class="v-label">Patente C1</span>
   </a>
   <a class="vehicle sub-vehicle" data-sub="c" href="patente-c.html#c1-c1e" style="width:19%; left:67.7%; top:63%; z-index:-2;">
     <div class="crop" data-rx="0" data-ry="0" style="aspect-ratio:2400/1792; transform:rotateX(0deg) rotateY(0deg) scale(1.67);">
-      <img src="foto%20categorie%20patenti/hf_20260729_075553_40189ef2-6e04-43c2-90c5-58f07cd4531c.webp" style="width:100%; left:0%; top:0%;" alt="Camion Patente C1E con logo Autoscuole Gasparella" />
+      <img src="foto%20categorie%20patenti/hf_20260729_075553_40189ef2-6e04-43c2-90c5-58f07cd4531c.png" style="width:100%; left:0%; top:0%;" alt="Camion Patente C1E con logo Autoscuole Gasparella" />
     </div>
     <span class="v-label">Patente C1E</span>
   </a>
   <a class="vehicle sub-vehicle" data-sub="c" href="patente-c.html#c-ce" style="width:19%; z-index:2; left:18.3%; top:90.6%;">
     <div class="crop" data-rx="0" data-ry="0" style="aspect-ratio:2400/1792; transform:rotateX(0deg) rotateY(0deg) scale(2.58);">
-      <img src="foto%20categorie%20patenti/hf_20260729_075549_8e690672-ce4c-4a15-8376-609a4fc0b4e1.webp" style="width:100%; left:0%; top:0%;" alt="Camion Patente C con logo Autoscuole Gasparella" />
+      <img src="foto%20categorie%20patenti/hf_20260729_075549_8e690672-ce4c-4a15-8376-609a4fc0b4e1.png" style="width:100%; left:0%; top:0%;" alt="Camion Patente C con logo Autoscuole Gasparella" />
     </div>
     <span class="v-label">Patente C</span>
   </a>
   <a class="vehicle sub-vehicle" data-sub="c" href="patente-c.html#c-ce" style="width:19%; left:85%; top:53.3%; z-index:-3;">
     <div class="crop" data-rx="0" data-ry="0" style="aspect-ratio:2400/1792; transform:rotateX(0deg) rotateY(0deg) scale(1.42);">
-      <img src="foto%20categorie%20patenti/hf_20260729_075554_79f247db-a676-4a60-be3e-5b8de0f6af08.webp" style="width:100%; left:0%; top:0%;" alt="Camion Patente CE con logo Autoscuole Gasparella" />
+      <img src="foto%20categorie%20patenti/hf_20260729_075554_79f247db-a676-4a60-be3e-5b8de0f6af08.png" style="width:100%; left:0%; top:0%;" alt="Camion Patente CE con logo Autoscuole Gasparella" />
     </div>
     <span class="v-label">Patente CE</span>
   </a>
@@ -421,25 +421,25 @@
   <!-- ═══ D SUBCATEGORIES ═══ -->
   <a class="vehicle sub-vehicle" data-sub="d" href="patente-d.html#d1-d1e" style="width:19%; left:44.4%; top:64.5%; z-index:-5;">
     <div class="crop" data-rx="11" data-ry="-9" style="aspect-ratio:1640/870; transform:rotateX(11deg) rotateY(-9deg) scale(2.17);">
-      <img src="foto%20categorie%20patenti/hf_20260907_152829_3b4ed76c-02d0-4d68-9233-bd0c36c54486.webp" style="width:100%; left:0%; top:-44.25%;" alt="Patente D1" />
+      <img src="foto%20categorie%20patenti/hf_20260907_152829_3b4ed76c-02d0-4d68-9233-bd0c36c54486.png" style="width:100%; left:0%; top:-44.25%;" alt="Patente D1" />
     </div>
     <span class="v-label">Patente D1</span>
   </a>
   <a class="vehicle sub-vehicle" data-sub="d" href="patente-d.html#d1-d1e" style="width:19%; left:65.3%; top:55.6%; z-index:-6;">
     <div class="crop" data-rx="11" data-ry="-9" style="aspect-ratio:1718/868; transform:rotateX(11deg) rotateY(-9deg) scale(1.99);">
-      <img src="foto%20categorie%20patenti/hf_20260907_152831_96e1612f-de06-4bf3-be59-80c0da9d5e44.webp" style="width:100%; left:0%; top:-48.97%;" alt="Patente D1E" />
+      <img src="foto%20categorie%20patenti/hf_20260907_152831_96e1612f-de06-4bf3-be59-80c0da9d5e44.png" style="width:100%; left:0%; top:-48.97%;" alt="Patente D1E" />
     </div>
     <span class="v-label">Patente D1E</span>
   </a>
   <a class="vehicle sub-vehicle" data-sub="d" href="patente-d.html#d-de" style="width:19%; z-index:2; left:18%; top:76.6%;">
     <div class="crop" data-rx="11" data-ry="-9" style="aspect-ratio:936/500; transform:rotateX(11deg) rotateY(-9deg) scale(2.22);">
-      <img src="foto%20categorie%20patenti/hf_20260908_205805_76424971-590c-4f30-93ca-1a5925be4cc0.webp" style="width:100%; left:0%; top:-43.6%;" alt="Patente D" />
+      <img src="foto%20categorie%20patenti/hf_20260908_205805_76424971-590c-4f30-93ca-1a5925be4cc0.png" style="width:100%; left:0%; top:-43.6%;" alt="Patente D" />
     </div>
     <span class="v-label">Patente D</span>
   </a>
   <a class="vehicle sub-vehicle" data-sub="d" href="patente-d.html#d-de" style="width:19%; left:84.3%; top:46.1%; z-index:-7;">
     <div class="crop" data-rx="11" data-ry="-9" style="aspect-ratio:1802/868; transform:rotateX(11deg) rotateY(-9deg) scale(1.6);">
-      <img src="foto%20categorie%20patenti/hf_20260907_152834_c21f52d5-e451-42be-98e3-95d456b5d584.webp" style="width:100%; left:0%; top:-53.8%;" alt="Patente DE" />
+      <img src="foto%20categorie%20patenti/hf_20260907_152834_c21f52d5-e451-42be-98e3-95d456b5d584.png" style="width:100%; left:0%; top:-53.8%;" alt="Patente DE" />
     </div>
     <span class="v-label">Patente DE</span>
   </a>

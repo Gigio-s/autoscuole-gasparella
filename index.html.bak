@@ -585,7 +585,7 @@
       <p class="tag2">DIVENTA INDIPENDENTE</p>
     </div>
     <a href="patenti.html" class="hero-photo" aria-label="Vai alle categorie patenti">
-      <img src="img/auto%20homepage.webp" alt="Renault Captur Autoscuole Gasparella" class="hero-car" />
+      <img src="img/auto%20homepage.png" alt="Renault Captur Autoscuole Gasparella" class="hero-car" />
       <span class="hero-photo-overlay">Patenti</span>
     </a>
   </div>
@@ -731,7 +731,7 @@
   </div>
   <div class="corsi-grid rv rv2">
     <a href="corsi-cqc.html" class="corso-card">
-      <div class="corso-bg" style="background-image:url('img/cqc.webp');"></div>
+      <div class="corso-bg" style="background-image:url('img/cqc.png');"></div>
       <div class="corso-tint"></div>
       <div class="corso-frame"></div>
       <span class="corso-num">01</span>
@@ -741,7 +741,7 @@
       </div>
     </a>
     <a href="recupero-punti.html" class="corso-card">
-      <div class="corso-bg" style="background-image:url('img/polizia.webp');"></div>
+      <div class="corso-bg" style="background-image:url('img/polizia.png');"></div>
       <div class="corso-tint"></div>
       <div class="corso-frame"></div>
       <span class="corso-num">02</span>
