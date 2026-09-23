@@ -20,10 +20,14 @@ create table if not exists public.prenotazioni (
   extra_ue          boolean not null default false,
   n_permesso        text,
   sede              text,
+  residenza         text,                                 -- residenza attuale (se diversa dalla C.I.)
   documenti         jsonb not null default '{}'::jsonb,  -- { "cf_fronte": "path", ... }
   stato             text not null default 'nuova',        -- nuova | gestita | annullata
   note              text
 );
+
+-- Se la tabella esiste gia', aggiunge la colonna residenza (idempotente):
+alter table public.prenotazioni add column if not exists residenza text;
 
 -- Indice per ordinare/filtrare le piu' recenti
 create index if not exists prenotazioni_created_idx on public.prenotazioni (created_at desc);

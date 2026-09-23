@@ -87,6 +87,7 @@
         + '<b>Sede:</b> '+esc(r.sede||'-')+' &nbsp;|&nbsp; <b>Data richiesta:</b> '+esc(itDate(r.created_at))+'<br>'
         + '<b>Tel:</b> '+esc(r.telefono)+' &nbsp;|&nbsp; <b>Email:</b> '+esc(r.email)+'<br>'
         + '<b>CF:</b> '+esc(r.codice_fiscale)+' &nbsp;|&nbsp; <b>Carta id.:</b> '+esc(r.n_carta_identita)+' &nbsp;|&nbsp; <b>Patente:</b> '+esc(r.n_patente)
+        + '<br><b>Residenza attuale:</b> '+esc(r.residenza||'-')
         + (r.extra_ue ? '<br><b>Permesso soggiorno:</b> '+esc(r.n_permesso) : '')
         + '</div>'
         + '<div class="docs">'+ (docs || '<span style="font-size:.8rem;color:#999">Nessun documento</span>') +'</div>'

@@ -86,6 +86,7 @@ exports.handler = async function (event) {
       }
       out.push({
         id: r.id, created_at: r.created_at, stato: r.stato, corso: r.corso, sede: r.sede,
+        residenza: r.residenza,
         nome: r.nome, cognome: r.cognome, telefono: r.telefono, email: r.email,
         codice_fiscale: r.codice_fiscale, n_carta_identita: r.n_carta_identita,
         n_patente: r.n_patente, extra_ue: r.extra_ue, n_permesso: r.n_permesso,

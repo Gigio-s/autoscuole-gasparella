@@ -216,6 +216,7 @@
       <li><a href="corsi.html">Corsi</a></li>
       <li><a href="storia.html">La Nostra Storia</a></li>
       <li><a href="corsi-cqc.html#calendario" style="border:1.5px solid rgba(255,255,255,.75);color:#fff;padding:.4rem 1rem;border-radius:999px;font-size:.78rem;font-weight:800;white-space:nowrap;">Prenota corsi</a></li>
+      <li><a href="prenota-visita.html" style="background:#fff;color:#0e6aa3;padding:.4rem 1rem;border-radius:999px;font-size:.78rem;font-weight:800;white-space:nowrap;">Prenota visita</a></li>
     </ul>
     <div class="nav-social">
       <a class="nav-social-icon" href="https://www.facebook.com/p/Autoscuola-Gasparella-100046330225155/?locale=it_IT" target="_blank" rel="noopener" aria-label="Facebook">
@@ -235,6 +236,7 @@
     <a href="corsi.html">Corsi</a>
     <a href="storia.html">La Nostra Storia</a>
         <a href="corsi-cqc.html#calendario">Prenota corsi</a>
+        <a href="prenota-visita.html">Prenota visita</a>
   <a href="https://www.facebook.com/p/Autoscuola-Gasparella-100046330225155/?locale=it_IT" target="_blank" rel="noopener">Facebook</a>
   <a href="https://www.instagram.com/autoscuolegasparella/" target="_blank" rel="noopener">Instagram</a>
 </div>
@@ -424,6 +426,14 @@
         <div><label class="fl" for="cqCi">N. carta d'identit&agrave; *</label><input type="text" id="cqCi" required /></div>
         <div><label class="fl" for="cqPat">N. patente *</label><input type="text" id="cqPat" required /></div>
         <label class="check full">
+          <input type="checkbox" id="cqResiSame" />
+          La residenza attuale &egrave; quella indicata sulla carta d'identit&agrave;
+        </label>
+        <div class="full" id="cqResiWrap">
+          <label class="fl" for="cqResi">Residenza attuale *</label>
+          <input type="text" id="cqResi" placeholder="Via, n. civico, CAP, comune" required />
+        </div>
+        <label class="check full">
           <input type="checkbox" id="cqStraniero" />
           Sono cittadino/a extra&#8209;UE (richiesto il permesso di soggiorno)
         </label>
@@ -494,7 +504,8 @@
         { sede:'Montegalda', formato:'Sabato', soldout:true, s:[['2026-10-24','08:00–13:00'],['2026-10-31','08:00–13:00'],['2026-11-07','08:00–12:00'],['2026-11-14','08:00–13:00'],['2026-11-21','08:00–13:00'],['2026-11-28','08:00–12:00'],['2026-12-05','08:00–15:00']] },
         { sede:'Barbarano Mossano', formato:'Serale', s:[['2026-11-09','19:00–21:00'],['2026-11-11','19:00–21:00'],['2026-11-12','18:30–21:30'],['2026-11-16','19:00–21:00'],['2026-11-18','19:00–21:00'],['2026-11-19','18:30–21:30'],['2026-11-23','19:00–21:00'],['2026-11-25','19:00–21:00'],['2026-11-26','18:30–21:30'],['2026-11-30','19:00–21:00'],['2026-12-02','19:00–21:00'],['2026-12-03','18:30–21:30'],['2026-12-09','18:30–21:30'],['2026-12-10','18:00–22:00']] },
         { sede:'Barbarano Mossano', formato:'Sabato mattina', s:[['2026-11-07','08:00–13:00'],['2026-11-14','08:00–13:00'],['2026-11-21','08:00–12:00'],['2026-11-28','08:00–13:00'],['2026-12-05','08:00–13:00'],['2026-12-12','08:00–12:00'],['2026-12-19','08:00–15:00']] },
-        { sede:'Montegalda', formato:'Serale', s:[['2026-09-22','18:30–21:30'],['2026-09-24','19:00–21:00'],['2026-09-25','19:00–21:00'],['2026-09-29','18:30–21:30'],['2026-10-01','19:00–21:00'],['2026-10-02','19:00–21:00'],['2026-10-06','18:30–21:30'],['2026-10-08','19:00–21:00'],['2026-10-09','19:00–21:00'],['2026-10-13','18:30–21:30'],['2026-10-15','19:00–21:00'],['2026-10-16','19:00–21:00'],['2026-10-20','18:00–22:00'],['2026-10-22','19:00–22:00']] }
+        { sede:'Montegalda', formato:'Serale', s:[['2026-09-22','18:30–21:30'],['2026-09-24','19:00–21:00'],['2026-09-25','19:00–21:00'],['2026-09-29','18:30–21:30'],['2026-10-01','19:00–21:00'],['2026-10-02','19:00–21:00'],['2026-10-06','18:30–21:30'],['2026-10-08','19:00–21:00'],['2026-10-09','19:00–21:00'],['2026-10-13','18:30–21:30'],['2026-10-15','19:00–21:00'],['2026-10-16','19:00–21:00'],['2026-10-20','18:00–22:00'],['2026-10-22','19:00–22:00']] },
+        { sede:'Montegalda', formato:'Serale', s:[['2026-11-03','18:30–21:30'],['2026-11-05','19:00–21:00'],['2026-11-06','19:00–21:00'],['2026-11-10','18:30–21:30'],['2026-11-12','19:00–21:00'],['2026-11-13','19:00–21:00'],['2026-11-17','18:30–21:30'],['2026-11-19','19:00–21:00'],['2026-11-20','19:00–21:00'],['2026-11-24','18:30–21:30'],['2026-11-26','19:00–21:00'],['2026-11-27','19:00–21:00'],['2026-12-01','18:00–22:00'],['2026-12-03','19:00–22:00']] }
       ]},
       { nome: 'Conseguimento CQC Merci - 140 ore', costo: '2000 €', pagamento: 'Pagamento in ufficio, divisibile in 4 rate da 500 €', sedi: [
         { sede:'Sossano', formato:'Serale + sabato', s:[['2026-10-19','19:00–21:00'],['2026-10-21','19:00–21:00'],['2026-10-22','19:00–21:00'],['2026-10-26','19:00–21:00'],['2026-10-28','19:00–21:00'],['2026-10-29','19:00–21:00'],['2026-10-31','08:00–12:00'],['2026-11-02','19:00–21:00'],['2026-11-04','19:00–21:00'],['2026-11-07','08:00–12:00'],['2026-11-09','19:00–21:00'],['2026-11-11','19:00–21:00'],['2026-11-14','08:00–12:00'],['2026-11-16','19:00–21:00'],['2026-11-18','19:00–21:00'],['2026-11-20','18:00–21:00'],['2026-11-21','08:00–13:00'],['2026-11-23','19:00–21:00'],['2026-11-25','19:00–21:00'],['2026-11-28','08:00–12:00'],['2026-11-30','19:00–21:00'],['2026-12-02','19:00–21:00'],['2026-12-05','08:00–13:00'],['2026-12-09','18:30–21:30'],['2026-12-11','18:00–22:00'],['2026-12-12','08:00–13:00'],['2026-12-14','19:00–21:00'],['2026-12-16','19:00–21:00'],['2026-12-19','08:00–12:00'],['2026-12-21','19:00–21:00'],['2026-12-23','19:00–21:00'],['2027-01-09','08:00–12:00'],['2027-01-11','19:00–21:00'],['2027-01-13','19:00–21:00'],['2027-01-16','08:00–12:00'],['2027-01-18','19:00–21:00'],['2027-01-20','18:30–21:30'],['2027-01-23','08:00–12:00'],['2027-01-25','19:00–21:00'],['2027-01-27','19:00–21:00'],['2027-01-30','08:00–13:00'],['2027-02-01','19:00–21:00'],['2027-02-03','19:00–21:00'],['2027-02-06','08:00–12:00'],['2027-02-08','19:00–21:00'],['2027-02-10','19:00–21:00'],['2027-02-13','08:00–11:00'],['2027-02-15','19:00–21:30']] }
@@ -557,6 +568,11 @@
 
     function openCourse(i) {
       state.corso = CORSI[i];
+      // Ordina le sedi per nome (alfabetico) e poi per data di inizio
+      state.corso.sedi.sort(function (a, b) {
+        if (a.sede !== b.sede) return a.sede.localeCompare(b.sede, 'it');
+        return a.s[0][0] < b.s[0][0] ? -1 : (a.s[0][0] > b.s[0][0] ? 1 : 0);
+      });
       elSelCourse.innerHTML = 'Corso: <b>' + state.corso.nome + '</b>' +
         (state.corso.costo ? '<span class="cp-cost"><b>Costo: ' + state.corso.costo + '</b>' + (state.corso.pagamento ? ' &middot; ' + state.corso.pagamento : '') + '</span>' : '');
       elSedeList.innerHTML = '';
@@ -666,6 +682,15 @@
       if (!this.checked) { cqPds.value = ''; cqPdsFronte.value = ''; cqPdsRetro.value = ''; }
     });
 
+    var cqResiSame = document.getElementById('cqResiSame');
+    var cqResiWrap = document.getElementById('cqResiWrap');
+    var cqResi = document.getElementById('cqResi');
+    cqResiSame.addEventListener('change', function () {
+      cqResiWrap.style.display = this.checked ? 'none' : '';
+      cqResi.required = !this.checked;
+      if (this.checked) cqResi.value = '';
+    });
+
     // Mappa input file del form -> nome campo lato backend
     var FILE_MAP = {
       cqCfFronte: 'cf_fronte', cqCfRetro: 'cf_retro',
@@ -740,6 +765,7 @@
             codice_fiscale: val('cqCf'), n_carta_identita: val('cqCi'), n_patente: val('cqPat'),
             extra_ue: extraUe, n_permesso: extraUe ? val('cqPds') : null,
             sede: val('cqSede'),
+            residenza: document.getElementById('cqResiSame').checked ? 'Come da carta d\'identita' : val('cqResi'),
             documenti: documenti,
             consenso_privacy: document.getElementById('cqPrivacy').checked
           })

@@ -184,6 +184,8 @@
   .sede-card h3 { font-size: 1.12rem; font-weight: 800; color: var(--text); margin-bottom: .55rem; }
   .sede-card .sede-addr { font-size: .86rem; color: #666; line-height: 1.5; margin-bottom: .3rem; }
   .sede-card .sede-phone { font-size: .86rem; color: var(--blue); font-weight: 700; margin-bottom: 1rem; display: block; }
+  .sede-card .sede-hours { font-size: .8rem; color: #555; line-height: 1.5; background: #f5f8fb; border-left: 3px solid var(--blue); border-radius: 0 8px 8px 0; padding: .55rem .7rem; margin-bottom: 1rem; }
+  .sede-card .sede-hours b { display: block; margin-bottom: .15rem; color: var(--dark); font-size: .72rem; text-transform: uppercase; letter-spacing: .04em; }
   .sede-actions { display: flex; gap: .6rem; flex-wrap: wrap; }
   .sede-actions a {
     font-size: .78rem; font-weight: 700; padding: .5rem .9rem; border-radius: 8px;
@@ -291,6 +293,7 @@
       <li><a href="corsi.html">Corsi</a></li>
       <li><a href="storia.html">La Nostra Storia</a></li>
       <li><a href="corsi-cqc.html#calendario" style="border:1.5px solid rgba(255,255,255,.75);color:#fff;padding:.4rem 1rem;border-radius:999px;font-size:.78rem;font-weight:800;white-space:nowrap;">Prenota corsi</a></li>
+      <li><a href="prenota-visita.html" style="background:#fff;color:#0e6aa3;padding:.4rem 1rem;border-radius:999px;font-size:.78rem;font-weight:800;white-space:nowrap;">Prenota visita</a></li>
     </ul>
     <div class="nav-social">
       <a class="nav-social-icon" href="https://www.facebook.com/p/Autoscuola-Gasparella-100046330225155/?locale=it_IT" target="_blank" rel="noopener" aria-label="Facebook">
@@ -310,6 +313,7 @@
     <a href="corsi.html">Corsi</a>
     <a href="storia.html">La Nostra Storia</a>
         <a href="corsi-cqc.html#calendario">Prenota corsi</a>
+        <a href="prenota-visita.html">Prenota visita</a>
   <a href="https://www.facebook.com/p/Autoscuola-Gasparella-100046330225155/?locale=it_IT" target="_blank" rel="noopener">Facebook</a>
   <a href="https://www.instagram.com/autoscuolegasparella/" target="_blank" rel="noopener">Instagram</a>
 </div>
@@ -333,6 +337,7 @@
       <h3>Isola Vicentina</h3>
       <p class="sede-addr">Via Pasubio 67<br>36033 Isola Vicentina (VI)</p>
       <a class="sede-phone" href="tel:0444976358">0444 976358</a>
+      <div class="sede-hours"><b>Orari ufficio</b>Lun-Ven 09:30-12:00 e 15:00-19:00<br>Sab e Dom chiuso</div>
       <div class="sede-actions">
         <a class="sa-call" href="tel:0444976358">Chiama</a>
         <a class="sa-map" href="https://www.google.com/maps/dir/?api=1&destination=45.6340569,11.4381779" target="_blank" rel="noopener">Indicazioni</a>
@@ -345,6 +350,7 @@
       <h3>Sossano</h3>
       <p class="sede-addr">Via degli Alpini 13<br>36040 Sossano (VI)</p>
       <a class="sede-phone" href="tel:0444885907">0444 885907</a>
+      <div class="sede-hours"><b>Orari ufficio</b>Lun-Ven 09:00-12:00 e 15:30-19:00<br>Sab 09:00-12:00 &middot; Dom chiuso</div>
       <div class="sede-actions">
         <a class="sa-call" href="tel:0444885907">Chiama</a>
         <a class="sa-map" href="https://www.google.com/maps/dir/?api=1&destination=45.3568281,11.5083541" target="_blank" rel="noopener">Indicazioni</a>
@@ -357,6 +363,7 @@
       <h3>Barbarano</h3>
       <p class="sede-addr">Via Padre A. Pagani 7<br>36048 Barbarano Mossano (VI)</p>
       <a class="sede-phone" href="tel:0444896934">0444 896934</a>
+      <div class="sede-hours"><b>Orari ufficio</b>Lun, Mer, Ven 10:00-12:00 e 16:30-19:30<br>Mar, Gio 16:30-19:30 &middot; Sab 10:00-12:00 &middot; Dom chiuso</div>
       <div class="sede-actions">
         <a class="sa-call" href="tel:0444896934">Chiama</a>
         <a class="sa-map" href="https://www.google.com/maps/dir/?api=1&destination=45.3946098,11.5690114" target="_blank" rel="noopener">Indicazioni</a>
@@ -369,6 +376,7 @@
       <h3>Costabissara</h3>
       <p class="sede-addr">Via Gioberti 18<br>36030 Costabissara (VI)</p>
       <a class="sede-phone" href="tel:0444970305">0444 970305</a>
+      <div class="sede-hours"><b>Orari ufficio</b>Lun-Ven 10:00-12:00 e 15:00-19:00<br>Sab e Dom chiuso</div>
       <div class="sede-actions">
         <a class="sa-call" href="tel:0444970305">Chiama</a>
         <a class="sa-map" href="https://www.google.com/maps/dir/?api=1&destination=45.5866158,11.490969" target="_blank" rel="noopener">Indicazioni</a>
@@ -381,6 +389,7 @@
       <h3>Montegalda</h3>
       <p class="sede-addr">Piazza G. Marconi 7<br>36047 Montegalda (VI)</p>
       <a class="sede-phone" href="tel:0444737121">0444 737121</a>
+      <div class="sede-hours"><b>Orari ufficio</b>Lun 09:00-12:00 e 15:00-19:00<br>Mar-Ven 10:00-12:00 e 15:00-19:00 &middot; Sab 09:00-12:00 &middot; Dom chiuso</div>
       <div class="sede-actions">
         <a class="sa-call" href="tel:0444737121">Chiama</a>
         <a class="sa-map" href="https://www.google.com/maps/dir/?api=1&destination=45.4433071,11.6735651" target="_blank" rel="noopener">Indicazioni</a>
@@ -393,22 +402,19 @@
       <h3>Caldogno</h3>
       <p class="sede-addr">Via Barco 36<br>36030 Caldogno (VI)</p>
       <a class="sede-phone" href="tel:0444585747">0444 585747</a>
+      <div class="sede-hours"><b>Orari ufficio</b>Lun-Ven 09:30-12:00 e 15:00-19:00<br>Sab e Dom chiuso</div>
       <div class="sede-actions">
         <a class="sa-call" href="tel:0444585747">Chiama</a>
         <a class="sa-map" href="https://www.google.com/maps/dir/?api=1&destination=45.609215,11.508821" target="_blank" rel="noopener">Indicazioni</a>
         <a class="sa-locate" href="#sediMap" onclick="focusSede(5); return true;">Vedi su mappa</a>
-      </div>
-      <div style="margin-top:.8rem;display:flex;align-items:flex-start;gap:.5rem;background:#eef6fc;border-left:3px solid #1280c2;border-radius:0 8px 8px 0;padding:.6rem .7rem;">
-        <span style="flex:0 0 auto;background:#1280c2;color:#fff;font-size:.6rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.2rem .45rem;border-radius:999px;">Novità</span>
-        <span style="font-size:.82rem;color:#2d3236;line-height:1.45;">Da lunedì 21 settembre nuovo orario: <b>09:30-12:00</b> e <b>15:00-19:00</b>.</span>
-      </div>
-    </div>
+      </div>    </div>
     <div class="sede-card">
       <span class="sede-num">07</span>
       <div class="sede-pin"><svg viewBox="0 0 24 24" fill="none"><path d="M12 22s7-7.58 7-12.5A7 7 0 0 0 5 9.5C5 14.42 12 22 12 22Z" stroke="#fff" stroke-width="1.7"/><circle cx="12" cy="9.3" r="2.4" stroke="#fff" stroke-width="1.7"/></svg></div>
       <h3>Marano Vicentino</h3>
       <p class="sede-addr">Piazza Silva 86/A<br>36035 Marano Vicentino (VI)</p>
       <a class="sede-phone" href="tel:0444585451">0444 585451</a>
+      <div class="sede-hours"><b>Orari ufficio</b>Lun-Ven 15:00-19:00<br>Sab e Dom chiuso</div>
       <div class="sede-actions">
         <a class="sa-call" href="tel:0444585451">Chiama</a>
         <a class="sa-map" href="https://www.google.com/maps/dir/?api=1&destination=45.6924703,11.4279575" target="_blank" rel="noopener">Indicazioni</a>
@@ -421,6 +427,7 @@
       <h3>Villaverla</h3>
       <p class="sede-addr">Piazza delle Fornaci 7<br>36030 Villaverla (VI)</p>
       <a class="sede-phone" href="tel:0445227902">0445 227902</a>
+      <div class="sede-hours"><b>Orari ufficio</b>Lun-Ven 16:00-19:00<br>Sab e Dom chiuso</div>
       <div class="sede-actions">
         <a class="sa-call" href="tel:0445227902">Chiama</a>
         <a class="sa-map" href="https://www.google.com/maps/dir/?api=1&destination=45.652668,11.488463" target="_blank" rel="noopener">Indicazioni</a>

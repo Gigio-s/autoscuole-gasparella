@@ -78,6 +78,7 @@ exports.handler = async function (event) {
     }
   }
   const extraUe = b.extra_ue === true;
+  const isVisita = b.tipo === 'visita';
   if (extraUe && (!b.n_permesso || String(b.n_permesso).trim() === '')) {
     return { statusCode: 400, headers: headers(), body: JSON.stringify({ error: 'Numero permesso di soggiorno obbligatorio' }) };
   }
@@ -124,6 +125,7 @@ exports.handler = async function (event) {
     extra_ue: extraUe,
     n_permesso: extraUe ? String(b.n_permesso).trim() : null,
     sede: b.sede ? String(b.sede).trim() : null,
+    residenza: b.residenza ? String(b.residenza).trim() : null,
     documenti: documenti
   };
 
@@ -142,17 +144,24 @@ exports.handler = async function (event) {
       await inviaMail({
         sender: { name: MITTENTE_NOME, email: MITTENTE_EMAIL },
         to: [{ email: record.email, name: record.nome + ' ' + record.cognome }],
-        subject: 'Conferma prenotazione corso - Autoscuole Gasparella',
+        subject: isVisita
+          ? 'Conferma prenotazione visita medica - Autoscuole Gasparella'
+          : 'Conferma prenotazione corso - Autoscuole Gasparella',
         htmlContent:
           '<div style="font-family:Arial,sans-serif;color:#2d3236;line-height:1.6">' +
           '<h2 style="color:#1280c2">Prenotazione ricevuta</h2>' +
           '<p>Ciao ' + esc(record.nome) + ',</p>' +
-          '<p>abbiamo ricevuto la tua richiesta di iscrizione al corso:</p>' +
-          '<p style="background:#f2f4f7;padding:12px 16px;border-radius:8px"><b>' + esc(record.corso) + '</b>' +
-          (record.sede ? '<br>Sede preferita: ' + esc(record.sede) : '') + '</p>' +
-          '<p>I documenti che hai allegato sono stati ricevuti correttamente. ' +
-          'La segreteria ti contattera’ a breve per confermare il posto e gli ultimi dettagli.</p>' +
-          '<p>Per qualsiasi necessita’ puoi rispondere a questa email o chiamarci.</p>' +
+          (isVisita
+            ? '<p>sei stato prenotato per la <b>visita medica di rinnovo</b>:</p>' +
+              '<p style="background:#f2f4f7;padding:12px 16px;border-radius:8px"><b>' + esc(record.corso) + '</b></p>' +
+              '<p>Il <b>pagamento si effettua in ufficio</b> il giorno della visita. I documenti che hai allegato sono stati ricevuti correttamente.</p>' +
+              '<p>La segreteria ti contattera’ se necessario. Per modifiche puoi rispondere a questa email o chiamarci.</p>'
+            : '<p>abbiamo ricevuto la tua richiesta di iscrizione al corso:</p>' +
+              '<p style="background:#f2f4f7;padding:12px 16px;border-radius:8px"><b>' + esc(record.corso) + '</b>' +
+              (record.sede ? '<br>Sede preferita: ' + esc(record.sede) : '') + '</p>' +
+              '<p>I documenti che hai allegato sono stati ricevuti correttamente. ' +
+              'La segreteria ti contattera’ a breve per confermare il posto e gli ultimi dettagli.</p>' +
+              '<p>Per qualsiasi necessita’ puoi rispondere a questa email o chiamarci.</p>') +
           '<p style="margin-top:24px;color:#888;font-size:13px">Autoscuole Gasparella Vicenza</p>' +
           '</div>'
       });
@@ -166,12 +175,12 @@ exports.handler = async function (event) {
         await inviaMail({
           sender: { name: MITTENTE_NOME, email: MITTENTE_EMAIL },
           to: [{ email: SEGRETERIA_EMAIL }],
-          subject: 'NUOVA prenotazione corso: ' + record.nome + ' ' + record.cognome,
+          subject: (isVisita ? 'NUOVA prenotazione VISITA MEDICA: ' : 'NUOVA prenotazione corso: ') + record.nome + ' ' + record.cognome,
           htmlContent:
             '<div style="font-family:Arial,sans-serif;color:#2d3236;line-height:1.6">' +
-            '<h2 style="color:#1280c2">Nuova prenotazione corso</h2>' +
+            '<h2 style="color:#1280c2">' + (isVisita ? 'Nuova prenotazione visita medica' : 'Nuova prenotazione corso') + '</h2>' +
             '<table cellpadding="6" style="border-collapse:collapse">' +
-            '<tr><td><b>Corso</b></td><td>' + esc(record.corso) + '</td></tr>' +
+            '<tr><td><b>' + (isVisita ? 'Visita' : 'Corso') + '</b></td><td>' + esc(record.corso) + '</td></tr>' +
             '<tr><td><b>Sede</b></td><td>' + esc(record.sede || '-') + '</td></tr>' +
             '<tr><td><b>Nome</b></td><td>' + esc(record.nome + ' ' + record.cognome) + '</td></tr>' +
             '<tr><td><b>Telefono</b></td><td>' + esc(record.telefono) + '</td></tr>' +
@@ -179,6 +188,7 @@ exports.handler = async function (event) {
             '<tr><td><b>Cod. fiscale</b></td><td>' + esc(record.codice_fiscale) + '</td></tr>' +
             '<tr><td><b>N. carta id.</b></td><td>' + esc(record.n_carta_identita) + '</td></tr>' +
             '<tr><td><b>N. patente</b></td><td>' + esc(record.n_patente) + '</td></tr>' +
+            '<tr><td><b>Residenza attuale</b></td><td>' + esc(record.residenza || '-') + '</td></tr>' +
             (record.extra_ue ? '<tr><td><b>Permesso soggiorno</b></td><td>' + esc(record.n_permesso) + '</td></tr>' : '') +
             '</table>' +
             '<p style="margin-top:16px">I documenti allegati sono nell’area riservata:</p>' +
