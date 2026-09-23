@@ -74,7 +74,15 @@
   .cq-updoc-name { font-size: .85rem; font-weight: 700; color: var(--dark); }
   .cq-file { display: flex; flex-direction: column; gap: .2rem; font-size: .72rem; color: #555; }
   .cq-file input[type=file] { font-size: .74rem; font-family: inherit; border: 1px solid #d8dde3; border-radius: 8px; padding: .35rem .4rem; background: #fff; cursor: pointer; }
-  @media (max-width: 620px) { form.pv-form { grid-template-columns: 1fr; } .cq-updoc { grid-template-columns: 1fr; } }
+  form.pv-form { min-width: 0; }
+  form.pv-form > div, form.pv-form > label, form.pv-form > .cq-uploads, form.pv-form > .pv-pay { min-width: 0; }
+  form.pv-form input { max-width: 100%; }
+  @media (max-width: 620px) { form.pv-form { grid-template-columns: 1fr; } .cq-updoc { grid-template-columns: 1fr; min-width: 0; } }
+  @media (max-width: 600px) {
+    .wrap { padding: 0 4%; }
+    .card { padding: 1.3rem 1.1rem 1.6rem; }
+    .hero h1 { font-size: 1.55rem; }
+  }
   label.check { grid-column: 1 / -1; display: flex; align-items: flex-start; gap: .6rem; font-size: .82rem; color: #555; line-height: 1.5; }
   label.check input { width: 20px; height: 20px; flex: 0 0 auto; margin-top: .1rem; -webkit-appearance: checkbox; appearance: auto; accent-color: var(--blue-d); cursor: pointer; }
   label.check a { color: var(--blue-d); font-weight: 700; }
