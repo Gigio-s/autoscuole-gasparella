@@ -242,3 +242,26 @@
     if (e.key === 'Escape' && panel.classList.contains('open')) chiudi();
   });
 })();
+
+/* Pulsante header "Prenota visita": testo lungo a scorrimento dentro la casella (dimensione invariata) */
+(function () {
+  try {
+    var FULL = 'Prenota visita medica rinnovo patente';
+    var m = document.querySelector('.mobile-menu a[href*="prenota-visita"]');
+    if (m) m.textContent = FULL;
+    var a = null, links = document.querySelectorAll('nav a[href*="prenota-visita"]');
+    for (var i = 0; i < links.length; i++) { if (links[i].closest('.nav-links')) { a = links[i]; break; } }
+    if (!a) return;
+    var st = document.createElement('style');
+    st.textContent =
+      '.pv-marq{width:112px;overflow:hidden;box-sizing:border-box;display:inline-block;vertical-align:middle;text-align:left;}' +
+      '.pv-marq .pv-track{display:inline-block;white-space:nowrap;animation:pvsc 11s linear infinite;}' +
+      '.pv-marq:hover .pv-track{animation-play-state:paused;}' +
+      '.pv-marq .pv-track b{font-weight:800;padding-right:30px;}' +
+      '@keyframes pvsc{from{transform:translateX(0)}to{transform:translateX(-50%)}}';
+    document.head.appendChild(st);
+    a.classList.add('pv-marq');
+    a.setAttribute('title', FULL);
+    a.innerHTML = '<span class="pv-track"><b>' + FULL + '</b><b>' + FULL + '</b></span>';
+  } catch (e) {}
+})();
