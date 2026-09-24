@@ -62,6 +62,25 @@ exports.handler = async function (event) {
     }
   }
 
+  // Elimina definitivamente una prenotazione + i suoi documenti
+  if (b.action === 'elimina' && b.id) {
+    try {
+      // rimuove i file dallo storage (cartella = bookingId)
+      try {
+        const { data: lista } = await supabase.storage.from(BUCKET).list(b.id);
+        if (lista && lista.length) {
+          const paths = lista.map(function (f) { return b.id + '/' + f.name; });
+          await supabase.storage.from(BUCKET).remove(paths);
+        }
+      } catch (e) { /* se lo storage non trova nulla, si prosegue */ }
+      const { error } = await supabase.from('prenotazioni').delete().eq('id', b.id);
+      if (error) throw error;
+      return { statusCode: 200, headers: headers(), body: JSON.stringify({ ok: true }) };
+    } catch (e) {
+      return { statusCode: 500, headers: headers(), body: JSON.stringify({ error: e.message || String(e) }) };
+    }
+  }
+
   // Default: elenco prenotazioni + link firmati ai documenti (validi 7 giorni)
   try {
     const { data: righe, error } = await supabase

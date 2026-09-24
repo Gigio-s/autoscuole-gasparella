@@ -154,8 +154,9 @@ exports.handler = async function (event) {
           (isVisita
             ? '<p>sei stato prenotato per la <b>visita medica di rinnovo</b>:</p>' +
               '<p style="background:#f2f4f7;padding:12px 16px;border-radius:8px"><b>' + esc(record.corso) + '</b></p>' +
-              '<p>Il <b>pagamento si effettua in ufficio</b> il giorno della visita. I documenti che hai allegato sono stati ricevuti correttamente.</p>' +
-              '<p>La segreteria ti contattera’ se necessario. Per modifiche puoi rispondere a questa email o chiamarci.</p>'
+              '<p>Ti chiediamo di <b>presentarti almeno 5 minuti prima</b> dell’orario indicato.</p>' +
+              '<p>Il <b>pagamento si effettua in ufficio</b> il giorno della visita. Sono inoltre previsti <b>7,50 &euro; in contanti</b> per la spedizione della patente.</p>' +
+              '<p>I documenti che hai allegato sono stati ricevuti correttamente. La segreteria ti contattera’ se necessario. Per modifiche puoi rispondere a questa email o chiamarci.</p>'
             : '<p>abbiamo ricevuto la tua richiesta di iscrizione al corso:</p>' +
               '<p style="background:#f2f4f7;padding:12px 16px;border-radius:8px"><b>' + esc(record.corso) + '</b>' +
               (record.sede ? '<br>Sede preferita: ' + esc(record.sede) : '') + '</p>' +

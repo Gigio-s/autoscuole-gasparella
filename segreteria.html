@@ -18,6 +18,8 @@
   button:hover { background:var(--blue-d); }
   button.small { padding:.35rem .8rem; font-size:.78rem; }
   button.ghost { background:#e6ebf0; color:var(--dark); }
+  button.danger { background:#fdecea; color:#c0392b; }
+  button.danger:hover { background:#f8d7d2; }
   .msg { color:#c0392b; font-size:.85rem; min-height:1.1em; }
   .bar { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:1rem; flex-wrap:wrap; }
   .card { background:#fff; border-radius:12px; padding:1.1rem 1.3rem; margin-bottom:1rem; box-shadow:0 4px 16px rgba(0,0,0,.05); }
@@ -95,6 +97,7 @@
         + '<button class="small" data-stato="gestita" data-id="'+esc(r.id)+'">Segna gestita</button>'
         + '<button class="ghost small" data-stato="annullata" data-id="'+esc(r.id)+'">Annulla</button>'
         + '<button class="ghost small" data-stato="nuova" data-id="'+esc(r.id)+'">Riapri</button>'
+        + '<button class="ghost small danger" data-del="'+esc(r.id)+'">Elimina</button>'
         + '</div>'
         + '</div>';
     }).join('');
@@ -102,6 +105,14 @@
     Array.prototype.forEach.call(list.querySelectorAll('button[data-stato]'), function(btn){
       btn.addEventListener('click', async function(){
         try { await call({ password: pw, action:'setStato', id: btn.dataset.id, stato: btn.dataset.stato }); load(); }
+        catch(e){ document.getElementById('appMsg').textContent = e.message; }
+      });
+    });
+
+    Array.prototype.forEach.call(list.querySelectorAll('button[data-del]'), function(btn){
+      btn.addEventListener('click', async function(){
+        if (!confirm('Eliminare definitivamente questa prenotazione e i suoi documenti? L\'azione non e\' reversibile.')) return;
+        try { await call({ password: pw, action:'elimina', id: btn.dataset.del }); load(); }
         catch(e){ document.getElementById('appMsg').textContent = e.message; }
       });
     });
