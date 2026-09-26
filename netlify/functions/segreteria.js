@@ -17,7 +17,8 @@ const LABELS = {
   cf_fronte: 'Cod. fiscale (fronte)', cf_retro: 'Cod. fiscale (retro)',
   ci_fronte: "Carta id. (fronte)",   ci_retro: "Carta id. (retro)",
   pat_fronte: 'Patente (fronte)',    pat_retro: 'Patente (retro)',
-  pds_fronte: 'Permesso sogg. (fronte)', pds_retro: 'Permesso sogg. (retro)'
+  pds_fronte: 'Permesso sogg. (fronte)', pds_retro: 'Permesso sogg. (retro)',
+  foto: 'Fototessera', firma: 'Firma'
 };
 
 function headers() {

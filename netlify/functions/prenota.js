@@ -84,7 +84,8 @@ exports.handler = async function (event) {
   }
 
   const documenti = (b.documenti && typeof b.documenti === 'object') ? b.documenti : {};
-  const campiRichiesti = extraUe ? CAMPI_BASE.concat(CAMPI_PDS) : CAMPI_BASE;
+  let campiRichiesti = extraUe ? CAMPI_BASE.concat(CAMPI_PDS) : CAMPI_BASE.slice();
+  if (isVisita) campiRichiesti = campiRichiesti.concat(['foto', 'firma']); // fototessera + firma obbligatorie per il rinnovo
 
   // Ogni path deve appartenere alla cartella del bookingId (anti-manomissione)
   for (const campo of campiRichiesti) {

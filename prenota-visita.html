@@ -54,6 +54,10 @@
   .pv-item .pv-txt b { font-size: 1.05rem; color: var(--dark); display: block; }
   .pv-item .pv-txt span { font-size: .84rem; color: #666; }
   .pv-item .pv-arrow { margin-left: auto; color: var(--blue-d); font-weight: 800; font-size: 1.2rem; }
+  .pv-item.soldout { cursor: not-allowed; background: #fdf2f2; border-color: #f3d6d3; opacity: .85; }
+  .pv-item.soldout:hover { border-color: #f3d6d3; background: #fdf2f2; }
+  .pv-item.soldout .pv-txt b, .pv-item.soldout .pv-day { color: #b5726c; }
+  .pv-soldout { margin-left: auto; background: #e74c3c; color: #fff; font-size: .68rem; font-weight: 800; letter-spacing: .04em; padding: .28rem .6rem; border-radius: 999px; text-transform: uppercase; }
   .pv-day { flex: 0 0 auto; min-width: 96px; text-align: center; background: var(--blue); color: #fff; font-size: .8rem; font-weight: 800; padding: .5rem .55rem; border-radius: 9px; line-height: 1.2; }
   .pv-back { background: none; border: none; color: var(--blue-d); font-family: inherit; font-weight: 700; font-size: .82rem; cursor: pointer; padding: 0; margin-bottom: 1.1rem; }
   .pv-back:hover { text-decoration: underline; }
@@ -70,10 +74,16 @@
   .cq-uploads { border: 1.5px dashed #cfd6dd; border-radius: 12px; padding: 1rem 1.1rem; background: #fafbfc; }
   .cq-uploads-title { font-weight: 800; font-size: .95rem; margin-bottom: .2rem; }
   .cq-uploads-sub { font-size: .8rem; color: #666; margin-bottom: .8rem; }
-  .cq-updoc { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .5rem; align-items: center; margin-bottom: .7rem; }
-  .cq-updoc-name { font-size: .85rem; font-weight: 700; color: var(--dark); }
-  .cq-file { display: flex; flex-direction: column; gap: .2rem; font-size: .72rem; color: #555; }
-  .cq-file input[type=file] { font-size: .74rem; font-family: inherit; border: 1px solid #d8dde3; border-radius: 8px; padding: .35rem .4rem; background: #fff; cursor: pointer; }
+  .cq-updoc { display: grid; grid-template-columns: 6rem 1fr 1fr; gap: .5rem .6rem; align-items: center; margin-bottom: .7rem; }
+  .cq-updoc-name { font-size: .85rem; font-weight: 700; color: var(--dark); min-width: 0; }
+  .cq-file { display: flex; flex-direction: column; gap: .2rem; font-size: .72rem; color: #555; min-width: 0; }
+  .cq-file input[type=file] { width: 100%; max-width: 100%; box-sizing: border-box; font-size: .72rem; font-family: inherit; border: 1px solid #d8dde3; border-radius: 8px; padding: .35rem .4rem; background: #fff; cursor: pointer; }
+  .cq-file input[type=file]::file-selector-button { font-size: .72rem; padding: .2rem .5rem; margin-right: .4rem; border: 1px solid #d8dde3; border-radius: 6px; background: #f2f4f7; cursor: pointer; }
+  .cq-updoc-foto .cq-file { grid-column: 2 / -1; }
+  .cq-foto-req { background: #eef5fb; border: 1px solid #d3e4f2; border-radius: 10px; padding: .7rem .9rem; margin-top: .3rem; }
+  .cq-foto-req-t { font-weight: 800; font-size: .82rem; color: var(--blue-d); margin-bottom: .35rem; }
+  .cq-foto-req ul { margin: 0; padding-left: 1.1rem; }
+  .cq-foto-req li { font-size: .78rem; color: #444; line-height: 1.5; }
   form.pv-form { min-width: 0; }
   form.pv-form > div, form.pv-form > label, form.pv-form > .cq-uploads, form.pv-form > .pv-pay { min-width: 0; }
   form.pv-form input { max-width: 100%; }
@@ -148,8 +158,8 @@
 <header class="hero">
   <div class="wrap">
     <a href="corsi.html" class="ph-back">&larr; Torna ai corsi</a>
-    <h1>Prenota la visita medica di rinnovo</h1>
-    <p>Scegli la sede e la data, carica i documenti e ricevi la conferma via email. La visita si effettua direttamente in sede.</p>
+    <h1>Rinnova la patente</h1>
+    <p>Rinnova la tua patente prenotando direttamente la <b>visita medica</b>: scegli sede e data, carica i documenti e ricevi la conferma via email. Alla visita pensiamo a tutto noi &mdash; ci occupiamo noi della pratica di rinnovo.</p>
   </div>
 </header>
 
@@ -157,6 +167,7 @@
   <div class="wrap" style="max-width:820px;">
     <div class="card">
       <div class="notice">
+        <p>&#127973; Questa pagina serve a <b>rinnovare la patente</b>: prenoti qui la visita medica e noi completiamo la pratica di rinnovo.</p>
         <p>&#10003; Carica <b>carta d'identit&agrave;, tessera sanitaria e patente</b> (fronte e retro).</p>
         <p>&#128179; Il <b>pagamento si effettua in ufficio</b> il giorno della visita.</p>
       </div>
@@ -216,6 +227,35 @@
               <span class="cq-updoc-name">Patente</span>
               <label class="cq-file"><span>Fronte *</span><input type="file" id="cqPatFronte" accept=".pdf,.png,.jpg,.jpeg" required /></label>
               <label class="cq-file"><span>Retro *</span><input type="file" id="cqPatRetro" accept=".pdf,.png,.jpg,.jpeg" required /></label>
+            </div>
+            <div class="cq-updoc cq-updoc-foto">
+              <span class="cq-updoc-name">Fototessera</span>
+              <label class="cq-file"><span>Foto *</span><input type="file" id="cqFoto" accept=".png,.jpg,.jpeg" required /></label>
+            </div>
+            <div class="cq-foto-req">
+              <p class="cq-foto-req-t">Requisiti della fototessera</p>
+              <ul>
+                <li>Dimensioni: 40&ndash;45 mm di altezza per 32&ndash;35 mm di larghezza.</li>
+                <li>Scattata al massimo negli ultimi sei mesi.</li>
+                <li>Senza occhiali.</li>
+                <li>Inquadratura frontale, testa centrata, sguardo rivolto all'obiettivo.</li>
+                <li>Espressione neutra, bocca chiusa e occhi ben visibili.</li>
+                <li>Sfondo uniforme e chiaro (preferibilmente bianco o grigio chiaro).</li>
+                <li>Niente copricapo (salvo motivi religiosi) n&eacute; lenti scure/colorate.</li>
+              </ul>
+            </div>
+
+            <div class="cq-updoc cq-updoc-foto">
+              <span class="cq-updoc-name">Firma</span>
+              <label class="cq-file"><span>Scansione o foto *</span><input type="file" id="cqFirma" accept=".png,.jpg,.jpeg,.pdf" required /></label>
+            </div>
+            <div class="cq-foto-req">
+              <p class="cq-foto-req-t">Come inviare la firma</p>
+              <ul>
+                <li>Firma su un foglio bianco, con penna nera.</li>
+                <li>Allega una <b>scansione o una foto ben leggibile</b> della sola firma.</li>
+                <li>&#9888;&#65039; Questa sar&agrave; <b>la firma stampata sulla tua nuova patente</b>: assicurati che sia chiara e come la desideri.</li>
+              </ul>
             </div>
           </div>
 
@@ -286,6 +326,13 @@
     return sede.giorni.map(function(g){ return GIORNI[g.dow] + ' ' + g.ora + (g.quindicinale ? ' (ogni 2 settimane)' : ''); }).join(' &middot; ');
   }
 
+  // Le prenotazioni si chiudono alle 18:00 della sera prima della visita
+  function bloccata(dd){
+    var now = new Date();
+    var cutoff = new Date(dd.getFullYear(), dd.getMonth(), dd.getDate() - 1, 18, 0, 0, 0);
+    return now >= cutoff;
+  }
+
   // Genera le prossime N date per una sede
   function prossimeDate(sede, n){
     var oggi = new Date(); oggi.setHours(0,0,0,0);
@@ -303,9 +350,10 @@
         if (diff === 0) diff = 7; // sempre a partire dalla prossima occorrenza
         d.setDate(d.getDate() + diff);
       }
-      for (var i = 0; i < n; i++){
+      // genera qualche data in più, così se le prime sono bloccate restano n disponibili
+      for (var i = 0; i < n + 2; i++){
         var dd = new Date(d); dd.setDate(d.getDate() + i*step);
-        out.push({ when: dd, ora: g.ora, label: fmtData(dd) + ' alle ' + g.ora });
+        out.push({ when: dd, ora: g.ora, label: fmtData(dd) + ' alle ' + g.ora, bloccata: bloccata(dd) });
       }
     });
     out.sort(function(a,b){ return a.when - b.when; });
@@ -329,11 +377,14 @@
     elDateList.innerHTML = '';
     prossimeDate(state.sede, 8).forEach(function(dt){
       var btn = document.createElement('button');
-      btn.type = 'button'; btn.className = 'pv-item';
+      btn.type = 'button'; btn.className = 'pv-item' + (dt.bloccata ? ' soldout' : '');
       var g = dt.when;
-      btn.innerHTML = '<span class="pv-day">' + GIORNI[g.getDay()] + '<br>' + g.getDate() + '/' + pad(g.getMonth()+1) + '</span>' +
-        '<span class="pv-txt"><b>' + dt.label + '</b><span>Visita medica di rinnovo</span></span><span class="pv-arrow">&rsaquo;</span>';
-      btn.addEventListener('click', function(){ openData(dt); });
+      var coda = dt.bloccata
+        ? '<span class="pv-txt"><b>' + dt.label + '</b><span>Prenotazioni chiuse</span></span><span class="pv-soldout">Sold out</span>'
+        : '<span class="pv-txt"><b>' + dt.label + '</b><span>Visita medica di rinnovo</span></span><span class="pv-arrow">&rsaquo;</span>';
+      btn.innerHTML = '<span class="pv-day">' + GIORNI[g.getDay()] + '<br>' + g.getDate() + '/' + pad(g.getMonth()+1) + '</span>' + coda;
+      if (dt.bloccata) { btn.disabled = true; }
+      else { btn.addEventListener('click', function(){ openData(dt); }); }
       elDateList.appendChild(btn);
     });
     elSediWrap.classList.add('hidden');
@@ -369,7 +420,8 @@
   var FILE_MAP = {
     cqCfFronte: 'cf_fronte', cqCfRetro: 'cf_retro',
     cqCiFronte: 'ci_fronte', cqCiRetro: 'ci_retro',
-    cqPatFronte: 'pat_fronte', cqPatRetro: 'pat_retro'
+    cqPatFronte: 'pat_fronte', cqPatRetro: 'pat_retro',
+    cqFoto: 'foto', cqFirma: 'firma'
   };
   var FN_BASE = '/.netlify/functions';
   function val(id){ var el = document.getElementById(id); return el ? el.value.trim() : ''; }
@@ -408,7 +460,7 @@
     try {
       var r1 = await fetch(FN_BASE + '/upload-url', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ extra_ue: false, files: files.map(function(f){ return { field: f.field, filename: f.filename, contentType: f.contentType, size: f.size }; }) })
+        body: JSON.stringify({ extra_ue: false, foto: true, files: files.map(function(f){ return { field: f.field, filename: f.filename, contentType: f.contentType, size: f.size }; }) })
       });
       if (!r1.ok) throw new Error('backend');
       var d1 = await r1.json();

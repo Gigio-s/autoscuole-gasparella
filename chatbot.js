@@ -246,7 +246,7 @@
 /* Pulsante header "Prenota visita": testo lungo a scorrimento dentro la casella (dimensione invariata) */
 (function () {
   try {
-    var FULL = 'Prenota visita medica rinnovo patente';
+    var FULL = 'Rinnova la patente: prenota la visita medica';
     var m = document.querySelector('.mobile-menu a[href*="prenota-visita"]');
     if (m) m.textContent = FULL;
     var a = null, links = document.querySelectorAll('nav a[href*="prenota-visita"]');

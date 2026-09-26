@@ -16,7 +16,8 @@ const SITE_URL     = process.env.SITE_URL || '*';
 // pds_* solo se cittadino extra-UE.
 const CAMPI_BASE  = ['cf_fronte', 'cf_retro', 'ci_fronte', 'ci_retro', 'pat_fronte', 'pat_retro'];
 const CAMPI_PDS   = ['pds_fronte', 'pds_retro'];
-const CAMPI_TUTTI = CAMPI_BASE.concat(CAMPI_PDS);
+const CAMPI_FOTO  = ['foto', 'firma']; // fototessera + firma: solo form visita medica / rinnovo patente
+const CAMPI_TUTTI = CAMPI_BASE.concat(CAMPI_PDS).concat(CAMPI_FOTO);
 
 const TIPI_OK = {
   'application/pdf': 'pdf',
@@ -50,9 +51,11 @@ exports.handler = async function (event) {
   catch (e) { return { statusCode: 400, headers: headers(), body: JSON.stringify({ error: 'JSON non valido' }) }; }
 
   const extraUe = body.extra_ue === true;
+  const conFoto = body.foto === true; // richiesta fototessera (form visita/rinnovo)
   const files = Array.isArray(body.files) ? body.files : [];
 
-  const richiesti = extraUe ? CAMPI_TUTTI : CAMPI_BASE;
+  let richiesti = extraUe ? CAMPI_BASE.concat(CAMPI_PDS) : CAMPI_BASE.slice();
+  if (conFoto) richiesti = richiesti.concat(CAMPI_FOTO);
   const presenti = files.map(function (f) { return f && f.field; });
 
   // Verifica che ci siano tutti i documenti richiesti e nessun campo estraneo
