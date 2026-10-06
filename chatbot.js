@@ -265,3 +265,39 @@
     a.innerHTML = '<span class="pv-track"><b>' + FULL + '</b><b>' + FULL + '</b></span>';
   } catch (e) {}
 })();
+
+/* Pulsante "Lascia una recensione" che spunta sopra il chatbot al passaggio del mouse */
+(function () {
+  try {
+    var BASE = /\/legale\//.test(location.pathname) ? '../' : '';
+    var fab = document.querySelector('.gb-fab');
+    if (!fab) return;
+
+    var a = document.createElement('a');
+    a.className = 'gb-review';
+    a.href = BASE + 'recensioni.html';
+    a.setAttribute('aria-label', 'Lascia una recensione');
+    a.innerHTML = '<span class="gb-review-star">&#9733;</span> Lascia una recensione';
+    document.body.appendChild(a);
+
+    var st = document.createElement('style');
+    st.textContent =
+      '.gb-review{position:fixed;right:22px;bottom:200px;z-index:997;display:inline-flex;align-items:center;gap:.4rem;' +
+      'background:#ffb400;color:#1a1a1a;font-family:Montserrat,system-ui,sans-serif;font-weight:800;font-size:.76rem;' +
+      'text-decoration:none;padding:.6rem 1rem;border-radius:999px;box-shadow:0 6px 18px rgba(0,0,0,.22);white-space:nowrap;' +
+      'opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .25s ease,transform .25s ease;}' +
+      '.gb-review.show{opacity:1;transform:translateY(0);pointer-events:auto;}' +
+      '.gb-review .gb-review-star{color:#1a1a1a;font-size:.9rem;line-height:1;}' +
+      '@media(max-width:600px){.gb-review{right:14px;bottom:174px;font-size:.72rem;padding:.5rem .85rem;}}' +
+      '@media(hover:none){.gb-review{opacity:1;transform:translateY(0);pointer-events:auto;}}';
+    document.head.appendChild(st);
+
+    var hideT;
+    function show() { clearTimeout(hideT); a.classList.add('show'); }
+    function hideSoon() { hideT = setTimeout(function () { a.classList.remove('show'); }, 350); }
+    fab.addEventListener('mouseenter', show);
+    fab.addEventListener('mouseleave', hideSoon);
+    a.addEventListener('mouseenter', show);
+    a.addEventListener('mouseleave', hideSoon);
+  } catch (e) {}
+})();
