@@ -82,6 +82,8 @@ exports.handler = async function (event) {
         comune: b.comune != null ? String(b.comune).trim() : null,
         telefono: b.telefono != null ? String(b.telefono).trim() : null,
         orari: pulisciOrari(b.orari),
+        avviso: b.avviso === true,
+        avviso_testo: b.avviso_testo != null ? String(b.avviso_testo).trim() : null,
         updated_at: new Date().toISOString()
       };
       if (typeof b.ordine === 'number') rec.ordine = b.ordine;

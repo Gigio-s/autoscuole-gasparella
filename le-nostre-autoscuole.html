@@ -185,6 +185,8 @@
   .sede-card .sede-addr { font-size: .86rem; color: #666; line-height: 1.5; margin-bottom: .3rem; }
   .sede-card .sede-phone { font-size: .86rem; color: var(--blue); font-weight: 700; margin-bottom: 1rem; display: block; }
   .sede-card .sede-hours { font-size: .8rem; color: #555; line-height: 1.5; background: #f5f8fb; border-left: 3px solid var(--blue); border-radius: 0 8px 8px 0; padding: .55rem .7rem; margin-bottom: 1rem; }
+  .sede-card .sede-avviso { font-size: .82rem; font-weight: 700; color: #b9450b; line-height: 1.4; background: #fff4e6; border: 1px solid #ffd9a8; border-left: 3px solid #f08c1d; border-radius: 0 8px 8px 0; padding: .55rem .7rem; margin-bottom: 1rem; display: flex; gap: .45rem; align-items: flex-start; }
+  .sede-card .sede-avviso::before { content: "\26A0\FE0F"; }
   .sede-card .sede-hours b { display: block; margin-bottom: .15rem; color: var(--dark); font-size: .72rem; text-transform: uppercase; letter-spacing: .04em; }
   .sede-actions { display: flex; gap: .6rem; flex-wrap: wrap; }
   .sede-actions a {
@@ -647,6 +649,15 @@
         if (saCall && tel) saCall.setAttribute('href', telHref);
         var hours = card.querySelector('.sede-hours');
         if (hours && s.orari) hours.innerHTML = '<b>Orari ufficio</b>' + formatOrari(s.orari);
+        // avviso di chiusura (ferie / festività)
+        var existing = card.querySelector('.sede-avviso');
+        if (existing) existing.parentNode.removeChild(existing);
+        if (s.avviso && s.avviso_testo && hours) {
+          var av = document.createElement('div');
+          av.className = 'sede-avviso';
+          av.innerHTML = '<span>' + esc(s.avviso_testo) + '</span>';
+          hours.parentNode.insertBefore(av, hours);
+        }
       });
     })
     .catch(function(){});

@@ -179,6 +179,14 @@
         +   '<div><label>CAP</label><input type="text" class="f-cap" value="'+esc(s.cap||'')+'" /></div>'
         +   '<div><label>Comune</label><input type="text" class="f-comune" value="'+esc(s.comune||'')+'" /></div>'
         + '</div>'
+        + '<div class="avviso-box">'
+        +   '<label class="chk" style="display:flex;align-items:center;gap:.4rem;font-weight:700;color:#555;font-size:.85rem"><input type="checkbox" class="a-on" style="width:18px;height:18px"'+(s.avviso?' checked':'')+' /> Mostra un avviso di chiusura sul sito</label>'
+        +   '<input type="text" class="a-txt" placeholder="es. Chiuso per ferie dal 10 al 24 agosto" value="'+esc(s.avviso_testo||'')+'" style="margin-top:.45rem" />'
+        +   '<div style="margin-top:.4rem;display:flex;gap:.4rem;flex-wrap:wrap">'
+        +     '<button type="button" class="small ghost a-ferie">Chiuso per ferie</button>'
+        +     '<button type="button" class="small ghost a-fest">Chiuso per festivit&agrave;</button>'
+        +   '</div>'
+        + '</div>'
         + '<div class="giorni"><label style="font-size:.75rem;font-weight:700;color:#555;display:block;margin-bottom:.5rem">Orari ufficio (lascia vuoto o spunta "chiuso" nei giorni di chiusura)</label>'+giorni+'</div>'
         + '<div class="save-row"><button class="small" data-save>Salva questa sede</button><span class="msg" data-sedemsg></span></div>'
         + '</div>';
@@ -191,6 +199,17 @@
         ore.disabled = chk.checked;
         if (chk.checked) ore.value = '';
       });
+    });
+
+    // avviso: pulsanti rapidi -> compilano testo e attivano la spunta
+    Array.prototype.forEach.call(el.querySelectorAll('.sede-box'), function(box){
+      function setAvviso(txt){
+        box.querySelector('.a-txt').value = txt;
+        box.querySelector('.a-on').checked = true;
+      }
+      var bf = box.querySelector('.a-ferie'), bx = box.querySelector('.a-fest');
+      if (bf) bf.addEventListener('click', function(){ setAvviso('Chiuso per ferie'); });
+      if (bx) bx.addEventListener('click', function(){ setAvviso('Chiuso per festività'); });
     });
 
     // salva sede
@@ -211,14 +230,16 @@
           via: box.querySelector('.f-via').value.trim(),
           cap: box.querySelector('.f-cap').value.trim(),
           comune: box.querySelector('.f-comune').value.trim(),
-          orari: orari
+          orari: orari,
+          avviso: box.querySelector('.a-on').checked,
+          avviso_testo: box.querySelector('.a-txt').value.trim()
         };
         var m = box.querySelector('[data-sedemsg]');
         m.className = 'msg'; m.textContent = 'Salvo...'; btn.disabled = true;
         try {
           await callS(payload);
           // aggiorna copia locale
-          for (var i=0;i<SEDI.length;i++){ if (SEDI[i].id===id){ SEDI[i].nome=payload.nome; SEDI[i].telefono=payload.telefono; SEDI[i].via=payload.via; SEDI[i].cap=payload.cap; SEDI[i].comune=payload.comune; SEDI[i].orari=orari; } }
+          for (var i=0;i<SEDI.length;i++){ if (SEDI[i].id===id){ SEDI[i].nome=payload.nome; SEDI[i].telefono=payload.telefono; SEDI[i].via=payload.via; SEDI[i].cap=payload.cap; SEDI[i].comune=payload.comune; SEDI[i].orari=orari; SEDI[i].avviso=payload.avviso; SEDI[i].avviso_testo=payload.avviso_testo; } }
           m.className = 'msg ok-msg'; m.textContent = 'Salvato ✓';
           box.querySelector('h3').textContent = payload.nome || id;
         } catch(e){ m.className='msg'; m.textContent = e.message; }
