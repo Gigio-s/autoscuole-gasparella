@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Gestionale sito - Autoscuole Gasparella</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="icon" href="img/PittogrammaGaspa.png" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --blue:#1280c2; --blue-d:#0e6aa3; --bg:#f2f4f7; --dark:#2d3236; }
+  body { font-family: Arial, Helvetica, sans-serif; background: var(--bg); color: var(--dark); padding: 1.5rem; }
+  h1 { color: var(--blue); font-size: 1.4rem; margin-bottom: .3rem; }
+  .sub { font-size: .85rem; color: #666; }
+  .login { max-width: 360px; margin: 8vh auto; background:#fff; padding: 2rem; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.08); }
+  .login h1 { text-align:center; }
+  input[type=password], input[type=text] { width:100%; padding:.7rem; border:1px solid #ccd2d8; border-radius:8px; font-size:.95rem; }
+  .login input[type=password] { margin:.6rem 0 1rem; }
+  button { background:var(--blue); color:#fff; border:none; border-radius:999px; padding:.7rem 1.4rem; font-size:.95rem; font-weight:700; cursor:pointer; }
+  button:hover { background:var(--blue-d); }
+  button.small { padding:.4rem .9rem; font-size:.8rem; }
+  button.ghost { background:#e6ebf0; color:var(--dark); }
+  button.red { background:#fdecea; color:#c0392b; }
+  button.red:hover { background:#f8d7d2; }
+  button.green { background:#e8f6ec; color:#1e7e34; }
+  button.green:hover { background:#d6efdd; }
+  .msg { color:#c0392b; font-size:.85rem; min-height:1.1em; }
+  .ok-msg { color:#1e7e34; }
+  .bar { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:1rem; flex-wrap:wrap; }
+  .tabs { display:flex; gap:.5rem; margin-bottom:1.2rem; }
+  .tab { background:#e6ebf0; color:var(--dark); border:none; border-radius:999px; padding:.55rem 1.3rem; font-weight:700; font-size:.9rem; cursor:pointer; }
+  .tab.active { background:var(--blue); color:#fff; }
+  .corso, .sede-box { background:#fff; border-radius:12px; padding:1.1rem 1.3rem; margin-bottom:1.2rem; box-shadow:0 4px 16px rgba(0,0,0,.05); }
+  .corso > h3, .sede-box > h3 { font-size:1.05rem; color:var(--blue-d); margin-bottom:.8rem; }
+  .sess { display:flex; align-items:center; gap:1rem; padding:.7rem 0; border-top:1px solid #eef1f4; flex-wrap:wrap; }
+  .sess:first-of-type { border-top:none; }
+  .sess .info { flex:1; min-width:200px; }
+  .sess .info b { color:var(--dark); font-size:.95rem; }
+  .sess .info span { display:block; font-size:.8rem; color:#666; margin-top:.15rem; }
+  .pill { display:inline-block; font-size:.68rem; font-weight:800; text-transform:uppercase; padding:.2rem .55rem; border-radius:999px; }
+  .pill.full { background:#fdecea; color:#c0392b; }
+  .pill.ok { background:#e8f6ec; color:#1e7e34; }
+  .hint { font-size:.75rem; color:#8a929a; margin-top:.2rem; }
+  .fields { display:grid; grid-template-columns:1fr 1fr; gap:.7rem 1rem; margin-bottom:1rem; }
+  .fields label { font-size:.75rem; font-weight:700; color:#555; display:block; margin-bottom:.2rem; }
+  .fields .full { grid-column:1 / -1; }
+  .giorni { border-top:1px solid #eef1f4; padding-top:.8rem; }
+  .giorno { display:flex; align-items:center; gap:.7rem; margin-bottom:.5rem; flex-wrap:wrap; }
+  .giorno .gl { width:42px; font-weight:700; font-size:.85rem; }
+  .giorno input[type=text] { flex:1; min-width:160px; }
+  .giorno label.chk { display:flex; align-items:center; gap:.35rem; font-size:.8rem; color:#555; }
+  .giorno input[type=checkbox] { width:18px; height:18px; }
+  .save-row { display:flex; align-items:center; gap:1rem; margin-top:.8rem; }
+  .hidden { display:none; }
+  @media (max-width:560px){ .fields { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+
+  <div id="loginBox" class="login">
+    <h1>Gestionale sito</h1>
+    <p class="sub" style="text-align:center;margin-bottom:.4rem">Autoscuole Gasparella</p>
+    <input type="password" id="pw" placeholder="Password" autocomplete="current-password" />
+    <button id="btnLogin" style="width:100%">Entra</button>
+    <p class="msg" id="loginMsg"></p>
+  </div>
+
+  <div id="app" class="hidden">
+    <div class="bar">
+      <div>
+        <h1 style="margin:0">Gestionale sito</h1>
+        <p class="sub" style="margin:0">Modifica corsi e sedi: le pagine del sito si aggiornano da sole.</p>
+      </div>
+      <div>
+        <button class="ghost small" id="btnReload">Aggiorna</button>
+        <button class="ghost small" id="btnLogout">Esci</button>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="corsi">Corsi</button>
+      <button class="tab" data-tab="sedi">Sedi &amp; orari</button>
+    </div>
+
+    <p class="msg" id="appMsg"></p>
+    <div id="tabCorsi"></div>
+    <div id="tabSedi" class="hidden"></div>
+  </div>
+
+<script src="corsi-data.js"></script>
+<script>
+(function () {
+  'use strict';
+  var API_CORSI = '/.netlify/functions/corsi-stato';
+  var API_SEDI  = '/.netlify/functions/sedi';
+  var MESI = ['gen','feb','mar','apr','mag','giu','lug','ago','set','ott','nov','dic'];
+  var GIORNI = [['lun','Lun'],['mar','Mar'],['mer','Mer'],['gio','Gio'],['ven','Ven'],['sab','Sab'],['dom','Dom']];
+  var pw = '';
+  var STATO = {};   // corsi: chiave -> soldout
+  var SEDI = [];    // dati sedi dal DB
+
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function itDate(str){ var p=str.split('-'); return parseInt(p[2],10)+' '+MESI[parseInt(p[1],10)-1]+' '+p[0]; }
+  function chiaveSede(nomeCorso, s){ return nomeCorso+'|'+s.sede+'|'+s.formato+'|'+(s.s&&s.s[0]?s.s[0][0]:''); }
+
+  function callC(payload){ return callTo(API_CORSI, payload); }
+  function callS(payload){ return callTo(API_SEDI, payload); }
+  async function callTo(url, payload){
+    var res = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+    var data = await res.json().catch(function(){ return {}; });
+    if (!res.ok) throw new Error(data.error || ('Errore '+res.status));
+    return data;
+  }
+
+  /* ---------------- TAB CORSI ---------------- */
+  function renderCorsi(){
+    var CORSI = window.CORSI_CQC || [];
+    var el = document.getElementById('tabCorsi');
+    if (!CORSI.length){ el.innerHTML = '<p style="color:#555">Nessun corso (corsi-data.js non caricato).</p>'; return; }
+    el.innerHTML = CORSI.map(function(c){
+      var righe = c.sedi.map(function(s){
+        var k = chiaveSede(c.nome, s);
+        var pieno = STATO[k] === true;
+        var fisso = s.soldout === true;
+        var ultima = s.s[s.s.length-1][0];
+        var periodo = itDate(s.s[0][0]) + (s.s.length>1 ? ' → ' + itDate(ultima) : '');
+        return '<div class="sess" data-k="'+esc(k)+'">'
+          + '<div class="info"><b>'+esc(s.sede)+'</b> &middot; '+esc(s.formato)
+          +   '<span>'+esc(periodo)+' &middot; '+s.s.length+' incontri</span>'
+          +   (fisso ? '<span class="hint">Nota: impostato pieno direttamente sul sito.</span>' : '')
+          + '</div>'
+          + '<span class="pill '+(pieno||fisso?'full':'ok')+'" data-pill>'+(pieno||fisso?'Pieno':'Aperto')+'</span>'
+          + '<button class="small '+(pieno?'green':'red')+'" data-toggle>'+(pieno?'Riapri':'Segna pieno')+'</button>'
+          + '</div>';
+      }).join('');
+      return '<div class="corso"><h3>'+esc(c.nome)+'</h3>'+righe+'</div>';
+    }).join('');
+
+    Array.prototype.forEach.call(el.querySelectorAll('button[data-toggle]'), function(btn){
+      btn.addEventListener('click', async function(){
+        var row = btn.closest('.sess'); var k = row.getAttribute('data-k');
+        var nuovo = !(STATO[k] === true); btn.disabled = true;
+        try {
+          await callC({ password: pw, action:'set', chiave:k, soldout:nuovo });
+          STATO[k] = nuovo;
+          var pill = row.querySelector('[data-pill]');
+          pill.className = 'pill '+(nuovo?'full':'ok'); pill.textContent = nuovo?'Pieno':'Aperto';
+          btn.className = 'small '+(nuovo?'green':'red'); btn.textContent = nuovo?'Riapri':'Segna pieno';
+        } catch(e){ document.getElementById('appMsg').textContent = e.message; }
+        btn.disabled = false;
+      });
+    });
+  }
+
+  /* ---------------- TAB SEDI ---------------- */
+  function renderSedi(){
+    var el = document.getElementById('tabSedi');
+    if (!SEDI.length){
+      el.innerHTML = '<p style="color:#c0392b">Nessuna sede trovata. Verifica di aver creato la tabella "sedi" su Supabase con i dati iniziali.</p>';
+      return;
+    }
+    el.innerHTML = SEDI.map(function(s){
+      var orari = s.orari || {};
+      var giorni = GIORNI.map(function(g){
+        var key=g[0], val=(orari[key]||'');
+        var chiuso = val.trim()==='';
+        return '<div class="giorno" data-day="'+key+'">'
+          + '<span class="gl">'+g[1]+'</span>'
+          + '<input type="text" class="d-ore" placeholder="es. 09:00-12:00 e 15:30-19:30" value="'+esc(val)+'"'+(chiuso?' disabled':'')+' />'
+          + '<label class="chk"><input type="checkbox" class="d-chiuso"'+(chiuso?' checked':'')+' /> chiuso</label>'
+          + '</div>';
+      }).join('');
+      return '<div class="sede-box" data-id="'+esc(s.id)+'">'
+        + '<h3>'+esc(s.nome || s.id)+'</h3>'
+        + '<div class="fields">'
+        +   '<div><label>Nome</label><input type="text" class="f-nome" value="'+esc(s.nome||'')+'" /></div>'
+        +   '<div><label>Telefono</label><input type="text" class="f-tel" value="'+esc(s.telefono||'')+'" /></div>'
+        +   '<div class="full"><label>Via e civico</label><input type="text" class="f-via" value="'+esc(s.via||'')+'" /></div>'
+        +   '<div><label>CAP</label><input type="text" class="f-cap" value="'+esc(s.cap||'')+'" /></div>'
+        +   '<div><label>Comune</label><input type="text" class="f-comune" value="'+esc(s.comune||'')+'" /></div>'
+        + '</div>'
+        + '<div class="giorni"><label style="font-size:.75rem;font-weight:700;color:#555;display:block;margin-bottom:.5rem">Orari ufficio (lascia vuoto o spunta "chiuso" nei giorni di chiusura)</label>'+giorni+'</div>'
+        + '<div class="save-row"><button class="small" data-save>Salva questa sede</button><span class="msg" data-sedemsg></span></div>'
+        + '</div>';
+    }).join('');
+
+    // toggle chiuso -> abilita/disabilita campo orari
+    Array.prototype.forEach.call(el.querySelectorAll('.giorno'), function(row){
+      var chk = row.querySelector('.d-chiuso'), ore = row.querySelector('.d-ore');
+      chk.addEventListener('change', function(){
+        ore.disabled = chk.checked;
+        if (chk.checked) ore.value = '';
+      });
+    });
+
+    // salva sede
+    Array.prototype.forEach.call(el.querySelectorAll('button[data-save]'), function(btn){
+      btn.addEventListener('click', async function(){
+        var box = btn.closest('.sede-box');
+        var id = box.getAttribute('data-id');
+        var orari = {};
+        Array.prototype.forEach.call(box.querySelectorAll('.giorno'), function(row){
+          var key = row.getAttribute('data-day');
+          var chiuso = row.querySelector('.d-chiuso').checked;
+          orari[key] = chiuso ? '' : row.querySelector('.d-ore').value.trim();
+        });
+        var payload = {
+          password: pw, action:'set', id: id,
+          nome: box.querySelector('.f-nome').value.trim(),
+          telefono: box.querySelector('.f-tel').value.trim(),
+          via: box.querySelector('.f-via').value.trim(),
+          cap: box.querySelector('.f-cap').value.trim(),
+          comune: box.querySelector('.f-comune').value.trim(),
+          orari: orari
+        };
+        var m = box.querySelector('[data-sedemsg]');
+        m.className = 'msg'; m.textContent = 'Salvo...'; btn.disabled = true;
+        try {
+          await callS(payload);
+          // aggiorna copia locale
+          for (var i=0;i<SEDI.length;i++){ if (SEDI[i].id===id){ SEDI[i].nome=payload.nome; SEDI[i].telefono=payload.telefono; SEDI[i].via=payload.via; SEDI[i].cap=payload.cap; SEDI[i].comune=payload.comune; SEDI[i].orari=orari; } }
+          m.className = 'msg ok-msg'; m.textContent = 'Salvato ✓';
+          box.querySelector('h3').textContent = payload.nome || id;
+        } catch(e){ m.className='msg'; m.textContent = e.message; }
+        btn.disabled = false;
+      });
+    });
+  }
+
+  /* ---------------- tabs ---------------- */
+  Array.prototype.forEach.call(document.querySelectorAll('.tab'), function(t){
+    t.addEventListener('click', function(){
+      Array.prototype.forEach.call(document.querySelectorAll('.tab'), function(x){ x.classList.remove('active'); });
+      t.classList.add('active');
+      var which = t.getAttribute('data-tab');
+      document.getElementById('tabCorsi').classList.toggle('hidden', which!=='corsi');
+      document.getElementById('tabSedi').classList.toggle('hidden', which!=='sedi');
+    });
+  });
+
+  /* ---------------- login / load ---------------- */
+  async function caricaTutto(){
+    document.getElementById('appMsg').textContent = 'Carico...';
+    try {
+      var dc = await callC({ password: pw });
+      STATO = {}; (dc.stati||[]).forEach(function(x){ STATO[x.chiave] = x.soldout===true; });
+      var ds = await callS({ password: pw });
+      SEDI = ds.sedi || [];
+      document.getElementById('appMsg').textContent = '';
+      renderCorsi(); renderSedi();
+    } catch(e){
+      document.getElementById('appMsg').textContent = e.message;
+      if (/password/i.test(e.message)) logout();
+    }
+  }
+
+  function entra(){
+    document.getElementById('loginBox').classList.add('hidden');
+    document.getElementById('app').classList.remove('hidden');
+    sessionStorage.setItem('gs_pw', pw);
+    caricaTutto();
+  }
+
+  function login(){
+    pw = document.getElementById('pw').value;
+    document.getElementById('loginMsg').textContent = 'Verifico...';
+    callC({ password: pw }).then(function(){ entra(); })
+      .catch(function(e){ document.getElementById('loginMsg').textContent = e.message; pw=''; });
+  }
+
+  function logout(){
+    pw=''; sessionStorage.removeItem('gs_pw');
+    document.getElementById('app').classList.add('hidden');
+    document.getElementById('loginBox').classList.remove('hidden');
+    document.getElementById('pw').value='';
+  }
+
+  document.getElementById('btnLogin').addEventListener('click', login);
+  document.getElementById('pw').addEventListener('keydown', function(e){ if (e.key==='Enter') login(); });
+  document.getElementById('btnReload').addEventListener('click', caricaTutto);
+  document.getElementById('btnLogout').addEventListener('click', logout);
+
+  var saved = sessionStorage.getItem('gs_pw');
+  if (saved){ pw = saved; callC({ password: pw }).then(function(){ entra(); }).catch(function(){ logout(); }); }
+})();
+</script>
+</body>
+</html>
