@@ -775,20 +775,42 @@
       }
     });
 
-    // Carica gli stati "pieno" dal backend, poi disegna i corsi
-    (function initCorsi() {
-      // assegna una chiave stabile a ogni sessione
-      CORSI.forEach(function (c) {
-        c.sedi.forEach(function (s) { s._key = chiaveSede(c.nome, s); });
+    // Raggruppa le edizioni (dal DB) nella struttura attesa, per tipo di corso
+    function buildFromEdizioni(rows) {
+      var byNome = {}, order = [];
+      rows.forEach(function (r) {
+        if (!byNome[r.nome]) { byNome[r.nome] = { nome: r.nome, costo: r.costo || '', pagamento: r.pagamento || '', sedi: [] }; order.push(r.nome); }
+        var g = byNome[r.nome];
+        if (!g.costo && r.costo) g.costo = r.costo;
+        if (!g.pagamento && r.pagamento) g.pagamento = r.pagamento;
+        g.sedi.push({ sede: r.sede, formato: r.formato, s: (r.date || []) });
       });
-      fetch(FN_BASE + '/corsi-stato', {
+      return order.map(function (n) { var g = byNome[n]; if (!g.costo) delete g.costo; if (!g.pagamento) delete g.pagamento; return g; });
+    }
+
+    // Carica i corsi dal DB (fallback al file corsi-data.js) + gli stati "pieno", poi disegna
+    (function initCorsi() {
+      function finish() {
+        CORSI.forEach(function (c) { c.sedi.forEach(function (s) { s._key = chiaveSede(c.nome, s); }); });
+        renderCourses();
+      }
+      fetch(FN_BASE + '/corsi', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'list' })
       })
-        .then(function (r) { return r.ok ? r.json() : { stati: [] }; })
-        .then(function (d) { (d.stati || []).forEach(function (x) { if (x.soldout) STATO_CORSI[x.chiave] = true; }); })
+        .then(function (r) { return r.ok ? r.json() : { corsi: [] }; })
+        .then(function (d) { if (d.corsi && d.corsi.length) CORSI = buildFromEdizioni(d.corsi); })
         .catch(function () {})
-        .then(function () { renderCourses(); });
+        .then(function () {
+          return fetch(FN_BASE + '/corsi-stato', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'list' })
+          })
+            .then(function (r) { return r.ok ? r.json() : { stati: [] }; })
+            .then(function (d) { (d.stati || []).forEach(function (x) { if (x.soldout) STATO_CORSI[x.chiave] = true; }); })
+            .catch(function () {});
+        })
+        .then(finish);
     })();
   })();
   </script>

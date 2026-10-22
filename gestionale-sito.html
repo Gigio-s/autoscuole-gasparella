@@ -92,18 +92,21 @@
 (function () {
   'use strict';
   var API_CORSI = '/.netlify/functions/corsi-stato';
+  var API_CORSIDEF = '/.netlify/functions/corsi';
   var API_SEDI  = '/.netlify/functions/sedi';
   var MESI = ['gen','feb','mar','apr','mag','giu','lug','ago','set','ott','nov','dic'];
   var GIORNI = [['lun','Lun'],['mar','Mar'],['mer','Mer'],['gio','Gio'],['ven','Ven'],['sab','Sab'],['dom','Dom']];
   var pw = '';
-  var STATO = {};   // corsi: chiave -> soldout
-  var SEDI = [];    // dati sedi dal DB
+  var STATO = {};     // corsi: chiave -> soldout
+  var CORSI_DB = [];  // edizioni corsi dal DB (attive + archiviate)
+  var SEDI = [];      // dati sedi dal DB
 
   function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
   function itDate(str){ var p=str.split('-'); return parseInt(p[2],10)+' '+MESI[parseInt(p[1],10)-1]+' '+p[0]; }
   function chiaveSede(nomeCorso, s){ return nomeCorso+'|'+s.sede+'|'+s.formato+'|'+(s.s&&s.s[0]?s.s[0][0]:''); }
 
   function callC(payload){ return callTo(API_CORSI, payload); }
+  function callK(payload){ return callTo(API_CORSIDEF, payload); }
   function callS(payload){ return callTo(API_SEDI, payload); }
   async function callTo(url, payload){
     var res = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
@@ -112,37 +115,140 @@
     return data;
   }
 
-  /* ---------------- TAB CORSI ---------------- */
+  /* ---------------- TAB CORSI (da database) ---------------- */
+  function firstDate(ed){ return (ed.date && ed.date[0]) ? ed.date[0][0] : ''; }
+  function chiaveEd(ed){ return ed.nome+'|'+ed.sede+'|'+ed.formato+'|'+firstDate(ed); }
+  function periodoEd(ed){
+    if (!ed.date || !ed.date.length) return 'nessuna data';
+    var a = ed.date[0][0], b = ed.date[ed.date.length-1][0];
+    return itDate(a) + (ed.date.length>1 ? ' → '+itDate(b) : '') + ' · '+ed.date.length+' incontri';
+  }
+  function nomiEsistenti(){ var set={}; CORSI_DB.forEach(function(e){ if(e.nome) set[e.nome]=1; }); return Object.keys(set); }
+  function sediNomi(){ return SEDI.map(function(s){ return s.nome; }); }
+
+  async function caricaStato(){ var d = await callC({ password: pw }); STATO = {}; (d.stati||[]).forEach(function(x){ STATO[x.chiave] = x.soldout===true; }); }
+  async function caricaCorsi(){ var d = await callK({ password: pw, action:'all' }); CORSI_DB = d.corsi || []; }
+
+  function formAggiungiHtml(){
+    var nomiOpts = nomiEsistenti().map(function(n){ return '<option value="'+esc(n)+'">'; }).join('');
+    var sediOpts = sediNomi().map(function(n){ return '<option value="'+esc(n)+'">'; }).join('');
+    return '<div class="corso" id="addBox"><h3>Aggiungi una edizione di corso</h3>'
+      + '<div class="fields">'
+      +  '<div class="full"><label>Tipo di corso</label><input type="text" id="adNome" list="adNomi" placeholder="es. Rinnovo CQC Merci e Persone" /><datalist id="adNomi">'+nomiOpts+'</datalist></div>'
+      +  '<div><label>Sede</label><input type="text" id="adSede" list="adSedi" placeholder="es. Sossano" /><datalist id="adSedi">'+sediOpts+'</datalist></div>'
+      +  '<div><label>Formato</label><input type="text" id="adFormato" placeholder="es. Serale / Sabato mattina" /></div>'
+      +  '<div><label>Costo (opzionale)</label><input type="text" id="adCosto" placeholder="es. 350 €" /></div>'
+      +  '<div><label>Pagamento (opzionale)</label><input type="text" id="adPagamento" placeholder="es. Pagamento in ufficio" /></div>'
+      + '</div>'
+      + '<label style="font-size:.75rem;font-weight:700;color:#555;display:block;margin:.3rem 0 .5rem">Date delle lezioni (una per riga)</label>'
+      + '<div id="adDate"></div>'
+      + '<button type="button" class="small ghost" id="adAddData">+ Aggiungi data</button>'
+      + '<div class="save-row"><button id="adSalva">Crea corso</button><span class="msg" id="adMsg"></span></div>'
+      + '</div>';
+  }
+  function dataRowHtml(){
+    return '<div class="giorno ad-datarow"><input type="date" class="ad-d" style="flex:0 0 auto" /><input type="text" class="ad-o" placeholder="es. 08:00-13:00" /><button type="button" class="small red ad-del">&times;</button></div>';
+  }
+  function wireAggiungi(){
+    var wrap = document.getElementById('adDate'); if (!wrap) return;
+    function addRow(){
+      var div = document.createElement('div'); div.innerHTML = dataRowHtml();
+      var row = div.firstChild; wrap.appendChild(row);
+      row.querySelector('.ad-del').addEventListener('click', function(){ row.parentNode.removeChild(row); });
+    }
+    addRow();
+    document.getElementById('adAddData').addEventListener('click', addRow);
+    document.getElementById('adSalva').addEventListener('click', async function(){
+      var nome = document.getElementById('adNome').value.trim();
+      var sede = document.getElementById('adSede').value.trim();
+      var date = [];
+      Array.prototype.forEach.call(wrap.querySelectorAll('.ad-datarow'), function(r){
+        var d = r.querySelector('.ad-d').value; var o = r.querySelector('.ad-o').value.trim();
+        if (d) date.push([d, o]);
+      });
+      var msg = document.getElementById('adMsg'); msg.className = 'msg';
+      if (!nome || !sede || !date.length){ msg.textContent = 'Compila almeno tipo di corso, sede e una data.'; return; }
+      var btn = document.getElementById('adSalva'); btn.disabled = true; msg.textContent = 'Salvo...';
+      try {
+        await callK({ password: pw, action:'save', nome:nome, sede:sede,
+          formato: document.getElementById('adFormato').value.trim(),
+          costo: document.getElementById('adCosto').value.trim(),
+          pagamento: document.getElementById('adPagamento').value.trim(),
+          date: date, ordine: 999 });
+        await caricaCorsi(); renderCorsi();
+      } catch(e){ msg.textContent = e.message; btn.disabled = false; }
+    });
+  }
+
+  async function importaCorsi(){
+    var src = window.CORSI_CQC || [];
+    var edizioni = [], soldouts = [];
+    src.forEach(function(c, ci){
+      (c.sedi||[]).forEach(function(s, si){
+        edizioni.push({ nome:c.nome, sede:s.sede, formato:s.formato, costo:c.costo||'', pagamento:c.pagamento||'', date:s.s, ordine: ci*100+si });
+        if (s.soldout) soldouts.push(c.nome+'|'+s.sede+'|'+s.formato+'|'+(s.s[0]?s.s[0][0]:''));
+      });
+    });
+    var m = document.getElementById('importMsg'); if(m){ m.className='msg'; m.textContent='Importo...'; }
+    var btn = document.getElementById('btnImport'); if(btn) btn.disabled = true;
+    try {
+      await callK({ password: pw, action:'seed', corsi: edizioni });
+      for (var i=0;i<soldouts.length;i++){ try { await callC({ password: pw, action:'set', chiave: soldouts[i], soldout:true }); } catch(e){} }
+      await caricaCorsi(); await caricaStato(); renderCorsi();
+    } catch(e){ if(m) m.textContent = e.message; if(btn) btn.disabled = false; }
+  }
+
   function renderCorsi(){
-    var CORSI = window.CORSI_CQC || [];
     var el = document.getElementById('tabCorsi');
-    if (!CORSI.length){ el.innerHTML = '<p style="color:#555">Nessun corso (corsi-data.js non caricato).</p>'; return; }
-    el.innerHTML = CORSI.map(function(c){
-      var righe = c.sedi.map(function(s){
-        var k = chiaveSede(c.nome, s);
-        var pieno = STATO[k] === true;
-        var fisso = s.soldout === true;
-        var ultima = s.s[s.s.length-1][0];
-        var periodo = itDate(s.s[0][0]) + (s.s.length>1 ? ' → ' + itDate(ultima) : '');
-        return '<div class="sess" data-k="'+esc(k)+'">'
-          + '<div class="info"><b>'+esc(s.sede)+'</b> &middot; '+esc(s.formato)
-          +   '<span>'+esc(periodo)+' &middot; '+s.s.length+' incontri</span>'
-          +   (fisso ? '<span class="hint">Nota: impostato pieno direttamente sul sito.</span>' : '')
-          + '</div>'
-          + '<span class="pill '+(pieno||fisso?'full':'ok')+'" data-pill>'+(pieno||fisso?'Pieno':'Aperto')+'</span>'
+    var attivi = CORSI_DB.filter(function(e){ return !e.archiviato; });
+    var arch = CORSI_DB.filter(function(e){ return e.archiviato; });
+
+    if (!CORSI_DB.length){
+      el.innerHTML = '<div class="corso"><h3>Nessun corso nel gestionale</h3>'
+        + '<p class="sub" style="margin-bottom:.8rem">Importa i corsi che sono gi&agrave; sul sito per iniziare a gestirli da qui (si fa una volta sola).</p>'
+        + '<button id="btnImport">Importa i corsi attuali</button> <span class="msg" id="importMsg"></span></div>'
+        + formAggiungiHtml();
+      var bi = document.getElementById('btnImport'); if (bi) bi.addEventListener('click', importaCorsi);
+      wireAggiungi();
+      return;
+    }
+
+    var byNome = {}, order = [];
+    attivi.forEach(function(e){ if(!byNome[e.nome]){ byNome[e.nome]=[]; order.push(e.nome); } byNome[e.nome].push(e); });
+    var activeHtml = order.map(function(n){
+      var righe = byNome[n].map(function(e){
+        var k = chiaveEd(e); var pieno = STATO[k] === true;
+        return '<div class="sess" data-k="'+esc(k)+'" data-id="'+esc(e.id)+'">'
+          + '<div class="info"><b>'+esc(e.sede)+'</b> &middot; '+esc(e.formato||'')+'<span>'+esc(periodoEd(e))+'</span></div>'
+          + '<span class="pill '+(pieno?'full':'ok')+'" data-pill>'+(pieno?'Pieno':'Aperto')+'</span>'
           + '<button class="small '+(pieno?'green':'red')+'" data-toggle>'+(pieno?'Riapri':'Segna pieno')+'</button>'
+          + '<button class="small ghost" data-arch>Archivia</button>'
           + '</div>';
       }).join('');
-      return '<div class="corso"><h3>'+esc(c.nome)+'</h3>'+righe+'</div>';
+      return '<div class="corso"><h3>'+esc(n)+'</h3>'+righe+'</div>';
     }).join('');
 
+    var archHtml = '';
+    if (arch.length){
+      archHtml = '<div class="corso"><h3>Archivio corsi ('+arch.length+')</h3>'
+        + arch.map(function(e){
+          return '<div class="sess" data-id="'+esc(e.id)+'">'
+            + '<div class="info"><b>'+esc(e.nome)+'</b> &middot; '+esc(e.sede)+' &middot; '+esc(e.formato||'')+'<span>'+esc(periodoEd(e))+'</span></div>'
+            + '<button class="small green" data-ripristina>Ripristina</button>'
+            + '<button class="small red" data-elimina>Elimina</button>'
+            + '</div>';
+        }).join('') + '</div>';
+    }
+
+    el.innerHTML = activeHtml + formAggiungiHtml() + archHtml;
+
+    // toggle sold-out + archivia
     Array.prototype.forEach.call(el.querySelectorAll('button[data-toggle]'), function(btn){
       btn.addEventListener('click', async function(){
         var row = btn.closest('.sess'); var k = row.getAttribute('data-k');
         var nuovo = !(STATO[k] === true); btn.disabled = true;
         try {
-          await callC({ password: pw, action:'set', chiave:k, soldout:nuovo });
-          STATO[k] = nuovo;
+          await callC({ password: pw, action:'set', chiave:k, soldout:nuovo }); STATO[k] = nuovo;
           var pill = row.querySelector('[data-pill]');
           pill.className = 'pill '+(nuovo?'full':'ok'); pill.textContent = nuovo?'Pieno':'Aperto';
           btn.className = 'small '+(nuovo?'green':'red'); btn.textContent = nuovo?'Riapri':'Segna pieno';
@@ -150,6 +256,32 @@
         btn.disabled = false;
       });
     });
+    Array.prototype.forEach.call(el.querySelectorAll('button[data-arch]'), function(btn){
+      btn.addEventListener('click', async function(){
+        if (!confirm('Archiviare questa edizione? Verrà tolta dal sito ma resta in archivio.')) return;
+        var id = btn.closest('.sess').getAttribute('data-id'); btn.disabled = true;
+        try { await callK({ password: pw, action:'archivia', id:id, archiviato:true }); await caricaCorsi(); renderCorsi(); }
+        catch(e){ document.getElementById('appMsg').textContent = e.message; btn.disabled = false; }
+      });
+    });
+    // archivio: ripristina / elimina
+    Array.prototype.forEach.call(el.querySelectorAll('button[data-ripristina]'), function(btn){
+      btn.addEventListener('click', async function(){
+        var id = btn.closest('.sess').getAttribute('data-id'); btn.disabled = true;
+        try { await callK({ password: pw, action:'archivia', id:id, archiviato:false }); await caricaCorsi(); renderCorsi(); }
+        catch(e){ document.getElementById('appMsg').textContent = e.message; btn.disabled = false; }
+      });
+    });
+    Array.prototype.forEach.call(el.querySelectorAll('button[data-elimina]'), function(btn){
+      btn.addEventListener('click', async function(){
+        if (!confirm('Eliminare DEFINITIVAMENTE questa edizione dall’archivio?')) return;
+        var id = btn.closest('.sess').getAttribute('data-id'); btn.disabled = true;
+        try { await callK({ password: pw, action:'elimina', id:id }); await caricaCorsi(); renderCorsi(); }
+        catch(e){ document.getElementById('appMsg').textContent = e.message; btn.disabled = false; }
+      });
+    });
+
+    wireAggiungi();
   }
 
   /* ---------------- TAB SEDI ---------------- */
@@ -263,8 +395,8 @@
   async function caricaTutto(){
     document.getElementById('appMsg').textContent = 'Carico...';
     try {
-      var dc = await callC({ password: pw });
-      STATO = {}; (dc.stati||[]).forEach(function(x){ STATO[x.chiave] = x.soldout===true; });
+      await caricaStato();
+      await caricaCorsi();
       var ds = await callS({ password: pw });
       SEDI = ds.sedi || [];
       document.getElementById('appMsg').textContent = '';
