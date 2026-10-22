@@ -55,6 +55,15 @@
   .save-row { display:flex; align-items:center; gap:1rem; margin-top:.8rem; }
   .hidden { display:none; }
   @media (max-width:560px){ .fields { grid-template-columns:1fr; } }
+  .help-overlay { position:fixed; inset:0; background:rgba(0,0,0,.45); display:none; align-items:flex-start; justify-content:center; z-index:500; padding:4vh 1rem; overflow:auto; }
+  .help-overlay.open { display:flex; }
+  .help-modal { background:#fff; max-width:720px; width:100%; border-radius:14px; padding:1.4rem 1.8rem 2rem; box-shadow:0 20px 50px rgba(0,0,0,.3); }
+  .help-modal h2 { color:var(--blue); font-size:1.3rem; margin-bottom:.2rem; }
+  .help-modal h3 { color:var(--blue-d); font-size:1rem; margin:1.2rem 0 .35rem; }
+  .help-modal p, .help-modal li { font-size:.9rem; line-height:1.6; color:var(--dark); }
+  .help-modal ul { margin:.2rem 0 .2rem 1.15rem; }
+  .help-modal .tag { display:inline-block; background:#eef4fb; color:var(--blue-d); font-weight:700; font-size:.8rem; padding:.05rem .4rem; border-radius:5px; }
+  .help-close { float:right; background:#e6ebf0; color:var(--dark); border:none; border-radius:999px; padding:.4rem 1rem; cursor:pointer; font-weight:700; font-size:.85rem; }
 </style>
 </head>
 <body>
@@ -74,6 +83,7 @@
         <p class="sub" style="margin:0">Modifica corsi e sedi: le pagine del sito si aggiornano da sole.</p>
       </div>
       <div>
+        <button class="ghost small" id="btnGuida">? Guida</button>
         <button class="ghost small" id="btnReload">Aggiorna</button>
         <button class="ghost small" id="btnLogout">Esci</button>
       </div>
@@ -89,6 +99,38 @@
     <div id="tabSedi" class="hidden"></div>
   </div>
 
+  <div class="help-overlay" id="helpOverlay">
+    <div class="help-modal">
+      <button class="help-close" id="helpClose">Chiudi ✕</button>
+      <h2>Guida al gestionale</h2>
+      <p>Da qui gestisci <b>corsi</b> e <b>sedi</b> del sito. Ogni modifica che salvi compare sul sito pubblico; se stai guardando il sito, <b>ricarica la pagina</b> (Ctrl+F5) per vedere l'aggiornamento.</p>
+
+      <h3>Scheda “Corsi”</h3>
+      <p>Ogni riga è una <b>edizione</b> di corso (un corso in una sede con le sue date).</p>
+      <ul>
+        <li><span class="tag">Segna pieno</span> chiude le iscrizioni online: sul sito quella edizione diventa <b>SOLD OUT</b>. <span class="tag">Riapri</span> le riapre.</li>
+        <li><span class="tag">Modifica</span> apre l'editor per cambiare tipo, sede, formato, costo, pagamento e date/orari, <b>senza rifare il corso</b>. Poi “Salva modifiche”.</li>
+        <li><span class="tag">Archivia</span> toglie l'edizione dal sito e la sposta in <b>Archivio corsi</b> (in fondo). Da lì puoi <b>Ripristinare</b> (rimetterla online) o <b>Eliminare</b> definitivamente.</li>
+      </ul>
+      <p><b>Aggiungere un corso:</b> nel riquadro “Aggiungi una edizione di corso” scegli il <b>tipo</b> dal menu (o “Nuovo tipo di corso”), la <b>sede</b>, il <b>formato</b>, eventuale costo, poi aggiungi le <b>date</b> (una per riga) scegliendo giorno e orari dalle tendine “dalle/alle”. Infine “Crea corso”.</p>
+
+      <h3>Scheda “Sedi &amp; orari”</h3>
+      <ul>
+        <li>Modifichi <b>nome, telefono, via, CAP e comune</b> di ogni sede.</li>
+        <li>Imposti gli <b>orari giorno per giorno</b>: scrivi l'orario (es. <i>09:00-12:00 e 15:30-19:30</i>) oppure spunta <b>“chiuso”</b> nei giorni di chiusura.</li>
+        <li><b>Avviso di chiusura:</b> spunta “Mostra un avviso di chiusura sul sito” e scrivi il motivo (o usa i pulsanti <b>Chiuso per ferie</b> / <b>Chiuso per festività</b>). Sul sito comparirà un banner arancione sulla sede.</li>
+        <li>Ricordati di premere <b>“Salva questa sede”</b> dopo le modifiche.</li>
+      </ul>
+
+      <h3>In breve</h3>
+      <ul>
+        <li>Tutto si salva da solo nel sistema: non serve avvisare nessuno.</li>
+        <li>Se non vedi subito il cambiamento sul sito, ricarica con <b>Ctrl+F5</b>.</li>
+        <li><b>Aggiorna</b> (in alto) ricarica i dati nel pannello; <b>Esci</b> chiude la sessione.</li>
+      </ul>
+    </div>
+  </div>
+
 <script src="corsi-data.js"></script>
 <script>
 (function () {
@@ -102,6 +144,7 @@
   var STATO = {};     // corsi: chiave -> soldout
   var CORSI_DB = [];  // edizioni corsi dal DB (attive + archiviate)
   var SEDI = [];      // dati sedi dal DB
+  var editingId = null; // id edizione in modifica (apre l'editor inline)
 
   function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
   function itDate(str){ var p=str.split('-'); return parseInt(p[2],10)+' '+MESI[parseInt(p[1],10)-1]+' '+p[0]; }
@@ -167,6 +210,80 @@
       + '<span style="font-size:.78rem;color:#555">dalle</span><select class="ad-o1">'+timeOpts()+'</select>'
       + '<span style="font-size:.78rem;color:#555">alle</span><select class="ad-o2">'+timeOpts()+'</select>'
       + '<button type="button" class="small red ad-del">&times;</button></div>';
+  }
+
+  // ---- Editor di una edizione esistente (Modifica) ----
+  function timeOptsSel(sel){
+    var o = '<option value="">--</option>';
+    for (var h=7; h<=23; h++){
+      ['00','30'].forEach(function(mm){
+        if (h===23 && mm==='30') return;
+        var t = ('0'+h).slice(-2)+':'+mm;
+        o += '<option value="'+t+'"'+(t===sel?' selected':'')+'>'+t+'</option>';
+      });
+    }
+    return o;
+  }
+  function edDateRow(d, o){
+    var o1='', o2=''; if (o){ var p=String(o).split('-'); o1=(p[0]||'').trim(); o2=(p[1]||'').trim(); }
+    return '<div class="giorno ef-datarow">'
+      + '<input type="date" class="ef-d" style="flex:0 0 auto" value="'+esc(d||'')+'" />'
+      + '<span style="font-size:.78rem;color:#555">dalle</span><select class="ef-o1">'+timeOptsSel(o1)+'</select>'
+      + '<span style="font-size:.78rem;color:#555">alle</span><select class="ef-o2">'+timeOptsSel(o2)+'</select>'
+      + '<button type="button" class="small red ef-del">&times;</button></div>';
+  }
+  function editorHtml(e){
+    var nomiOpts = nomiEsistenti().map(function(n){ return '<option value="'+esc(n)+'">'; }).join('');
+    var sediOpts = sediNomi().map(function(n){ return '<option value="'+esc(n)+'">'; }).join('');
+    var dateRows = (e.date||[]).map(function(x){ return edDateRow(x[0], x[1]); }).join('');
+    return '<div class="corso edit-box" data-id="'+esc(e.id)+'">'
+      + '<h3>Modifica edizione</h3>'
+      + '<div class="fields">'
+      +  '<div class="full"><label>Tipo di corso</label><input type="text" class="ef-nome" list="efNomi" value="'+esc(e.nome||'')+'" /><datalist id="efNomi">'+nomiOpts+'</datalist></div>'
+      +  '<div><label>Sede</label><input type="text" class="ef-sede" list="efSedi" value="'+esc(e.sede||'')+'" /><datalist id="efSedi">'+sediOpts+'</datalist></div>'
+      +  '<div><label>Formato</label><input type="text" class="ef-formato" value="'+esc(e.formato||'')+'" /></div>'
+      +  '<div><label>Costo (opzionale)</label><input type="text" class="ef-costo" value="'+esc(e.costo||'')+'" /></div>'
+      +  '<div><label>Pagamento (opzionale)</label><input type="text" class="ef-pagamento" value="'+esc(e.pagamento||'')+'" /></div>'
+      + '</div>'
+      + '<label style="font-size:.75rem;font-weight:700;color:#555;display:block;margin:.3rem 0 .5rem">Date delle lezioni</label>'
+      + '<div class="ef-date">'+dateRows+'</div>'
+      + '<button type="button" class="small ghost ef-add">+ Aggiungi data</button>'
+      + '<div class="save-row"><button class="ef-salva">Salva modifiche</button><button class="ghost ef-annulla">Annulla</button><span class="msg ef-msg"></span></div>'
+      + '</div>';
+  }
+  function wireEditor(el){
+    var box = el.querySelector('.edit-box'); if (!box) return;
+    var wrap = box.querySelector('.ef-date');
+    function wireDel(row){ row.querySelector('.ef-del').addEventListener('click', function(){ row.parentNode.removeChild(row); }); }
+    Array.prototype.forEach.call(wrap.querySelectorAll('.ef-datarow'), wireDel);
+    box.querySelector('.ef-add').addEventListener('click', function(){
+      var div = document.createElement('div'); div.innerHTML = edDateRow('', '');
+      var row = div.firstChild; wrap.appendChild(row); wireDel(row);
+    });
+    box.querySelector('.ef-annulla').addEventListener('click', function(){ editingId = null; renderCorsi(); });
+    box.querySelector('.ef-salva').addEventListener('click', async function(){
+      var id = box.getAttribute('data-id');
+      var nome = box.querySelector('.ef-nome').value.trim();
+      var sede = box.querySelector('.ef-sede').value.trim();
+      var date = [];
+      Array.prototype.forEach.call(wrap.querySelectorAll('.ef-datarow'), function(r){
+        var d = r.querySelector('.ef-d').value;
+        var o1 = r.querySelector('.ef-o1').value, o2 = r.querySelector('.ef-o2').value;
+        var o = (o1 && o2) ? (o1 + '-' + o2) : (o1 || o2 || '');
+        if (d) date.push([d, o]);
+      });
+      var msg = box.querySelector('.ef-msg'); msg.className = 'msg';
+      if (!nome || !sede || !date.length){ msg.textContent = 'Servono tipo di corso, sede e almeno una data.'; return; }
+      var btn = box.querySelector('.ef-salva'); btn.disabled = true; msg.textContent = 'Salvo...';
+      try {
+        await callK({ password: pw, action:'save', id: id, nome:nome, sede:sede,
+          formato: box.querySelector('.ef-formato').value.trim(),
+          costo: box.querySelector('.ef-costo').value.trim(),
+          pagamento: box.querySelector('.ef-pagamento').value.trim(),
+          date: date });
+        editingId = null; await caricaCorsi(); renderCorsi();
+      } catch(e){ msg.textContent = e.message; btn.disabled = false; }
+    });
   }
   function wireAggiungi(){
     var wrap = document.getElementById('adDate'); if (!wrap) return;
@@ -247,11 +364,13 @@
     attivi.forEach(function(e){ if(!byNome[e.nome]){ byNome[e.nome]=[]; order.push(e.nome); } byNome[e.nome].push(e); });
     var activeHtml = order.map(function(n){
       var righe = byNome[n].map(function(e){
+        if (editingId === e.id) return editorHtml(e);
         var k = chiaveEd(e); var pieno = STATO[k] === true;
         return '<div class="sess" data-k="'+esc(k)+'" data-id="'+esc(e.id)+'">'
           + '<div class="info"><b>'+esc(e.sede)+'</b> &middot; '+esc(e.formato||'')+'<span>'+esc(periodoEd(e))+'</span></div>'
           + '<span class="pill '+(pieno?'full':'ok')+'" data-pill>'+(pieno?'Pieno':'Aperto')+'</span>'
           + '<button class="small '+(pieno?'green':'red')+'" data-toggle>'+(pieno?'Riapri':'Segna pieno')+'</button>'
+          + '<button class="small ghost" data-edit>Modifica</button>'
           + '<button class="small ghost" data-arch>Archivia</button>'
           + '</div>';
       }).join('');
@@ -294,6 +413,11 @@
         catch(e){ document.getElementById('appMsg').textContent = e.message; btn.disabled = false; }
       });
     });
+    // apri editor Modifica
+    Array.prototype.forEach.call(el.querySelectorAll('button[data-edit]'), function(btn){
+      btn.addEventListener('click', function(){ editingId = btn.closest('.sess').getAttribute('data-id'); renderCorsi(); });
+    });
+    wireEditor(el);
     // archivio: ripristina / elimina
     Array.prototype.forEach.call(el.querySelectorAll('button[data-ripristina]'), function(btn){
       btn.addEventListener('click', async function(){
@@ -462,6 +586,12 @@
   document.getElementById('pw').addEventListener('keydown', function(e){ if (e.key==='Enter') login(); });
   document.getElementById('btnReload').addEventListener('click', caricaTutto);
   document.getElementById('btnLogout').addEventListener('click', logout);
+  (function(){
+    var ov = document.getElementById('helpOverlay');
+    document.getElementById('btnGuida').addEventListener('click', function(){ ov.classList.add('open'); });
+    document.getElementById('helpClose').addEventListener('click', function(){ ov.classList.remove('open'); });
+    ov.addEventListener('click', function(e){ if (e.target === ov) ov.classList.remove('open'); });
+  })();
 
   var saved = sessionStorage.getItem('gs_pw');
   if (saved){ pw = saved; callC({ password: pw }).then(function(){ entra(); }).catch(function(){ logout(); }); }
