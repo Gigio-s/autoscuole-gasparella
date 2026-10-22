@@ -48,6 +48,8 @@
   .giorno { display:flex; align-items:center; gap:.7rem; margin-bottom:.5rem; flex-wrap:wrap; }
   .giorno .gl { width:42px; font-weight:700; font-size:.85rem; }
   .giorno input[type=text] { flex:1; min-width:160px; }
+  .fields select, .giorno select { padding:.6rem .5rem; border:1px solid #ccd2d8; border-radius:8px; font-size:.9rem; background:#fff; font-family:inherit; }
+  .giorno select { flex:0 0 auto; }
   .giorno label.chk { display:flex; align-items:center; gap:.35rem; font-size:.8rem; color:#555; }
   .giorno input[type=checkbox] { width:18px; height:18px; }
   .save-row { display:flex; align-items:center; gap:1rem; margin-top:.8rem; }
@@ -129,12 +131,25 @@
   async function caricaStato(){ var d = await callC({ password: pw }); STATO = {}; (d.stati||[]).forEach(function(x){ STATO[x.chiave] = x.soldout===true; }); }
   async function caricaCorsi(){ var d = await callK({ password: pw, action:'all' }); CORSI_DB = d.corsi || []; }
 
+  function timeOpts(){
+    var o = '<option value="">--</option>';
+    for (var h=7; h<=23; h++){
+      ['00','30'].forEach(function(mm){
+        if (h===23 && mm==='30') return;
+        var t = ('0'+h).slice(-2)+':'+mm;
+        o += '<option value="'+t+'">'+t+'</option>';
+      });
+    }
+    return o;
+  }
   function formAggiungiHtml(){
-    var nomiOpts = nomiEsistenti().map(function(n){ return '<option value="'+esc(n)+'">'; }).join('');
+    var nomiSelOpts = nomiEsistenti().map(function(n){ return '<option value="'+esc(n)+'">'+esc(n)+'</option>'; }).join('');
     var sediOpts = sediNomi().map(function(n){ return '<option value="'+esc(n)+'">'; }).join('');
     return '<div class="corso" id="addBox"><h3>Aggiungi una edizione di corso</h3>'
       + '<div class="fields">'
-      +  '<div class="full"><label>Tipo di corso</label><input type="text" id="adNome" list="adNomi" placeholder="es. Rinnovo CQC Merci e Persone" /><datalist id="adNomi">'+nomiOpts+'</datalist></div>'
+      +  '<div class="full"><label>Tipo di corso</label>'
+      +    '<select id="adNomeSel" style="width:100%"><option value="">— scegli un corso esistente —</option>'+nomiSelOpts+'<option value="__new__">➕ Nuovo tipo di corso…</option></select>'
+      +    '<input type="text" id="adNomeNew" placeholder="Nome del nuovo corso" style="margin-top:.4rem;display:none" /></div>'
       +  '<div><label>Sede</label><input type="text" id="adSede" list="adSedi" placeholder="es. Sossano" /><datalist id="adSedi">'+sediOpts+'</datalist></div>'
       +  '<div><label>Formato</label><input type="text" id="adFormato" placeholder="es. Serale / Sabato mattina" /></div>'
       +  '<div><label>Costo (opzionale)</label><input type="text" id="adCosto" placeholder="es. 350 €" /></div>'
@@ -147,7 +162,11 @@
       + '</div>';
   }
   function dataRowHtml(){
-    return '<div class="giorno ad-datarow"><input type="date" class="ad-d" style="flex:0 0 auto" /><input type="text" class="ad-o" placeholder="es. 08:00-13:00" /><button type="button" class="small red ad-del">&times;</button></div>';
+    return '<div class="giorno ad-datarow">'
+      + '<input type="date" class="ad-d" style="flex:0 0 auto" />'
+      + '<span style="font-size:.78rem;color:#555">dalle</span><select class="ad-o1">'+timeOpts()+'</select>'
+      + '<span style="font-size:.78rem;color:#555">alle</span><select class="ad-o2">'+timeOpts()+'</select>'
+      + '<button type="button" class="small red ad-del">&times;</button></div>';
   }
   function wireAggiungi(){
     var wrap = document.getElementById('adDate'); if (!wrap) return;
@@ -158,12 +177,23 @@
     }
     addRow();
     document.getElementById('adAddData').addEventListener('click', addRow);
+
+    // tipo di corso: menu esistenti oppure "nuovo tipo"
+    var selEl = document.getElementById('adNomeSel'), newEl = document.getElementById('adNomeNew');
+    if (selEl) selEl.addEventListener('change', function(){
+      newEl.style.display = (selEl.value === '__new__') ? '' : 'none';
+      if (selEl.value === '__new__') newEl.focus();
+    });
+
     document.getElementById('adSalva').addEventListener('click', async function(){
-      var nome = document.getElementById('adNome').value.trim();
+      var sel = document.getElementById('adNomeSel').value;
+      var nome = (sel === '__new__') ? document.getElementById('adNomeNew').value.trim() : sel.trim();
       var sede = document.getElementById('adSede').value.trim();
       var date = [];
       Array.prototype.forEach.call(wrap.querySelectorAll('.ad-datarow'), function(r){
-        var d = r.querySelector('.ad-d').value; var o = r.querySelector('.ad-o').value.trim();
+        var d = r.querySelector('.ad-d').value;
+        var o1 = r.querySelector('.ad-o1').value, o2 = r.querySelector('.ad-o2').value;
+        var o = (o1 && o2) ? (o1 + '-' + o2) : (o1 || o2 || '');
         if (d) date.push([d, o]);
       });
       var msg = document.getElementById('adMsg'); msg.className = 'msg';
