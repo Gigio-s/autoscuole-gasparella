@@ -92,13 +92,24 @@
   .nav-social-icon:hover { background: rgba(255,255,255,.3); }
   .burger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: .4rem; }
   .burger span { width: 22px; height: 1.5px; background: var(--paper); transition: transform .3s ease, opacity .3s ease; }
+  .mobile-menu-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 990; }
+  .mobile-menu-overlay.open { display: block; }
   .mobile-menu {
-    display: none; position: fixed; inset: 0; z-index: 480; background: rgba(9,9,9,.98);
-    flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
+    display: none; position: fixed; top: 0; right: 0; bottom: 0; width: min(84vw, 330px);
+    background: var(--gold-deep); z-index: 1000; flex-direction: column; align-items: stretch;
+    padding: 1.1rem 1.3rem 2rem; box-shadow: -10px 0 40px rgba(0,0,0,.35); overflow-y: auto;
   }
   .mobile-menu.open { display: flex; }
-  .mobile-menu a { color: var(--paper); font-size: 1.3rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; }
+  .mm-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: .6rem; }
+  .mm-head span { color: #fff; font-weight: 800; letter-spacing: .1em; font-size: .72rem; text-transform: uppercase; opacity: .8; }
+  .mm-close { background: rgba(255,255,255,.14); border: none; color: #fff; width: 34px; height: 34px; border-radius: 50%; font-size: 1.3rem; line-height: 1; cursor: pointer; }
+  .mobile-menu a { color: #fff; font-size: 1.02rem; letter-spacing: .01em; text-transform: none; font-weight: 700; text-align: left; padding: .9rem .2rem; border-bottom: 1px solid rgba(255,255,255,.14); }
   .mobile-menu a.gold { color: var(--gold-light); }
+  .mobile-menu a.mm-cta { margin-top: .7rem; background: #fff; color: var(--gold-deep); border: none; border-radius: 999px; text-align: center; font-weight: 800; padding: .8rem 1rem; }
+  .mobile-menu a.mm-cta.outline { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,.7); }
+  .burger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .burger.open span:nth-child(2) { opacity: 0; }
+  .burger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
   @media (max-width: 980px) { .nav-links, .nav-social { display: none; } .burger { display: flex; } }
 
   /* ── HERO ── */
@@ -569,15 +580,17 @@
   <button class="burger" id="burgerBtn" aria-label="Apri menu"><span></span><span></span><span></span></button>
 </nav>
 
+<div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
 <div class="mobile-menu" id="mobileMenu">
+  <div class="mm-head"><span>Menu</span><button class="mm-close" id="mobileMenuClose" aria-label="Chiudi">&times;</button></div>
   <a href="patenti.html">Categorie Patenti</a>
   <a href="le-nostre-autoscuole.html">Le Nostre Autoscuole</a>
   <a href="corsi.html">Corsi</a>
   <a href="storia.html">La Nostra Storia</a>
-    <a href="corsi-cqc.html#calendario">Prenota corsi</a>
-    <a href="prenota-visita.html">Prenota visita</a>
   <a class="gold" href="https://www.facebook.com/p/Autoscuola-Gasparella-100046330225155/?locale=it_IT" target="_blank" rel="noopener">Facebook</a>
   <a class="gold" href="https://www.instagram.com/autoscuolegasparella/" target="_blank" rel="noopener">Instagram</a>
+  <a class="mm-cta outline" href="corsi-cqc.html#calendario">Prenota corsi</a>
+  <a class="mm-cta" href="prenota-visita.html">Rinnova la patente</a>
 </div>
 
 <header class="hero">
@@ -1053,8 +1066,18 @@
   // Menu mobile
   const burgerBtn = document.getElementById('burgerBtn');
   const mobileMenu = document.getElementById('mobileMenu');
-  burgerBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
-  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.remove('open')));
+  const mmOverlay = document.getElementById('mobileMenuOverlay');
+  const mmClose = document.getElementById('mobileMenuClose');
+  function setMenu(on){
+    mobileMenu.classList.toggle('open', on);
+    if (mmOverlay) mmOverlay.classList.toggle('open', on);
+    burgerBtn.classList.toggle('open', on);
+    document.body.style.overflow = on ? 'hidden' : '';
+  }
+  burgerBtn.addEventListener('click', () => setMenu(!mobileMenu.classList.contains('open')));
+  if (mmClose) mmClose.addEventListener('click', () => setMenu(false));
+  if (mmOverlay) mmOverlay.addEventListener('click', () => setMenu(false));
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
 
   // Reveal del titolo hero
   requestAnimationFrame(() => {
