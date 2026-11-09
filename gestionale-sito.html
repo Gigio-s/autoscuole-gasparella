@@ -40,6 +40,14 @@
   .pill { display:inline-block; font-size:.68rem; font-weight:800; text-transform:uppercase; padding:.2rem .55rem; border-radius:999px; }
   .pill.full { background:#fdecea; color:#c0392b; }
   .pill.ok { background:#e8f6ec; color:#1e7e34; }
+  .pill.auto { background:#fff1e0; color:#b35900; }
+  .pill.forz { background:#e3f1fb; color:#0e6aa3; }
+  .sess .stato-nota { display:block; flex-basis:100%; font-size:.78rem; margin-top:-.3rem; }
+  .sess .stato-nota.auto { color:#b35900; }
+  .sess .stato-nota.forz { color:#0e6aa3; }
+  .sess .stato-nota.info { color:#777; }
+  button.orange { background:#fff1e0; color:#b35900; }
+  button.orange:hover { background:#ffe3c2; }
   .hint { font-size:.75rem; color:#8a929a; margin-top:.2rem; }
   .fields { display:grid; grid-template-columns:1fr 1fr; gap:.7rem 1rem; margin-bottom:1rem; }
   .fields label { font-size:.75rem; font-weight:700; color:#555; display:block; margin-bottom:.2rem; }
@@ -109,6 +117,8 @@
       <p>Ogni riga è una <b>edizione</b> di corso (un corso in una sede con le sue date).</p>
       <ul>
         <li><span class="tag">Segna pieno</span> chiude le iscrizioni online: sul sito quella edizione diventa <b>SOLD OUT</b>. <span class="tag">Riapri</span> le riapre.</li>
+        <li><b>Chiusura automatica:</b> le iscrizioni online si chiudono da sole <b>5 giorni prima della prima lezione</b>. In quel caso la riga mostra <span class="tag">Chiuso in automatico</span> con la data di chiusura. Per riaprire: <span class="tag">Modifica</span> e aggiorna le date (se è una nuova edizione), oppure <span class="tag">Riapri comunque</span> per accettare iscrizioni anche a meno di 5 giorni dall'inizio. <span class="tag">Richiudi</span> annulla la riapertura.</li>
+        <li>Un corso con l'<b>ultima lezione già passata</b> resta chiuso sul sito: aggiorna le date o archivialo.</li>
         <li><span class="tag">Modifica</span> apre l'editor per cambiare tipo, sede, formato, costo, pagamento e date/orari, <b>senza rifare il corso</b>. Poi “Salva modifiche”.</li>
         <li><span class="tag">Archivia</span> toglie l'edizione dal sito e la sposta in <b>Archivio corsi</b> (in fondo). Da lì puoi <b>Ripristinare</b> (rimetterla online) o <b>Eliminare</b> definitivamente.</li>
       </ul>
@@ -163,6 +173,50 @@
   /* ---------------- TAB CORSI (da database) ---------------- */
   function firstDate(ed){ return (ed.date && ed.date[0]) ? ed.date[0][0] : ''; }
   function chiaveEd(ed){ return ed.nome+'|'+ed.sede+'|'+ed.formato+'|'+firstDate(ed); }
+  // Riapertura a mano (ignora la chiusura dei 5 giorni): salvata come chiave con prefisso
+  var PREFISSO_APERTO = 'APERTO|';
+  var GIORNI_CHIUSURA = 5;
+  function dOnly(str){ var p=str.split('-'); return new Date(parseInt(p[0],10), parseInt(p[1],10)-1, parseInt(p[2],10)); }
+  function isoD(d){ return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
+  // Stato reale dell'edizione sul sito, stessa logica di corsi-cqc.html
+  //  pieno | concluso | forzato | auto | aperto
+  function statoEd(ed){
+    var k = chiaveEd(ed);
+    if (STATO[k] === true) return { tipo:'pieno' };
+    if (!ed.date || !ed.date.length) return { tipo:'aperto' };
+    var oggi = new Date(); oggi.setHours(0,0,0,0);
+    var start = dOnly(ed.date[0][0]), last = dOnly(ed.date[ed.date.length-1][0]);
+    var cutoff = new Date(start.getFullYear(), start.getMonth(), start.getDate() - GIORNI_CHIUSURA);
+    if (oggi.getTime() > last.getTime()) return { tipo:'concluso', cutoff: isoD(cutoff) };
+    if (STATO[PREFISSO_APERTO + k] === true) return { tipo:'forzato', cutoff: isoD(cutoff) };
+    if (oggi.getTime() >= cutoff.getTime()) return { tipo:'auto', cutoff: isoD(cutoff) };
+    return { tipo:'aperto', cutoff: isoD(cutoff) };
+  }
+  function rigaStatoHtml(st){
+    var pill, btns, nota;
+    if (st.tipo === 'pieno'){
+      pill = '<span class="pill full">Pieno</span>';
+      btns = '<button class="small green" data-toggle>Riapri</button>';
+      nota = '';
+    } else if (st.tipo === 'concluso'){
+      pill = '<span class="pill full">Concluso</span>';
+      btns = '';
+      nota = '<span class="stato-nota auto">L\'ultima lezione è passata: sul sito risulta SOLD OUT. Per una nuova edizione usa <b>Modifica</b> e aggiorna le date, oppure archivialo.</span>';
+    } else if (st.tipo === 'auto'){
+      pill = '<span class="pill auto">Chiuso in automatico</span>';
+      btns = '<button class="small orange" data-forza>Riapri comunque</button><button class="small red" data-toggle>Segna pieno</button>';
+      nota = '<span class="stato-nota auto">Iscrizioni online chiuse in automatico dal '+esc(itDate(st.cutoff))+' (5 giorni prima della prima lezione): sul sito risulta SOLD OUT. Se hai nuove date usa <b>Modifica</b>, altrimenti <b>Riapri comunque</b>.</span>';
+    } else if (st.tipo === 'forzato'){
+      pill = '<span class="pill forz">Riaperto a mano</span>';
+      btns = '<button class="small orange" data-forza>Richiudi</button><button class="small red" data-toggle>Segna pieno</button>';
+      nota = '<span class="stato-nota forz">Riaperto anche se mancano meno di 5 giorni all\'inizio: sul sito si può prenotare fino all\'ultima lezione.</span>';
+    } else {
+      pill = '<span class="pill ok">Aperto</span>';
+      btns = '<button class="small red" data-toggle>Segna pieno</button>';
+      nota = st.cutoff ? '<span class="stato-nota info">Chiusura automatica il '+esc(itDate(st.cutoff))+' (5 giorni prima della prima lezione).</span>' : '';
+    }
+    return pill + btns + '<button class="small ghost" data-edit>Modifica</button><button class="small ghost" data-arch>Archivia</button>' + nota;
+  }
   function periodoEd(ed){
     if (!ed.date || !ed.date.length) return 'nessuna data';
     var a = ed.date[0][0], b = ed.date[ed.date.length-1][0];
@@ -191,7 +245,7 @@
     return '<div class="corso" id="addBox"><h3>Aggiungi una edizione di corso</h3>'
       + '<div class="fields">'
       +  '<div class="full"><label>Tipo di corso</label>'
-      +    '<select id="adNomeSel" style="width:100%"><option value="">— scegli un corso esistente —</option>'+nomiSelOpts+'<option value="__new__">➕ Nuovo tipo di corso…</option></select>'
+      +    '<select id="adNomeSel" style="width:100%"><option value="">- scegli un corso esistente -</option>'+nomiSelOpts+'<option value="__new__">➕ Nuovo tipo di corso…</option></select>'
       +    '<input type="text" id="adNomeNew" placeholder="Nome del nuovo corso" style="margin-top:.4rem;display:none" /></div>'
       +  '<div><label>Sede</label><input type="text" id="adSede" list="adSedi" placeholder="es. Sossano" /><datalist id="adSedi">'+sediOpts+'</datalist></div>'
       +  '<div><label>Formato</label><input type="text" id="adFormato" placeholder="es. Serale / Sabato mattina" /></div>'
@@ -365,13 +419,10 @@
     var activeHtml = order.map(function(n){
       var righe = byNome[n].map(function(e){
         if (editingId === e.id) return editorHtml(e);
-        var k = chiaveEd(e); var pieno = STATO[k] === true;
+        var k = chiaveEd(e);
         return '<div class="sess" data-k="'+esc(k)+'" data-id="'+esc(e.id)+'">'
           + '<div class="info"><b>'+esc(e.sede)+'</b> &middot; '+esc(e.formato||'')+'<span>'+esc(periodoEd(e))+'</span></div>'
-          + '<span class="pill '+(pieno?'full':'ok')+'" data-pill>'+(pieno?'Pieno':'Aperto')+'</span>'
-          + '<button class="small '+(pieno?'green':'red')+'" data-toggle>'+(pieno?'Riapri':'Segna pieno')+'</button>'
-          + '<button class="small ghost" data-edit>Modifica</button>'
-          + '<button class="small ghost" data-arch>Archivia</button>'
+          + rigaStatoHtml(statoEd(e))
           + '</div>';
       }).join('');
       return '<div class="corso"><h3>'+esc(n)+'</h3>'+righe+'</div>';
@@ -398,11 +449,21 @@
         var nuovo = !(STATO[k] === true); btn.disabled = true;
         try {
           await callC({ password: pw, action:'set', chiave:k, soldout:nuovo }); STATO[k] = nuovo;
-          var pill = row.querySelector('[data-pill]');
-          pill.className = 'pill '+(nuovo?'full':'ok'); pill.textContent = nuovo?'Pieno':'Aperto';
-          btn.className = 'small '+(nuovo?'green':'red'); btn.textContent = nuovo?'Riapri':'Segna pieno';
-        } catch(e){ document.getElementById('appMsg').textContent = e.message; }
-        btn.disabled = false;
+          renderCorsi();
+        } catch(e){ document.getElementById('appMsg').textContent = e.message; btn.disabled = false; }
+      });
+    });
+    // riapertura a mano (ignora la chiusura dei 5 giorni) / richiudi
+    Array.prototype.forEach.call(el.querySelectorAll('button[data-forza]'), function(btn){
+      btn.addEventListener('click', async function(){
+        var row = btn.closest('.sess'); var k = PREFISSO_APERTO + row.getAttribute('data-k');
+        var nuovo = !(STATO[k] === true);
+        if (nuovo && !confirm('Riaprire le iscrizioni online anche se mancano meno di 5 giorni all\'inizio del corso?')) return;
+        btn.disabled = true;
+        try {
+          await callC({ password: pw, action:'set', chiave:k, soldout:nuovo }); STATO[k] = nuovo;
+          renderCorsi();
+        } catch(e){ document.getElementById('appMsg').textContent = e.message; btn.disabled = false; }
       });
     });
     Array.prototype.forEach.call(el.querySelectorAll('button[data-arch]'), function(btn){

@@ -357,6 +357,10 @@
     .cp-item.soldout { cursor: not-allowed; background: #fdf3f3; border-color: #eab8b8; }
     .cp-item.soldout .cp-fmt { background: #b23b3b; }
     .cp-soldout { margin-left: auto; flex: 0 0 auto; background: #d33; color: #fff; font-size: .74rem; font-weight: 800; letter-spacing: .12em; padding: .42rem .9rem; border-radius: 999px; white-space: nowrap; }
+    /* ISCRIZIONI APERTE: badge verde, stesso stile del SOLD OUT */
+    .cp-open { margin-left: auto; flex: 0 0 auto; display: inline-flex; align-items: center; gap: .45rem; background: #1e9e4a; color: #fff; font-size: .74rem; font-weight: 800; letter-spacing: .12em; padding: .42rem .9rem; border-radius: 999px; white-space: nowrap; transition: background .2s ease; }
+    .cp-open i { font-style: normal; font-size: 1rem; line-height: 1; letter-spacing: 0; }
+    .cp-item:hover .cp-open { background: #178a3f; }
 
     /* --- Mobile: box corsi/sedi leggibili e senza accavallamenti (non tocca il desktop) --- */
     @media (max-width: 600px) {
@@ -371,6 +375,8 @@
       .cp-item .cp-txt b { font-size: .92rem; }
       .cp-item .cp-txt span { font-size: .76rem; }
       .cp-soldout { font-size: .58rem; padding: .3rem .55rem; letter-spacing: .06em; }
+      .cp-open { font-size: .58rem; padding: .3rem .55rem; letter-spacing: .06em; gap: .3rem; }
+      .cp-open i { font-size: .8rem; }
       .cp-selected { font-size: .82rem; }
       .cp-cost { font-size: .9rem; padding: .5rem .7rem; }
       .cp-book { width: 100%; justify-content: center; padding: .9rem 1rem; }
@@ -515,19 +521,27 @@
     function itDate(str) { var p = str.split('-'); return parseInt(p[2],10) + ' ' + MESI[parseInt(p[1],10)-1] + ' ' + p[0]; }
     function dateOnly(str) { var p = str.split('-'); return new Date(parseInt(p[0],10), parseInt(p[1],10)-1, parseInt(p[2],10)); }
 
-    // Stato "pieno" gestito dal pannello (gestione-corsi.html) -> chiave per sessione
+    // Stati gestiti dal gestionale (gestionale-sito.html) -> chiave per edizione
+    //  - STATO_CORSI[chiave]           = "Pieno" (chiuso a mano)
+    //  - STATO_CORSI['APERTO|'+chiave] = "Riaperto a mano" (ignora la chiusura dei 5 giorni)
     var STATO_CORSI = {};
+    var PREFISSO_APERTO = 'APERTO|';
     function chiaveSede(nomeCorso, s) {
       return nomeCorso + '|' + s.sede + '|' + s.formato + '|' + (s.s && s.s[0] ? s.s[0][0] : '');
     }
 
-    // Iscrizioni chiuse da 5 giorni prima dell'inizio del corso (o dopo l'inizio)
+    // Iscrizioni chiuse da 5 giorni prima dell'inizio del corso (o dopo l'inizio),
+    // salvo riapertura a mano dal gestionale. "Pieno" vince sempre.
+    // Un corso con l'ultima lezione gia passata resta comunque chiuso.
     function isSoldOut(sede) {
       if (sede.soldout) return true;
       if (sede._key && STATO_CORSI[sede._key]) return true;
+      var today = new Date(); today.setHours(0,0,0,0);
+      var last = dateOnly(sede.s[sede.s.length - 1][0]);
+      if (today.getTime() > last.getTime()) return true;
+      if (sede._key && STATO_CORSI[PREFISSO_APERTO + sede._key]) return false;
       var start = dateOnly(sede.s[0][0]);
       var cutoff = new Date(start.getFullYear(), start.getMonth(), start.getDate() - 5);
-      var today = new Date(); today.setHours(0,0,0,0);
       return today.getTime() >= cutoff.getTime();
     }
 
@@ -550,7 +564,7 @@
         b.innerHTML = '<span class="cp-txt"><b>' + c.nome + '</b><span>' +
           (allOut ? 'Iscrizioni chiuse' : (disp + (disp === 1 ? ' sede disponibile' : ' sedi disponibili'))) +
           (c.costo ? ' &middot; <b style="color:var(--blue-d)">' + c.costo + '</b>' : '') +
-          '</span></span>' + (allOut ? '<span class="cp-soldout">SOLD OUT</span>' : '<span class="cp-arrow">&rsaquo;</span>');
+          '</span></span>' + (allOut ? '<span class="cp-soldout">SOLD OUT</span>' : '<span class="cp-open">ISCRIZIONI APERTE <i>&rsaquo;</i></span>');
         if (!allOut) b.addEventListener('click', function () { openCourse(i); });
         elCourseList.appendChild(b);
       });
@@ -572,7 +586,7 @@
         b.type = 'button'; b.className = 'cp-item' + (out ? ' soldout' : '');
         b.innerHTML = '<span class="cp-fmt">' + fmtBadge(s.formato) + '</span>' +
           '<span class="cp-txt"><b>Sede di ' + s.sede + '</b><span>' + s.formato + ' &middot; ' + s.s.length + ' incontri &middot; dal ' + itDate(s.s[0][0]) + '</span></span>' +
-          (out ? '<span class="cp-soldout">SOLD OUT</span>' : '<span class="cp-arrow">&rsaquo;</span>');
+          (out ? '<span class="cp-soldout">SOLD OUT</span>' : '<span class="cp-open">ISCRIZIONI APERTE <i>&rsaquo;</i></span>');
         if (!out) b.addEventListener('click', function () { openSede(j); });
         elSedeList.appendChild(b);
       });

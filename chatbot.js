@@ -243,26 +243,80 @@
   });
 })();
 
-/* Pulsante header "Prenota visita": testo lungo a scorrimento dentro la casella (dimensione invariata) */
+/* Pulsante header "Prenota visita": testo fisso "Rinnovo patente" (richiesta cliente 28/10, niente scorrimento) */
 (function () {
   try {
-    var FULL = 'Rinnova la patente: prenota la visita medica';
+    var TESTO = 'Rinnovo patente';
+    var TITOLO = 'Rinnovo patente: prenota la visita medica';
     var m = document.querySelector('.mobile-menu a[href*="prenota-visita"]');
-    if (m) m.textContent = FULL;
-    var a = null, links = document.querySelectorAll('nav a[href*="prenota-visita"]');
-    for (var i = 0; i < links.length; i++) { if (links[i].closest('.nav-links')) { a = links[i]; break; } }
-    if (!a) return;
+    if (m) m.textContent = TESTO;
+    var links = document.querySelectorAll('nav a[href*="prenota-visita"]');
+    for (var i = 0; i < links.length; i++) {
+      if (links[i].closest('.nav-links')) {
+        links[i].textContent = TESTO;
+        links[i].setAttribute('title', TITOLO);
+        break;
+      }
+    }
+  } catch (e) {}
+})();
+
+/* Pop-up piccolo in basso a sinistra: "Vuoi rinnovare la tua patente?" (richiesta cliente 28/10)
+   - compare dopo 2 secondi, una volta per sessione di navigazione
+   - si chiude con la X o con Esc; non compare sulla pagina di prenotazione stessa */
+(function () {
+  try {
+    if (/prenota-visita\.html/.test(location.pathname)) return;
+    var KEY = 'gb_rinnovo_popup_visto';
+    try { if (sessionStorage.getItem(KEY)) return; } catch (e) {}
+    var BASE = /\/legale\//.test(location.pathname) ? '../' : '';
+
     var st = document.createElement('style');
     st.textContent =
-      '.pv-marq{width:112px;overflow:hidden;box-sizing:border-box;display:inline-block;vertical-align:middle;text-align:left;}' +
-      '.pv-marq .pv-track{display:inline-block;white-space:nowrap;animation:pvsc 11s linear infinite;}' +
-      '.pv-marq:hover .pv-track{animation-play-state:paused;}' +
-      '.pv-marq .pv-track b{font-weight:800;padding-right:30px;}' +
-      '@keyframes pvsc{from{transform:translateX(0)}to{transform:translateX(-50%)}}';
+      '.gb-rin{position:fixed;left:22px;bottom:22px;z-index:996;width:300px;max-width:calc(100vw - 110px);background:#fff;' +
+      'border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.22);border-left:5px solid #1280c2;padding:1rem 2.2rem 1rem 1.1rem;' +
+      'font-family:Montserrat,system-ui,sans-serif;opacity:0;transform:translateY(16px);transition:opacity .35s ease,transform .35s ease;}' +
+      '.gb-rin.show{opacity:1;transform:translateY(0);}' +
+      '.gb-rin b{display:block;color:#0e6aa3;font-size:1rem;font-weight:800;line-height:1.25;}' +
+      '.gb-rin p{margin:.3rem 0 .75rem;color:#2d3236;font-size:.84rem;line-height:1.4;}' +
+      '.gb-rin a.gb-rin-cta{display:inline-block;background:#1280c2;color:#fff;font-weight:800;font-size:.78rem;letter-spacing:.03em;' +
+      'text-transform:uppercase;text-decoration:none;padding:.55rem 1rem;border-radius:999px;}' +
+      '.gb-rin a.gb-rin-cta:hover{background:#0e6aa3;}' +
+      '.gb-rin-x{position:absolute;top:.35rem;right:.45rem;background:none;border:0;font-size:1.3rem;line-height:1;color:#8a929a;' +
+      'cursor:pointer;padding:.25rem .45rem;}' +
+      '.gb-rin-x:hover{color:#2d3236;}' +
+      '@media(max-width:600px){.gb-rin{left:12px;bottom:14px;padding:.85rem 2rem .85rem .95rem;}' +
+      '.gb-rin b{font-size:.92rem;}.gb-rin p{font-size:.78rem;margin:.25rem 0 .6rem;}.gb-rin a.gb-rin-cta{font-size:.72rem;padding:.5rem .85rem;}}';
     document.head.appendChild(st);
-    a.classList.add('pv-marq');
-    a.setAttribute('title', FULL);
-    a.innerHTML = '<span class="pv-track"><b>' + FULL + '</b><b>' + FULL + '</b></span>';
+
+    var box = document.createElement('div');
+    box.className = 'gb-rin';
+    box.setAttribute('role', 'dialog');
+    box.setAttribute('aria-label', 'Rinnovo patente');
+    box.innerHTML =
+      '<button type="button" class="gb-rin-x" aria-label="Chiudi">&times;</button>' +
+      '<b>Vuoi rinnovare la tua patente?</b>' +
+      '<p>Prenota online la visita medica: scegli sede e data in un minuto.</p>' +
+      '<a class="gb-rin-cta" href="' + BASE + 'prenota-visita.html">Clicca qui &rsaquo;</a>';
+
+    function segnaVisto() { try { sessionStorage.setItem(KEY, '1'); } catch (e) {} }
+    function chiudi() {
+      segnaVisto();
+      box.classList.remove('show');
+      setTimeout(function () { if (box.parentNode) box.parentNode.removeChild(box); }, 400);
+      document.removeEventListener('keydown', onKey);
+    }
+    function onKey(e) { if (e.key === 'Escape') chiudi(); }
+
+    box.querySelector('.gb-rin-x').addEventListener('click', chiudi);
+    box.querySelector('.gb-rin-cta').addEventListener('click', segnaVisto);
+
+    setTimeout(function () {
+      document.body.appendChild(box);
+      segnaVisto();
+      requestAnimationFrame(function () { requestAnimationFrame(function () { box.classList.add('show'); }); });
+      document.addEventListener('keydown', onKey);
+    }, 2000);
   } catch (e) {}
 })();
 
