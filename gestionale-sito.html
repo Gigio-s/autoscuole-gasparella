@@ -140,7 +140,7 @@
         <li><span class="tag">Togli</span> rimuove una data: sul sito non compare più. <span class="tag">Rimetti</span> la fa tornare.</li>
         <li><span class="tag">Sposta</span> cambia giorno e/o orario di una data: scegli il nuovo giorno e l'orario e premi “Salva”.</li>
         <li><b>Aggiungere una data:</b> in fondo alla sede scegli giorno e orario e premi <span class="tag">Aggiungi data</span>. Le date aggiunte si cancellano con <span class="tag">Elimina</span>.</li>
-        <li>Sul sito compaiono le <b>prossime 8 date</b> di ogni sede. Le prenotazioni per una data si chiudono alle 18:00 del giorno prima.</li>
+        <li>Sul sito compaiono tutte le date del <b>mese in corso e dei due successivi</b> (es. a novembre: novembre, dicembre, gennaio). Il 1° di ogni mese si aggiunge da solo il mese nuovo. Le prenotazioni per una data si chiudono alle 18:00 del giorno prima.</li>
       </ul>
 
       <h3>In breve</h3>
@@ -624,7 +624,7 @@
     var bott = sedi.map(function(s, i){
       return '<button type="button" class="small '+(i===visSede?'':'ghost')+'" data-vsede="'+i+'">'+esc(s.nome)+'</button>';
     }).join(' ');
-    var righe = V.elencoDate(sede, STATO, 12).map(function(x){
+    var righe = V.elencoDate(sede, STATO).map(function(x){
       var kNo = V.chiave(V.PRE_NO, sede.nome, x.iso, x.ora), kSi = V.chiave(V.PRE_SI, sede.nome, x.iso, x.ora);
       var k = x.tipo === 'aggiunta' ? kSi : kNo;
       var pill, btns;
@@ -641,7 +641,7 @@
       var edit = '';
       if (visSposta === k){
         edit = '<div class="stato-nota info" style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin-top:.2rem">'
-          + 'Nuovo giorno <input type="date" class="v-sp-data" value="'+x.iso+'" min="'+domaniIso()+'" style="padding:.4rem;border:1px solid #ccd2d8;border-radius:8px" />'
+          + 'Nuovo giorno <input type="date" class="v-sp-data" value="'+x.iso+'" min="'+domaniIso()+'" max="'+isoD(window.VISITE.fineFinestra())+'" style="padding:.4rem;border:1px solid #ccd2d8;border-radius:8px" />'
           + ' orario <input type="time" class="v-sp-ora" value="'+esc(x.ora)+'" style="padding:.4rem;border:1px solid #ccd2d8;border-radius:8px" />'
           + '<button class="small" data-vsp-ok>Salva</button><button class="small ghost" data-vsp-no>Annulla</button></div>';
       }
@@ -653,10 +653,10 @@
     var fisso = sede.giorni.map(function(g){ return ['domenica','lunedì','martedì','mercoledì','giovedì','venerdì','sabato'][g.dow]+' '+g.ora+(g.quindicinale?' (ogni 2 settimane)':''); }).join(', ');
     el.innerHTML = '<div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem">'+bott+'</div>'
       + '<div class="sede-box"><h3>Visite mediche: '+esc(sede.nome)+'</h3>'
-      + '<p class="hint" style="margin:-.5rem 0 .6rem">Calendario fisso: '+esc(fisso)+'. Elenco delle prossime 12 settimane.</p>'
+      + '<p class="hint" style="margin:-.5rem 0 .6rem">Calendario fisso: '+esc(fisso)+'. Elenco fino al '+esc(itDate(isoD(V.fineFinestra())))+': mese in corso e i due successivi, come sul sito. Il mese nuovo compare da solo il 1° del mese.</p>'
       + '<div class="save-row" style="flex-wrap:wrap;border-bottom:1px solid #eef1f4;padding-bottom:.9rem;margin:0 0 .4rem">'
       +   '<b style="font-size:.85rem">Aggiungi una data:</b>'
-      +   '<input type="date" id="vAddData" min="'+domaniIso()+'" style="padding:.5rem;border:1px solid #ccd2d8;border-radius:8px" />'
+      +   '<input type="date" id="vAddData" min="'+domaniIso()+'" max="'+isoD(V.fineFinestra())+'" style="padding:.5rem;border:1px solid #ccd2d8;border-radius:8px" />'
       +   '<input type="time" id="vAddOra" value="'+esc(sede.giorni[0] ? sede.giorni[0].ora : '09:00')+'" style="padding:.5rem;border:1px solid #ccd2d8;border-radius:8px" />'
       +   '<button class="small" id="vAddBtn">Aggiungi data</button><span class="msg" id="vMsg"></span>'
       + '</div>'
@@ -695,9 +695,10 @@
       var r = riga(btn), nd = r.querySelector('.v-sp-data').value, no = r.querySelector('.v-sp-ora').value;
       if (!nd || !oraOk(no)){ alert('Scegli giorno e orario.'); return; }
       if (nd < domaniIso()){ alert('Scegli un giorno da domani in avanti.'); return; }
+      if (nd > isoD(window.VISITE.fineFinestra())){ alert('Puoi scegliere fino al '+itDate(isoD(window.VISITE.fineFinestra()))+'.'); return; }
       var V = window.VISITE, s = V.SEDI[visSede].nome;
       if (nd === r.getAttribute('data-viso') && no === r.getAttribute('data-vora')){ visSposta = null; return; }
-      var gia = V.elencoDate(V.SEDI[visSede], STATO, 60).some(function(x){ return !x.tolta && x.iso === nd && x.ora === no; });
+      var gia = V.elencoDate(V.SEDI[visSede], STATO).some(function(x){ return !x.tolta && x.iso === nd && x.ora === no; });
       if (gia){ alert('In quel giorno e orario c\'è già una visita.'); return; }
       // nuova data: rimette la fissa se era tolta, altrimenti la aggiunge
       var kNoNew = V.chiave(V.PRE_NO, s, nd, no);
@@ -712,7 +713,8 @@
       var d = document.getElementById('vAddData').value, o = document.getElementById('vAddOra').value;
       if (!d || !oraOk(o)){ msg('Scegli giorno e orario.'); return; }
       if (d < domaniIso()){ msg('Scegli un giorno da domani in avanti.'); return; }
-      var gia = V.elencoDate(V.SEDI[visSede], STATO, 60).some(function(x){ return !x.tolta && x.iso === d && x.ora === o; });
+      if (d > isoD(V.fineFinestra())){ msg('Puoi scegliere fino al '+itDate(isoD(V.fineFinestra()))+'.'); return; }
+      var gia = V.elencoDate(V.SEDI[visSede], STATO).some(function(x){ return !x.tolta && x.iso === d && x.ora === o; });
       if (gia){ msg('Questa data c\'è già.'); return; }
       add.disabled = true;
       try {

@@ -30,10 +30,17 @@
   function fromIso(s){ var p = s.split('-'); return new Date(parseInt(p[0],10), parseInt(p[1],10)-1, parseInt(p[2],10)); }
   function chiave(pre, sede, isoData, ora){ return pre + sede + '|' + isoData + '|' + ora; }
 
-  // Date fisse del calendario settimanale, da domani in avanti, per "settimane" settimane
-  function dateFisse(sede, settimane){
+  // Periodo visibile: mese in corso + i 2 successivi (es. a novembre: nov, dic, gen;
+  // dal 1 dicembre: dic, gen, feb). Si aggiorna da solo ogni mese.
+  var MESI_VISIBILI = 3;
+  function fineFinestra(){
+    var oggi = new Date();
+    return new Date(oggi.getFullYear(), oggi.getMonth() + MESI_VISIBILI, 0); // ultimo giorno del 3o mese
+  }
+
+  // Date fisse del calendario settimanale, da domani in avanti, fino a "fine"
+  function dateFisse(sede, fine){
     var oggi = new Date(); oggi.setHours(0,0,0,0);
-    var fine = new Date(oggi); fine.setDate(fine.getDate() + settimane * 7);
     var out = [];
     sede.giorni.forEach(function (g) {
       var step = g.quindicinale ? 14 : 7;
@@ -54,8 +61,8 @@
     return out;
   }
 
-  // Date aggiunte dal gestionale per una sede (da domani in avanti)
-  function dateAggiunte(sede, stati){
+  // Date aggiunte dal gestionale per una sede (da domani in avanti, fino a "fine")
+  function dateAggiunte(sede, stati, fine){
     var oggi = new Date(); oggi.setHours(0,0,0,0);
     var pre = PRE_SI + sede.nome + '|';
     var out = [];
@@ -64,20 +71,21 @@
       var parti = k.slice(pre.length).split('|'); // [iso, ora]
       if (parti.length !== 2 || !/^\d{4}-\d{2}-\d{2}$/.test(parti[0])) return;
       var d = fromIso(parti[0]);
-      if (d <= oggi) return;
+      if (d <= oggi || d > fine) return;
       out.push({ when: d, iso: parti[0], ora: parti[1], tipo: 'aggiunta' });
     });
     return out;
   }
 
-  // Elenco completo per una sede, ordinato. Ogni voce ha "tolta" true/false.
-  function elencoDate(sede, stati, settimane){
+  // Elenco completo per una sede nel periodo visibile, ordinato. Ogni voce ha "tolta" true/false.
+  function elencoDate(sede, stati){
     stati = stati || {};
-    var fisse = dateFisse(sede, settimane || 12).map(function (x) {
+    var fine = fineFinestra();
+    var fisse = dateFisse(sede, fine).map(function (x) {
       x.tolta = stati[chiave(PRE_NO, sede.nome, x.iso, x.ora)] === true;
       return x;
     });
-    var tutte = fisse.concat(dateAggiunte(sede, stati).map(function (x) { x.tolta = false; return x; }));
+    var tutte = fisse.concat(dateAggiunte(sede, stati, fine).map(function (x) { x.tolta = false; return x; }));
     tutte.sort(function (a, b) { return (a.iso + a.ora) < (b.iso + b.ora) ? -1 : 1; });
     return tutte;
   }
@@ -89,6 +97,7 @@
     chiave: chiave,
     iso: iso,
     fromIso: fromIso,
+    fineFinestra: fineFinestra,
     elencoDate: elencoDate
   };
 })(window);

@@ -338,12 +338,11 @@
     return now >= cutoff;
   }
 
-  // Genera le prossime N date per una sede: calendario fisso
+  // Date di una sede nel mese in corso e nei 2 successivi: calendario fisso
   // meno le date tolte dal gestionale, piu' quelle aggiunte
-  function prossimeDate(sede, n){
-    return window.VISITE.elencoDate(sede, STATI_VISITE, 20)
+  function prossimeDate(sede){
+    return window.VISITE.elencoDate(sede, STATI_VISITE)
       .filter(function(x){ return !x.tolta; })
-      .slice(0, n)
       .map(function(x){
         return { when: x.when, ora: x.ora, label: fmtData(x.when) + ' alle ' + x.ora, bloccata: bloccata(x.when) };
       });
@@ -364,7 +363,17 @@
     state.sede = SEDI[i]; state.data = null;
     elSelSede.innerHTML = 'Sede: <b>' + state.sede.nome + '</b>';
     elDateList.innerHTML = '';
-    prossimeDate(state.sede, 8).forEach(function(dt){
+    var MESI_IT = ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
+    var meseCorr = -1;
+    prossimeDate(state.sede).forEach(function(dt){
+      // intestazione del mese
+      if (dt.when.getMonth() !== meseCorr) {
+        meseCorr = dt.when.getMonth();
+        var h = document.createElement('div');
+        h.style.cssText = 'font-weight:800;color:var(--blue-d);font-size:.95rem;margin:.6rem 0 .1rem;text-transform:uppercase;letter-spacing:.05em';
+        h.textContent = MESI_IT[meseCorr] + ' ' + dt.when.getFullYear();
+        elDateList.appendChild(h);
+      }
       var btn = document.createElement('button');
       btn.type = 'button'; btn.className = 'pv-item' + (dt.bloccata ? ' soldout' : '');
       var g = dt.when;
