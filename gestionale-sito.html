@@ -100,11 +100,13 @@
     <div class="tabs">
       <button class="tab active" data-tab="corsi">Corsi</button>
       <button class="tab" data-tab="sedi">Sedi &amp; orari</button>
+      <button class="tab" data-tab="visite">Visite mediche</button>
     </div>
 
     <p class="msg" id="appMsg"></p>
     <div id="tabCorsi"></div>
     <div id="tabSedi" class="hidden"></div>
+    <div id="tabVisite" class="hidden"></div>
   </div>
 
   <div class="help-overlay" id="helpOverlay">
@@ -132,6 +134,15 @@
         <li>Ricordati di premere <b>“Salva questa sede”</b> dopo le modifiche.</li>
       </ul>
 
+      <h3>Scheda “Visite mediche”</h3>
+      <p>Qui gestisci le date in cui i clienti possono prenotare la <b>visita medica di rinnovo</b> dal sito. Scegli la sede: vedi le prossime date in elenco.</p>
+      <ul>
+        <li><span class="tag">Togli</span> rimuove una data: sul sito non compare più. <span class="tag">Rimetti</span> la fa tornare.</li>
+        <li><span class="tag">Sposta</span> cambia giorno e/o orario di una data: scegli il nuovo giorno e l'orario e premi “Salva”.</li>
+        <li><b>Aggiungere una data:</b> in fondo alla sede scegli giorno e orario e premi <span class="tag">Aggiungi data</span>. Le date aggiunte si cancellano con <span class="tag">Elimina</span>.</li>
+        <li>Sul sito compaiono le <b>prossime 8 date</b> di ogni sede. Le prenotazioni per una data si chiudono alle 18:00 del giorno prima.</li>
+      </ul>
+
       <h3>In breve</h3>
       <ul>
         <li>Tutto si salva da solo nel sistema: non serve avvisare nessuno.</li>
@@ -142,6 +153,7 @@
   </div>
 
 <script src="corsi-data.js"></script>
+<script src="visite-data.js"></script>
 <script>
 (function () {
   'use strict';
@@ -595,6 +607,123 @@
     });
   }
 
+  /* ---------------- TAB VISITE MEDICHE ---------------- */
+  // Date di prenotazione della visita medica (pagina prenota-visita.html).
+  // Calendario fisso in visite-data.js; togli/aggiungi/sposta salvati in corsi_stato.
+  var GG_VIS = ['dom','lun','mar','mer','gio','ven','sab'];
+  var visSede = 0;           // indice sede selezionata
+  var visSposta = null;      // chiave della data in modifica (Sposta)
+  function visLabel(x){ return GG_VIS[x.when.getDay()] + ' ' + itDate(x.iso) + ' alle ' + x.ora; }
+  function oraOk(o){ return /^([01]\d|2[0-3]):[0-5]\d$/.test(o); }
+  function domaniIso(){ var d = new Date(); d.setDate(d.getDate()+1); return isoD(d); }
+
+  function renderVisite(){
+    var el = document.getElementById('tabVisite');
+    if (!window.VISITE){ el.innerHTML = '<p style="color:#c0392b">File visite-data.js non trovato.</p>'; return; }
+    var V = window.VISITE, sedi = V.SEDI, sede = sedi[visSede];
+    var bott = sedi.map(function(s, i){
+      return '<button type="button" class="small '+(i===visSede?'':'ghost')+'" data-vsede="'+i+'">'+esc(s.nome)+'</button>';
+    }).join(' ');
+    var righe = V.elencoDate(sede, STATO, 12).map(function(x){
+      var kNo = V.chiave(V.PRE_NO, sede.nome, x.iso, x.ora), kSi = V.chiave(V.PRE_SI, sede.nome, x.iso, x.ora);
+      var k = x.tipo === 'aggiunta' ? kSi : kNo;
+      var pill, btns;
+      if (x.tipo === 'aggiunta'){
+        pill = '<span class="pill forz">Aggiunta</span>';
+        btns = '<button class="small ghost" data-vsposta>Sposta</button><button class="small red" data-velimina>Elimina</button>';
+      } else if (x.tolta){
+        pill = '<span class="pill full">Tolta</span>';
+        btns = '<button class="small green" data-vrimetti>Rimetti</button>';
+      } else {
+        pill = '<span class="pill ok">Attiva</span>';
+        btns = '<button class="small ghost" data-vsposta>Sposta</button><button class="small red" data-vtogli>Togli</button>';
+      }
+      var edit = '';
+      if (visSposta === k){
+        edit = '<div class="stato-nota info" style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin-top:.2rem">'
+          + 'Nuovo giorno <input type="date" class="v-sp-data" value="'+x.iso+'" min="'+domaniIso()+'" style="padding:.4rem;border:1px solid #ccd2d8;border-radius:8px" />'
+          + ' orario <input type="time" class="v-sp-ora" value="'+esc(x.ora)+'" style="padding:.4rem;border:1px solid #ccd2d8;border-radius:8px" />'
+          + '<button class="small" data-vsp-ok>Salva</button><button class="small ghost" data-vsp-no>Annulla</button></div>';
+      }
+      return '<div class="sess" data-vk="'+esc(k)+'" data-viso="'+x.iso+'" data-vora="'+esc(x.ora)+'" data-vtipo="'+x.tipo+'">'
+        + '<div class="info"'+(x.tolta?' style="opacity:.55;text-decoration:line-through"':'')+'><b>'+esc(visLabel(x))+'</b>'
+        + '<span>'+(x.tipo==='aggiunta'?'Data aggiunta a mano':'Calendario fisso')+'</span></div>'
+        + pill + btns + edit + '</div>';
+    }).join('');
+    var fisso = sede.giorni.map(function(g){ return ['domenica','lunedì','martedì','mercoledì','giovedì','venerdì','sabato'][g.dow]+' '+g.ora+(g.quindicinale?' (ogni 2 settimane)':''); }).join(', ');
+    el.innerHTML = '<div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem">'+bott+'</div>'
+      + '<div class="sede-box"><h3>Visite mediche: '+esc(sede.nome)+'</h3>'
+      + '<p class="hint" style="margin:-.5rem 0 .6rem">Calendario fisso: '+esc(fisso)+'. Elenco delle prossime 12 settimane.</p>'
+      + '<div class="save-row" style="flex-wrap:wrap;border-bottom:1px solid #eef1f4;padding-bottom:.9rem;margin:0 0 .4rem">'
+      +   '<b style="font-size:.85rem">Aggiungi una data:</b>'
+      +   '<input type="date" id="vAddData" min="'+domaniIso()+'" style="padding:.5rem;border:1px solid #ccd2d8;border-radius:8px" />'
+      +   '<input type="time" id="vAddOra" value="'+esc(sede.giorni[0] ? sede.giorni[0].ora : '09:00')+'" style="padding:.5rem;border:1px solid #ccd2d8;border-radius:8px" />'
+      +   '<button class="small" id="vAddBtn">Aggiungi data</button><span class="msg" id="vMsg"></span>'
+      + '</div>'
+      + (righe || '<p class="hint">Nessuna data nelle prossime settimane.</p>')
+      + '</div>';
+
+    function msg(t, ok){ var m = document.getElementById('vMsg'); m.className = 'msg'+(ok?' ok-msg':''); m.textContent = t; }
+    async function setK(k, val){ await callC({ password: pw, action:'set', chiave:k, soldout:val }); STATO[k] = val; }
+    function riga(btn){ return btn.closest('.sess'); }
+    function on(sel, fn){
+      Array.prototype.forEach.call(el.querySelectorAll(sel), function(btn){
+        btn.addEventListener('click', async function(){
+          btn.disabled = true;
+          try { await fn(btn); } catch(e){ document.getElementById('appMsg').textContent = e.message; }
+          renderVisite();
+        });
+      });
+    }
+    Array.prototype.forEach.call(el.querySelectorAll('[data-vsede]'), function(b){
+      b.addEventListener('click', function(){ visSede = parseInt(b.getAttribute('data-vsede'),10); visSposta = null; renderVisite(); });
+    });
+    on('[data-vtogli]', async function(btn){
+      var r = riga(btn);
+      if (!confirm('Togliere la visita di '+r.querySelector('b').textContent+'? Sul sito non sarà più prenotabile.')) return;
+      await setK(r.getAttribute('data-vk'), true);
+    });
+    on('[data-vrimetti]', async function(btn){ await setK(riga(btn).getAttribute('data-vk'), false); });
+    on('[data-velimina]', async function(btn){
+      var r = riga(btn);
+      if (!confirm('Eliminare la data aggiunta '+r.querySelector('b').textContent+'?')) return;
+      await setK(r.getAttribute('data-vk'), false);
+    });
+    on('[data-vsposta]', async function(btn){ visSposta = riga(btn).getAttribute('data-vk'); });
+    on('[data-vsp-no]', async function(){ visSposta = null; });
+    on('[data-vsp-ok]', async function(btn){
+      var r = riga(btn), nd = r.querySelector('.v-sp-data').value, no = r.querySelector('.v-sp-ora').value;
+      if (!nd || !oraOk(no)){ alert('Scegli giorno e orario.'); return; }
+      if (nd < domaniIso()){ alert('Scegli un giorno da domani in avanti.'); return; }
+      var V = window.VISITE, s = V.SEDI[visSede].nome;
+      if (nd === r.getAttribute('data-viso') && no === r.getAttribute('data-vora')){ visSposta = null; return; }
+      var gia = V.elencoDate(V.SEDI[visSede], STATO, 60).some(function(x){ return !x.tolta && x.iso === nd && x.ora === no; });
+      if (gia){ alert('In quel giorno e orario c\'è già una visita.'); return; }
+      // nuova data: rimette la fissa se era tolta, altrimenti la aggiunge
+      var kNoNew = V.chiave(V.PRE_NO, s, nd, no);
+      if (STATO[kNoNew] === true) await setK(kNoNew, false); else await setK(V.chiave(V.PRE_SI, s, nd, no), true);
+      // vecchia data: tolta (se fissa) o eliminata (se aggiunta)
+      await setK(r.getAttribute('data-vk'), r.getAttribute('data-vtipo') === 'fissa');
+      visSposta = null;
+    });
+    var add = document.getElementById('vAddBtn');
+    add.addEventListener('click', async function(){
+      var V = window.VISITE, s = V.SEDI[visSede].nome;
+      var d = document.getElementById('vAddData').value, o = document.getElementById('vAddOra').value;
+      if (!d || !oraOk(o)){ msg('Scegli giorno e orario.'); return; }
+      if (d < domaniIso()){ msg('Scegli un giorno da domani in avanti.'); return; }
+      var gia = V.elencoDate(V.SEDI[visSede], STATO, 60).some(function(x){ return !x.tolta && x.iso === d && x.ora === o; });
+      if (gia){ msg('Questa data c\'è già.'); return; }
+      add.disabled = true;
+      try {
+        // se era una data fissa tolta, la rimette; altrimenti la aggiunge
+        var kNo = V.chiave(V.PRE_NO, s, d, o);
+        if (STATO[kNo] === true) await setK(kNo, false); else await setK(V.chiave(V.PRE_SI, s, d, o), true);
+        renderVisite(); msg('Data aggiunta ✓', true);
+      } catch(e){ msg(e.message); add.disabled = false; }
+    });
+  }
+
   /* ---------------- tabs ---------------- */
   Array.prototype.forEach.call(document.querySelectorAll('.tab'), function(t){
     t.addEventListener('click', function(){
@@ -603,6 +732,7 @@
       var which = t.getAttribute('data-tab');
       document.getElementById('tabCorsi').classList.toggle('hidden', which!=='corsi');
       document.getElementById('tabSedi').classList.toggle('hidden', which!=='sedi');
+      document.getElementById('tabVisite').classList.toggle('hidden', which!=='visite');
     });
   });
 
@@ -615,7 +745,7 @@
       var ds = await callS({ password: pw });
       SEDI = ds.sedi || [];
       document.getElementById('appMsg').textContent = '';
-      renderCorsi(); renderSedi();
+      renderCorsi(); renderSedi(); renderVisite();
     } catch(e){
       document.getElementById('appMsg').textContent = e.message;
       if (/password/i.test(e.message)) logout();

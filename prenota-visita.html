@@ -292,6 +292,7 @@
 </footer>
 
 <script src="chatbot.js" defer></script>
+<script src="visite-data.js"></script>
 <script>
 (function () {
   'use strict';
@@ -305,16 +306,14 @@
   }
 
   var GIORNI = ['domenica','lunedì','martedì','mercoledì','giovedì','venerdì','sabato'];
-  // dow: 0=Dom ... 6=Sab
-  var SEDI = [
-    { nome:'Sossano',          giorni:[{dow:3, ora:'18:00'},{dow:5, ora:'18:00'}] },
-    { nome:'Costabissara',     giorni:[{dow:3, ora:'17:00'}] },
-    { nome:'Caldogno',         giorni:[{dow:3, ora:'16:30'}] },
-    { nome:'Isola Vicentina',  giorni:[{dow:4, ora:'18:00'}] },
-    { nome:'Barbarano Mossano',giorni:[{dow:5, ora:'15:30'}] },
-    { nome:'Montegalda',       giorni:[{dow:5, ora:'15:00'},{dow:6, ora:'08:30'}] },
-    { nome:'Marano Vicentino', giorni:[{dow:4, ora:'15:00', quindicinale:true, anchor:'2026-10-01'}] }
-  ];
+  // Calendario fisso delle sedi: in visite-data.js (condiviso con il gestionale)
+  var SEDI = window.VISITE.SEDI;
+  // Date tolte / aggiunte dal gestionale (tabella corsi_stato, lettura pubblica)
+  var STATI_VISITE = {};
+  fetch('/.netlify/functions/corsi-stato', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ action:'list' }) })
+    .then(function(r){ return r.json(); })
+    .then(function(d){ (d.stati || []).forEach(function(x){ if (x.soldout === true) STATI_VISITE[x.chiave] = true; }); })
+    .catch(function(){ /* se il backend non risponde resta il calendario fisso */ });
 
   var state = { sede: null, data: null };
 
@@ -339,31 +338,15 @@
     return now >= cutoff;
   }
 
-  // Genera le prossime N date per una sede
+  // Genera le prossime N date per una sede: calendario fisso
+  // meno le date tolte dal gestionale, piu' quelle aggiunte
   function prossimeDate(sede, n){
-    var oggi = new Date(); oggi.setHours(0,0,0,0);
-    var out = [];
-    sede.giorni.forEach(function(g){
-      var step = g.quindicinale ? 14 : 7;
-      var d;
-      if (g.anchor) {
-        var p = g.anchor.split('-');
-        d = new Date(parseInt(p[0],10), parseInt(p[1],10)-1, parseInt(p[2],10));
-        while (d < oggi) { d.setDate(d.getDate() + step); }
-      } else {
-        d = new Date(oggi);
-        var diff = (g.dow - d.getDay() + 7) % 7;
-        if (diff === 0) diff = 7; // sempre a partire dalla prossima occorrenza
-        d.setDate(d.getDate() + diff);
-      }
-      // genera qualche data in più, così se le prime sono bloccate restano n disponibili
-      for (var i = 0; i < n + 2; i++){
-        var dd = new Date(d); dd.setDate(d.getDate() + i*step);
-        out.push({ when: dd, ora: g.ora, label: fmtData(dd) + ' alle ' + g.ora, bloccata: bloccata(dd) });
-      }
-    });
-    out.sort(function(a,b){ return a.when - b.when; });
-    return out.slice(0, n);
+    return window.VISITE.elencoDate(sede, STATI_VISITE, 20)
+      .filter(function(x){ return !x.tolta; })
+      .slice(0, n)
+      .map(function(x){
+        return { when: x.when, ora: x.ora, label: fmtData(x.when) + ' alle ' + x.ora, bloccata: bloccata(x.when) };
+      });
   }
 
   function renderSedi(){
