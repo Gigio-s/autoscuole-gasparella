@@ -328,6 +328,7 @@
   function pad(n){ return (n<10?'0':'')+n; }
   function fmtData(d){ return GIORNI[d.getDay()] + ' ' + d.getDate() + '/' + pad(d.getMonth()+1) + '/' + d.getFullYear(); }
   function riepGiorni(sede){
+    if (!sede.giorni.length) return 'Date variabili: vedi calendario';
     return sede.giorni.map(function(g){ return GIORNI[g.dow] + ' ' + g.ora + (g.quindicinale ? ' (ogni 2 settimane)' : ''); }).join(' &middot; ');
   }
 
@@ -385,6 +386,12 @@
       else { btn.addEventListener('click', function(){ openData(dt); }); }
       elDateList.appendChild(btn);
     });
+    if (meseCorr === -1) {
+      var vuoto = document.createElement('p');
+      vuoto.style.cssText = 'margin:.4rem 0;color:#555';
+      vuoto.textContent = 'Al momento non ci sono date disponibili per questa sede. Chiamaci o scegli un\'altra sede.';
+      elDateList.appendChild(vuoto);
+    }
     elSediWrap.classList.add('hidden');
     elFormWrap.classList.add('hidden');
     elDateWrap.classList.remove('hidden');

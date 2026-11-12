@@ -20,7 +20,9 @@
     { nome:'Isola Vicentina',  giorni:[{dow:4, ora:'18:00'}] },
     { nome:'Barbarano Mossano',giorni:[{dow:5, ora:'15:30'}] },
     { nome:'Montegalda',       giorni:[{dow:5, ora:'15:00'},{dow:6, ora:'08:30'}] },
-    { nome:'Marano Vicentino', giorni:[{dow:4, ora:'15:00', quindicinale:true, anchor:'2026-10-01'}] }
+    { nome:'Marano Vicentino', giorni:[{dow:4, ora:'15:00', quindicinale:true, anchor:'2026-10-01'}] },
+    // Villaverla: per ora nessun giorno fisso, solo date aggiunte dal gestionale (fisso da gennaio 2027)
+    { nome:'Villaverla',       giorni:[] }
   ];
 
   var PRE_NO = 'VISITA_NO|', PRE_SI = 'VISITA_SI|';

@@ -650,7 +650,7 @@
         + '<span>'+(x.tipo==='aggiunta'?'Data aggiunta a mano':'Calendario fisso')+'</span></div>'
         + pill + btns + edit + '</div>';
     }).join('');
-    var fisso = sede.giorni.map(function(g){ return ['domenica','lunedì','martedì','mercoledì','giovedì','venerdì','sabato'][g.dow]+' '+g.ora+(g.quindicinale?' (ogni 2 settimane)':''); }).join(', ');
+    var fisso = sede.giorni.map(function(g){ return ['domenica','lunedì','martedì','mercoledì','giovedì','venerdì','sabato'][g.dow]+' '+g.ora+(g.quindicinale?' (ogni 2 settimane)':''); }).join(', ') || 'nessuno, solo date aggiunte a mano';
     el.innerHTML = '<div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem">'+bott+'</div>'
       + '<div class="sede-box"><h3>Visite mediche: '+esc(sede.nome)+'</h3>'
       + '<p class="hint" style="margin:-.5rem 0 .6rem">Calendario fisso: '+esc(fisso)+'. Elenco fino al '+esc(itDate(isoD(V.fineFinestra())))+': mese in corso e i due successivi, come sul sito. Il mese nuovo compare da solo il 1° del mese.</p>'
